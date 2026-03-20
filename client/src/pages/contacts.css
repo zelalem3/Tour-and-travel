@@ -1,0 +1,223 @@
+/* Container card */
+.contact-card {
+  background-color: #ffffff;
+  border-radius: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Headings */
+.contact-card h1 {
+  font-family: 'Poppins', sans-serif;
+  color: #1e3a8a; /* Indigo-800 */
+}
+
+/* Labels */
+.contact-card label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563; /* Gray-700 */
+}
+
+/* Inputs and textarea */
+.contact-card input,
+.contact-card textarea {
+  background-color: #f3f4f6; /* Gray-100 */
+  border: 1px solid #d1d5db; /* Gray-300 */
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #1f2937; /* Gray-800 */
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.contact-card input:focus,
+.contact-card textarea:focus {
+  border-color: #6366f1; /* Indigo-500 */
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+/* Button */
+.contact-card button {
+  background-color: #6366f1; /* Indigo-500 */
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.125rem;
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+.contact-card button:hover {
+  background-color: #4f46e5; /* Indigo-600 */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+
+/* Social icons hover effect */
+.contact-card .social-icon svg {
+  transition: all 0.3s ease;
+}
+
+.contact-card .social-icon:hover svg {
+  fill: #6366f1; /* Indigo-500 */
+  transform: scale(1.2);
+}
+/* Update the existing form styling to include: */
+
+.custom-select {
+  padding: 12px 18px;
+  border: 2px solid #f1f5f9;
+  background: #f8fafc;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #020617;
+  cursor: pointer;
+  appearance: none; /* Removes default browser arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.custom-select:focus {
+  border-color: #fbbf24;
+  outline: none;
+}
+
+/* Enhancing the Footer Icons/Text */
+.info-item {
+  display: flex;
+  align-items: flex-start; /* Better alignment for multi-line text */
+  gap: 12px;
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.info-item:hover {
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.info-item strong {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.info-item p {
+    margin: 0;
+    font-weight: 600;
+    color: #020617;
+    font-size: 0.85rem;
+}
+/* Styling for the phone and select inputs */
+.form-group input[type="tel"],
+.form-group input[type="number"],
+.custom-select {
+  padding: 12px 18px;
+  border: 2px solid #f1f5f9;
+  background: #f8fafc;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #020617;
+  transition: all 0.3s ease;
+}
+
+/* Ensure the contact footer items are clickable/interactive */
+.info-item {
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid transparent;
+}
+
+.info-item:hover {
+    background: #ffffff;
+    border-color: #fbbf24;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.info-item strong {
+    display: block;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+/* Custom Select Box Styling */
+.custom-select {
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid #f1f5f9;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #020617;
+  cursor: pointer;
+  
+  /* This removes the default browser arrow */
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* This adds our CUSTOM golden arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+  background-size: 1rem;
+  
+  transition: all 0.3s ease;
+}
+
+/* Hover & Focus States */
+.custom-select:hover {
+  border-color: #e2e8f0;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #fbbf24;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+}
+
+/* Universal Input Styling for consistency */
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid #f1f5f9;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #020617;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Crucial for padding */
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #fbbf24;
+  background-color: #ffffff;
+}

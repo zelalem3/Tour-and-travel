@@ -1,0 +1,109 @@
+/* Navbar.css */
+.button-27 {
+  /* Layout & Reset */
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  
+  /* Branding Colors */
+  background-color: #fbbf24; /* Golden Sun */
+  color: #020617 !important; /* Midnight Navy text for contrast */
+  
+  /* Shape & Typography */
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 12px 24px;
+  text-transform: uppercase;
+  
+  /* The "Magic" Transitions */
+  transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+  
+  /* Position fix */
+  margin-top: -4px; 
+}
+
+/* Hover Effect: Glow & Lift */
+.button-27:hover {
+  background-color: #fcd34d; /* Slightly lighter gold */
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+  color: #000000 !important;
+}
+
+/* Active Effect: Click "Push" */
+.button-27:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+}
+
+/* For responsiveness on small screens */
+@media (max-width: 768px) {
+  .button-27 {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+
+.button-27:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.navbar-light .navbar-brand {
+  font-size: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.navbar-nav {
+  text-align: center;
+}
+
+.nav-link {
+  padding: 0.2rem 1rem;
+  color: black !important;
+}
+
+.nav-link.active,
+.nav-link:focus {
+  color: #fff;
+}
+
+.navbar-toggler {
+  background: #fff;
+}
+
+.navbar {
+  padding: 20px;
+}
+
+a {
+  color: black !important;
+}
+
+.navbar-brand img {
+  width: 180px;
+  height: 70px;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand img {
+    width: 150px;
+    height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand img {
+    width: 100px !important;
+    height: auto;
+  }
+}
