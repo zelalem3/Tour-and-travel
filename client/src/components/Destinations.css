@@ -1,0 +1,136 @@
+.dest-section {
+  padding: 100px 20px;
+  background-color: #ffffff;
+}
+
+.dest-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.dest-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.dest-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 15px;
+}
+
+.dest-title span {
+  color: #ca8a04; /* Gold */
+}
+
+.dest-subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+/* Dynamic Grid */
+.dest-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .dest-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* Custom Spans for that "Mosaic" look */
+  .md\:col-span-2 { grid-column: span 2; }
+}
+
+@media (min-width: 1024px) {
+  .dest-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .lg\:col-span-3 { grid-column: span 3; }
+  .lg\:col-span-2 { grid-column: span 2; }
+}
+
+/* Card Styling */
+.dest-card {
+  position: relative;
+  display: block;
+  height: 400px;
+  border-radius: 24px;
+  overflow: hidden;
+  text-decoration: none;
+  opacity: 0;
+  animation: fadeIn 0.8s forwards ease-out;
+}
+
+.dest-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.dest-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dest-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 30px;
+  transition: background 0.4s ease;
+}
+
+.dest-info {
+  transform: translateY(20px);
+  transition: transform 0.4s ease;
+}
+
+.dest-name {
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dest-desc {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 8px 0 16px 0;
+  font-size: 1rem;
+}
+
+.dest-btn {
+  color: #fbbf24;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Hover States */
+.dest-card:hover .dest-img {
+  transform: scale(1.1);
+}
+
+.dest-card:hover .dest-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.dest-card:hover .dest-info {
+  transform: translateY(0);
+}
+
+.dest-card:hover .dest-btn {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}

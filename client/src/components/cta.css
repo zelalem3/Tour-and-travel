@@ -1,0 +1,111 @@
+/* Container & Background */
+.cta-section {
+  position: relative;
+  background-color: #020617; /* Dark Navy (Blue-950) */
+  padding: 100px 24px;
+  overflow: hidden;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.cta-container {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Background Glow Effects */
+.cta-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: 1;
+}
+
+.glow-1 {
+  top: -100px;
+  left: -100px;
+  background-color: #fbbf24; /* Yellow */
+}
+
+.glow-2 {
+  bottom: -100px;
+  right: -100px;
+  background-color: #3b82f6; /* Blue */
+}
+
+/* Typography */
+.cta-label {
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.cta-heading {
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.cta-gradient-text {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta-description {
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  background-color: #fbbf24;
+  color: #020617;
+  padding: 18px 40px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 18px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
+}
+
+.cta-button:hover {
+  background-color: #fcd34d;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(251, 191, 36, 0.4);
+}
+
+.cta-arrow {
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover .cta-arrow {
+  transform: translateX(5px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .cta-heading {
+    font-size: 2.2rem;
+  }
+}
