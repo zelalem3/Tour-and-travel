@@ -33,65 +33,70 @@ export default function Tours() {
         </p>
       </div>
 
-      {/* Tours Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {tours.map((tour, index) => (
-          <div
-            key={tour._id || index}
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300 relative"
-          >
-            {/* Popular Badge - logic stays the same */}
-            {index === 0 && (
-              <div className="badge badge-secondary absolute top-2 right-2 z-10">
-                Popular
-              </div>
-            )}
+   <div className="tours-grid-container max-w-7xl mx-auto">
+  {tours.map((tour, index) => (
+    <div
+      key={tour._id || index}
+      className="card w-full bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 relative border border-gray-100"
+    >
+      {/* Popular Badge */}
+      {index === 0 && (
+        <div className="badge badge-secondary absolute top-4 right-4 z-10 shadow-sm">
+          Popular
+        </div>
+      )}
 
-            <figure>
-              {tour.mainImage ? (
-                <img
-                  src={urlFor(tour.mainImage).width(600).url()}
-                  alt={tour.title}
-                  className="h-56 w-full object-cover"
-                />
-              ) : (
-                <div className="h-56 w-full bg-gray-200 flex items-center justify-center">No Image</div>
-              )}
-            </figure>
-
-            <div className="card-body">
-              <h2 className="card-title">{tour.title}</h2>
-
-              <p className="text-sm text-gray-500">
-                {tour.description}
-              </p>
-
-              {/* Note: I added 'duration' to your Sanity schema earlier, 
-                  make sure it's filled in the CMS! */}
-              <p className="text-xs mt-2">
-                ⏳ {tour.duration || "Contact for duration"} • Guided Tour
-              </p>
-
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-primary font-bold text-lg">
-                  ${tour.price}
-                </span>
-
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() =>
-                    navigate("/contact", {
-                      state: { tour: tour.title },
-                    })
-                  }
-                >
-                  Book Now
-                </button>
-              </div>
-            </div>
+      <figure className="px-0 pt-0">
+        {tour.mainImage ? (
+          <img
+            src={urlFor(tour.mainImage).width(600).height(400).url()}
+            alt={tour.title}
+            className="h-64 w-full object-cover rounded-t-xl"
+          />
+        ) : (
+          <div className="h-64 w-full bg-gray-200 flex items-center justify-center rounded-t-xl">
+            No Image
           </div>
-        ))}
+        )}
+      </figure>
+
+      <div className="card-body p-6">
+        <h2 className="card-title text-xl font-bold">{tour.title}</h2>
+        
+        <p className="text-sm text-gray-500 line-clamp-2">
+          {tour.description}
+        </p>
+
+        <div className="flex items-center gap-2 mt-2 text-gray-600">
+           <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded">
+             ⏳ {tour.duration || "Custom"}
+           </span>
+           <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded">
+             📍 Guided
+           </span>
+        </div>
+
+        <div className="card-actions justify-between items-center mt-6 pt-4 border-t border-gray-50">
+          <span className="text-2xl font-black text-primary">
+            ${tour.price}
+          </span>
+
+          <button
+            className="btn btn-primary btn-md shadow-md hover:scale-105 transition-transform"
+            onClick={() =>
+              navigate("/contact", {
+                state: { tour: tour.title },
+              })
+            }
+          >
+            Book Now
+          </button>
+        </div>
       </div>
     </div>
+  ))}
+</div>
+</div>
   );
 }
+      
