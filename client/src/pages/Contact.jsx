@@ -1,25 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Mail, Phone, MessageSquare, Send, MapPin, Loader2 } from "lucide-react";
 import "./contacts.css";
-import { Mail, Phone, MessageSquare, Send, MapPin } from "lucide-react";
 
 export default function Contact() {
   const location = useLocation();
+  
+  // State for form submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  
+  // State for the selected tour (defaults to "custom")
   const [selectedTour, setSelectedTour] = useState("custom");
 
-  // Logic to auto-select the tour if coming from the Tours page
+  // Auto-fill logic: If user clicked "Book Now" on a specific tour
   useEffect(() => {
     if (location.state && location.state.tour) {
       setSelectedTour(location.state.tour);
     }
+    window.scrollTo(0, 0); // Ensure page starts at top
   }, [location]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, this just logs the data. 
-    // You can connect this to EmailJS or a backend later!
-    alert("Thank you! Your inquiry for " + selectedTour + " has been sent.");
+    setIsSubmitting(true);
+
+    // Simulate sending an email (Replace this with EmailJS or your API later)
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }, 2000);
   };
+
+  if (submitted) {
+    return (
+      <div className="contact-viewport flex items-center justify-center">
+        <div className="contact-card text-center py-20 px-10">
+          <div className="bg-[#fbbf24] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Send size={40} className="text-[#020617]" />
+          </div>
+          <h1 className="text-3xl font-bold mb-4">Request Received!</h1>
+          <p className="text-gray-500 mb-8">
+            Thank you for choosing us. One of our Ethiopian travel experts will contact you 
+            via your preferred method within 24 hours.
+          </p>
+          <button 
+            onClick={() => setSubmitted(false)}
+            className="submit-btn max-w-xs mx-auto"
+          >
+            Send Another Inquiry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="contact-viewport">
@@ -32,7 +66,7 @@ export default function Contact() {
               Plan Your <span className="highlight">Ethiopian Odyssey</span>
             </h1>
             <p className="contact-description">
-              Our local travel experts in Addis Ababa typically respond within 12-24 hours.
+              Our local experts in Addis Ababa typically respond within 12-24 hours.
             </p>
           </div>
 
@@ -41,7 +75,7 @@ export default function Contact() {
             <div className="form-row">
               <div className="form-group half">
                 <label htmlFor="name">Full Name</label>
-                <input type="text" id="name" placeholder="e.g. Zelalem Mengistu" required />
+                <input type="text" id="name" placeholder="e.g. Zelalem Getnet" required />
               </div>
               <div className="form-group half">
                 <label htmlFor="email">Email Address</label>
@@ -53,12 +87,7 @@ export default function Contact() {
             <div className="form-row">
               <div className="form-group half">
                 <label htmlFor="phone">Phone / WhatsApp</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  placeholder="+251 9xx xx xx xx" 
-                  required 
-                />
+                <input type="tel" id="phone" placeholder="+251 9xx xx xx xx" required />
               </div>
               <div className="form-group half">
                 <label htmlFor="contact-method">Preferred Contact Method</label>
@@ -103,9 +132,22 @@ export default function Contact() {
             </div>
 
             <div className="form-button-container">
-              <button type="submit" className="submit-btn">
-                <span>Request Custom Quote</span>
-                <Send size={18} className="btn-icon" />
+              <button 
+                type="submit" 
+                className={`submit-btn ${isSubmitting ? 'loading' : ''}`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Request Custom Quote</span>
+                    <Send size={18} className="btn-icon" />
+                  </>
+                )}
               </button>
             </div>
 

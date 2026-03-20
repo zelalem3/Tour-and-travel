@@ -221,3 +221,56 @@
   border-color: #fbbf24;
   background-color: #ffffff;
 }
+
+/* ... Keep your existing viewport and card styles ... */
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  background-color: #fbbf24; /* Golden Sun */
+  color: #020617; /* Midnight Navy */
+  padding: 18px;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border: none;
+  cursor: pointer;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #fcd34d;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(251, 191, 36, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-icon {
+  transition: transform 0.4s ease;
+}
+
+.submit-btn:hover .btn-icon {
+  transform: translateX(6px) translateY(-6px); /* The "flying" effect */
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.highlight {
+  color: #fbbf24;
+}
