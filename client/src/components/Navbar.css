@@ -1,109 +1,132 @@
-/* Navbar.css */
+/* --- Base Navbar Styling --- */
+.custom-nav {
+  background-color: #020617 !important; /* Midnight Navy */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px 0;
+  transition: all 0.3s ease;
+  color-scheme: dark; /* Helps browser handle dark UI elements */
+}
+
+/* --- Logo Sizing --- */
+.nav-logo {
+  width: 160px;
+  height: auto;
+  max-height: 60px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+  transform: scale(1.02);
+}
+
+/* --- Navigation Links --- */
+.nav-item-link {
+  color: #f8fafc !important; /* Near white */
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  margin: 0 12px;
+  transition: color 0.3s ease !important;
+  position: relative;
+}
+
+.nav-item-link:hover {
+  color: #fbbf24 !important; /* Gold on hover */
+}
+
+/* --- MOBILE TOGGLE (The Hamburger Button) --- */
+.navbar-toggler {
+  border: 1px solid rgba(251, 191, 36, 0.4) !important; /* Subtle Gold Border */
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2) !important;
+  outline: none;
+}
+
+/* FORCING THE ICON TO BE BRIGHT GOLD */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23fbbf24' stroke-width='2.5' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  width: 1.4em;
+  height: 1.4em;
+}
+
+/* --- CONTACT US BUTTON (Button 27) --- */
 .button-27 {
-  /* Layout & Reset */
   appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border: none;
-  outline: none;
-  
-  /* Branding Colors */
-  background-color: #fbbf24; /* Golden Sun */
-  color: #020617 !important; /* Midnight Navy text for contrast */
-  
-  /* Shape & Typography */
+  background-color: #fbbf24; /* Brand Gold */
+  color: #020617 !important; /* Navy Text */
   border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px 24px;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 12px 24px;
-  text-transform: uppercase;
-  
-  /* The "Magic" Transitions */
-  transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
   box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
-  
-  /* Position fix */
-  margin-top: -4px; 
-}
-
-/* Hover Effect: Glow & Lift */
-.button-27:hover {
-  background-color: #fcd34d; /* Slightly lighter gold */
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
-  color: #000000 !important;
-}
-
-/* Active Effect: Click "Push" */
-.button-27:active {
-  transform: translateY(-1px) scale(0.98);
-  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
-}
-
-/* For responsiveness on small screens */
-@media (max-width: 768px) {
-  .button-27 {
-    padding: 10px 18px;
-    font-size: 14px;
-  }
 }
 
 .button-27:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  background-color: #fcd34d;
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
 }
 
-.navbar-light .navbar-brand {
-  font-size: 25px;
-  text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 2px;
+.button-27:active {
+  transform: translateY(0);
 }
 
-.navbar-nav {
-  text-align: center;
-}
+/* --- MOBILE RESPONSIVE TWEAKS --- */
+@media (max-width: 991px) {
+  /* This ensures the dropdown menu is dark and separate from the nav bar */
+  .navbar-collapse {
+    background: #0f172a !important; /* Slightly lighter Navy for contrast */
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  }
 
-.nav-link {
-  padding: 0.2rem 1rem;
-  color: black !important;
-}
+  .nav-item-link {
+    display: block;
+    padding: 12px 0 !important;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    text-align: center;
+  }
 
-.nav-link.active,
-.nav-link:focus {
-  color: #fff;
-}
+  .nav-item-link:last-of-type {
+    border-bottom: none;
+  }
 
-.navbar-toggler {
-  background: #fff;
-}
+  .button-27 {
+    margin-top: 20px;
+    width: 100%; /* Make button full width on mobile */
+    padding: 14px;
+  }
 
-.navbar {
-  padding: 20px;
-}
-
-a {
-  color: black !important;
-}
-
-.navbar-brand img {
-  width: 180px;
-  height: 70px;
-}
-
-@media (max-width: 768px) {
-  .navbar-brand img {
-    width: 150px;
-    height: auto;
+  .nav-logo {
+    width: 140px;
   }
 }
 
 @media (max-width: 576px) {
-  .navbar-brand img {
-    width: 100px !important;
-    height: auto;
+  .nav-logo {
+    width: 120px !important;
+  }
+  
+  .custom-nav {
+    padding: 10px 0;
   }
 }
