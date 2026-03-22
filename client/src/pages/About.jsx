@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./About.css";
 
 const About = () => {
+  // Ensure the page starts at the top when navigating
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="about-page">
       {/* --- Section 1: Hero Header --- */}
       <section className="about-hero">
         <div className="about-hero-content animate-fade-in">
           <span className="subtitle">Our Story</span>
-          <h1 className="title">Preserving the Soul of <span className="highlight">Ethiopia</span></h1>
-          <p className="description">
-            We are more than a travel agency. We are storytellers, mountain guides, and keepers of ancient history.
+          <h1 className="title">
+            Preserving the Soul of <span className="highlight">Ethiopia</span>
+          </h1>
+          <p className="description max-w-2xl mx-auto px-4 text-lg text-gray-300">
+            We are more than a travel agency. We are storytellers, mountain guides, 
+            and keepers of ancient history.
           </p>
         </div>
       </section>
@@ -19,19 +27,20 @@ const About = () => {
       <section className="mission-section">
         <div className="container">
           <div className="mission-grid">
-            <div className="mission-text">
+            <div className="mission-text animate-fade-in">
               <h2 className="section-title">Why We Do What We Do</h2>
               <p>
-                Founded in the heart of Addis Ababa, our mission is to provide authentic, 
-                sustainable, and transformative travel experiences. We believe that 
-                Ethiopia is not just a destination—it is a journey back to the roots 
-                of humanity.
+                Founded in the heart of Addis Ababa, our mission is to provide 
+                authentic, sustainable, and transformative travel experiences. 
+                We believe that Ethiopia is not just a destination—it is a 
+                journey back to the roots of humanity.
               </p>
               <p>
                 From the jagged peaks of the Simien Mountains to the spiritual 
-                quietude of Lalibela, we ensure every traveler leaves with a piece 
-                of Ethiopia in their heart.
+                quietude of Lalibela, we ensure every traveler leaves with a 
+                piece of Ethiopia in their heart.
               </p>
+              
               <div className="stats-grid">
                 <div className="stat-item">
                   <span className="stat-num">10+</span>
@@ -47,6 +56,7 @@ const About = () => {
                 </div>
               </div>
             </div>
+            
             <div className="mission-image">
               <img 
                 src="https://images.unsplash.com/photo-1523438097201-512ae7d59c44?auto=format&fit=crop&w=800" 

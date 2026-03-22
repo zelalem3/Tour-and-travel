@@ -1,7 +1,11 @@
+/* About.css */
+
 .about-page {
   font-family: 'Inter', sans-serif;
-  color: #1a1a1a;
+  background-color: #020617 !important; /* Midnight Navy */
+  color: #ffffff;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
@@ -10,13 +14,13 @@
   padding: 0 24px;
 }
 
-/* Hero Section */
+/* Hero Section - Keep as is, it's already dark */
 .about-hero {
-  background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.8)), 
+  background: linear-gradient(rgba(2, 6, 23, 0.7), rgba(2, 6, 23, 0.9)), 
               url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600');
   background-size: cover;
   background-position: center;
-  height: 60vh;
+  height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,37 +29,46 @@
 }
 
 .about-hero .subtitle {
-  color: #fbbf24;
+  color: #fbbf24 !important;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  font-weight: 700;
+  font-weight: 800;
   display: block;
   margin-bottom: 10px;
 }
 
 .about-hero .title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 900;
   margin-bottom: 20px;
 }
 
-.about-hero .highlight { color: #fbbf24; }
+.about-hero .highlight { color: #fbbf24 !important; }
 
-/* Mission Section */
-.mission-section { padding: 100px 0; background: #fff; }
+/* Mission Section - Now Dark */
+.mission-section { 
+  padding: 100px 0; 
+  background-color: #020617 !important; 
+}
 
 .mission-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 80px;
   align-items: center;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
   margin-bottom: 30px;
-  color: #020617;
+  color: #ffffff !important;
+}
+
+.mission-text p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
 }
 
 .stats-grid {
@@ -67,55 +80,76 @@
 
 .stat-num {
   display: block;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 900;
-  color: #fbbf24;
+  color: #fbbf24 !important;
 }
 
-.stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+.stat-label { 
+  font-size: 0.8rem; 
+  color: rgba(255, 255, 255, 0.5); 
+  font-weight: 700; 
+  text-transform: uppercase;
+}
 
 .rounded-img {
   width: 100%;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border-radius: 30px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  border: 1px solid rgba(251, 191, 36, 0.2);
 }
 
-/* Values Section */
-.values-section { padding: 100px 0; background: #f8fafc; }
+/* Values Section - Glassmorphism */
+.values-section { 
+  padding: 120px 0; 
+  background-color: #020617 !important; 
+  position: relative;
+}
 
 .values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 50px;
+  gap: 40px;
+  margin-top: 60px;
 }
 
 .value-card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(10px);
+  padding: 50px 40px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.value-card:hover { transform: translateY(-10px); }
-
-.value-card .icon { font-size: 3rem; margin-bottom: 20px; }
-
-.value-card h3 { font-weight: 800; margin-bottom: 15px; }
-
-/* Mobile Fix */
-@media (max-width: 768px) {
-  .mission-grid { grid-template-columns: 1fr; }
-  .about-hero { height: 50vh; }
+.value-card:hover { 
+  transform: translateY(-15px); 
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.05) !important;
 }
 
-/* Animations */
-.animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
+.value-card .icon { font-size: 3.5rem; margin-bottom: 25px; }
+
+.value-card h3 { 
+  font-weight: 800; 
+  margin-bottom: 15px; 
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.value-card p {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Mobile Fixes */
+@media (max-width: 992px) {
+  .mission-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-hero { height: 60vh; }
+  .stats-grid { gap: 10px; }
+  .stat-num { font-size: 2rem; }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
