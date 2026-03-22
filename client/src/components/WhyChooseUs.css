@@ -1,26 +1,24 @@
 :root {
-  /* Updated to keep the dark slate/navy theme from your footer */
   --primary-gold: #fbbf24; 
-  --bg-dark-custom: #020617; /* Same as your Footer Box */
+  --bg-dark-custom: #020617; 
   --text-white: #ffffff;
   --text-muted-light: rgba(255, 255, 255, 0.7);
-  --card-dark-bg: rgba(255, 255, 255, 0.03); /* Subtle glass effect */
+  --card-dark-bg: rgba(255, 255, 255, 0.03);
 }
 
 .why-section {
   position: relative;
   padding: 100px 20px;
-  /* FORCE the background color to stay dark regardless of phone settings */
   background-color: var(--bg-dark-custom) !important;
   color: var(--text-white) !important;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
-  
-  /* Tells the browser this section is specifically dark themed */
   color-scheme: dark; 
+  /* This adds depth for the 3D tilt effect */
+  perspective: 1000px; 
 }
 
-/* Background Decorations - increased opacity slightly for dark mode */
+/* Background Decorations */
 .bg-blob {
   position: absolute;
   width: 400px;
@@ -49,7 +47,7 @@
 .badge {
   display: inline-block;
   padding: 8px 20px;
-  background: rgba(251, 191, 36, 0.15); /* Tinted gold background */
+  background: rgba(251, 191, 36, 0.15);
   color: var(--primary-gold) !important;
   border: 1px solid rgba(251, 191, 36, 0.3);
   border-radius: 100px;
@@ -62,7 +60,7 @@
 
 .title {
   font-size: clamp(2.2rem, 5vw, 3.5rem);
-  color: var(--text-white) !important; /* Force white */
+  color: var(--text-white) !important;
   margin: 0;
   font-weight: 800;
   line-height: 1.1;
@@ -88,20 +86,23 @@
 }
 
 .why-card {
-  /* Cards are now dark with a slight border to pop against the background */
   background: var(--card-dark-bg);
   backdrop-filter: blur(10px);
   padding: 40px;
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* The "Magic" tilt transition */
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  cursor: default;
 }
 
 .why-card:hover {
-  transform: translateY(-10px);
-  background: rgba(255, 255, 255, 0.06);
+  /* Added Tilt logic back in here */
+  transform: translateY(-15px) rotateX(4deg) rotateY(2deg);
+  background: rgba(255, 255, 255, 0.08);
   border-color: var(--primary-gold);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
 .icon-wrapper {
@@ -115,25 +116,62 @@
   border-radius: 18px;
   margin-bottom: 25px;
   border: 1px solid rgba(251, 191, 36, 0.2);
+  /* Makes icon pop forward slightly */
+  transform: translateZ(20px); 
 }
 
 .card-title {
   font-size: 22px;
-  color: var(--text-white) !important; /* Force white */
+  color: var(--text-white) !important;
   margin-bottom: 15px;
   font-weight: 700;
 }
 
 .card-text {
-  color: var(--text-muted-light) !important; /* Force muted white/grey */
+  color: var(--text-muted-light) !important;
   line-height: 1.7;
   font-size: 16px;
   margin: 0;
 }
 
-/* Mobile Adjustments */
+/* Mobile Adjustments - Disable tilt for better performance */
 @media (max-width: 768px) {
   .why-section { padding: 80px 20px; }
   .card-grid { gap: 20px; }
   .why-card { padding: 30px; }
+  
+  .why-card:hover {
+    transform: translateY(-5px); /* Simple lift for mobile */
+    rotate: none;
+  }
+}
+/* Restoring the Hover Tilt and Rotation */
+.why-card:hover {
+  transform: translateY(-12px) rotateX(2deg) rotateY(2deg); /* Added subtle 3D tilt */
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-gold);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.icon-wrapper {
+  width: 65px;
+  height: 65px;
+  background: rgba(251, 191, 36, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  
+  /* Critical for the smooth animation */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+/* Restoring the specific icon rotation on hover */
+.why-card:hover .icon-wrapper {
+  transform: scale(1.2) rotate(12deg); /* This gives it that "popping" look */
+  background: var(--primary-gold);
+  color: #020617 !important; /* Makes the emoji/icon pop against the gold */
 }
