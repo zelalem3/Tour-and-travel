@@ -7,17 +7,17 @@ const Hero = () => {
       {/* 1. Background Image Container */}
       <div className="hero-background-container">
         <img
-          src="https://images.unsplash.com/photo-1544085311-11a028465b03?q=80&w=2000&auto=format&fit=crop"
+          src="https://media.istockphoto.com/id/1323573691/photo/gheralta-mountains-tigray-region-ethiopia.jpg?s=612x612&w=0&k=20&c=P4v-wQF1IY_k3c4bFUW44k7dpHpP4uoTYn-JB0Yf2Fg="
           alt="Ethiopian Landscape"
-          className="hero-image-media ken-burns-render"
+          className="hero-image-media interactive-zoom"
         />
-        {/* These overlays ensure the text is readable over the image */}
+        {/* Overlays for readability and branding */}
         <div className="overlay-vignette"></div>
         <div className="overlay-texture-grid"></div>
       </div>
 
       {/* 2. Content Container */}
-      <div className="hero-content hero-fade-in-content">
+      <div className="hero-content hero-entrance-animation">
         <span className="hero-subtitle">Discover the Cradle of Humanity</span>
         
         <h1 className="hero-title">
@@ -26,7 +26,7 @@ const Hero = () => {
         </h1>
         
         <p className="hero-text">
-          Authentic journeys through Ethiopia's ancient wonders, 
+          Experience authentic journeys through Ethiopia's ancient wonders, 
           dramatic landscapes, and vibrant cultures.
         </p>
         

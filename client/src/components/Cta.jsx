@@ -21,10 +21,14 @@ const Cta = () => {
           start your journey with the local experts.
         </p>
 
-        <a href="mailto:info@travelethiopia.com" className="cta-button">
-          Contact Us Now
-          <span className="cta-arrow">→</span>
-        </a>
+            <div className="hero-actions">
+          <a href="#tours" className="hero-btn-primary">
+            <span>Explore Tours Now</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
   );
