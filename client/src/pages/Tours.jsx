@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { client, urlFor } from '../sanityClient'; // Ensure this path is correct
+import { client, urlFor } from '../sanityClient'; 
 
 export default function Tours() {
   const navigate = useNavigate();
@@ -8,9 +8,7 @@ export default function Tours() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch tours from Sanity
     const query = '*[_type == "tour"] | order(_createdAt asc)';
-    
     client.fetch(query)
       .then((data) => {
         setTours(data);
@@ -19,84 +17,130 @@ export default function Tours() {
       .catch(console.error);
   }, []);
 
+  // Loading State - Dark Version
   if (loading) {
-    return <div className="p-6 bg-base-200 min-h-screen text-center pt-20">Loading Tours...</div>;
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#020617' }}>
+        <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24' }}>Loading Tours...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6 bg-base-200 min-h-screen">
+    <div style={{ 
+      padding: '60px 20px', 
+      backgroundColor: '#020617', // Midnight Navy Background
+      minHeight: '100vh',
+      fontFamily: 'Inter, sans-serif'
+    }}>
       {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold">Our Tours</h1>
-        <p className="text-gray-500">
-          Discover unforgettable travel experiences across Ethiopia
+      <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+        <span style={{ color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.8rem' }}>
+          Explore Ethiopia
+        </span>
+        <h1 style={{ fontSize: '3rem', fontWeight: '900', color: '#ffffff', marginTop: '10px', marginBottom: '15px' }}>
+          Our <span style={{ color: '#fbbf24' }}>Tours</span>
+        </h1>
+        <p style={{ color: '#94a3b8', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
+          Discover unforgettable travel experiences across the Land of Origins.
         </p>
       </div>
 
-   <div className="tours-grid-container max-w-7xl mx-auto">
-  {tours.map((tour, index) => (
-    <div
-      key={tour._id || index}
-      className="card w-full bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 relative border border-gray-100"
-    >
-      {/* Popular Badge */}
-      {index === 0 && (
-        <div className="badge badge-secondary absolute top-4 right-4 z-10 shadow-sm">
-          Popular
-        </div>
-      )}
-
-      <figure className="px-0 pt-0">
-        {tour.mainImage ? (
-          <img
-            src={urlFor(tour.mainImage).width(600).height(400).url()}
-            alt={tour.title}
-            className="h-64 w-full object-cover rounded-t-xl"
-          />
-        ) : (
-          <div className="h-64 w-full bg-gray-200 flex items-center justify-center rounded-t-xl">
-            No Image
-          </div>
-        )}
-      </figure>
-
-      <div className="card-body p-6">
-        <h2 className="card-title text-xl font-bold">{tour.title}</h2>
-        
-        <p className="text-sm text-gray-500 line-clamp-2">
-          {tour.description}
-        </p>
-
-        <div className="flex items-center gap-2 mt-2 text-gray-600">
-           <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded">
-             ⏳ {tour.duration || "Custom"}
-           </span>
-           <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded">
-             📍 Guided
-           </span>
-        </div>
-
-        <div className="card-actions justify-between items-center mt-6 pt-4 border-t border-gray-50">
-          <span className="text-2xl font-black text-primary">
-            ${tour.price}
-          </span>
-
-          <button
-            className="btn btn-primary btn-md shadow-md hover:scale-105 transition-transform"
-            onClick={() =>
-              navigate("/contact", {
-                state: { tour: tour.title },
-              })
-            }
+      {/* THE GRID */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gap: '30px',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        {tours.map((tour, index) => (
+          <div
+            key={tour._id || index}
+            style={{
+              backgroundColor: '#0f172a', // Dark Card Background
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+              display: 'flex',
+              flexDirection: 'column',
+              border: '1px solid #1e293b', // Subtle border
+              transition: 'transform 0.3s ease'
+            }}
           >
-            Book Now
-          </button>
-        </div>
+            {/* Image Section */}
+            <div style={{ height: '250px', width: '100%', overflow: 'hidden', position: 'relative' }}>
+              {tour.mainImage ? (
+                <img
+                  src={urlFor(tour.mainImage).width(600).height(400).url()}
+                  alt={tour.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{ width: '100%', height: '100%', backgroundColor: '#1e293b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                  No Image
+                </div>
+              )}
+              {/* Optional: Dark gradient overlay on bottom of image */}
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to top, rgba(15,23,42,0.8), transparent)' }}></div>
+            </div>
+
+            {/* Content Section */}
+            <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#ffffff', marginBottom: '12px' }}>
+                {tour.title}
+              </h2>
+              
+              <p style={{ fontSize: '0.95rem', color: '#94a3b8', lineHeight: '1.7', marginBottom: '25px', flexGrow: 1 }}>
+                {tour.description}
+              </p>
+
+              {/* Price & Button Row */}
+              <div style={{ 
+                marginTop: 'auto', 
+                paddingTop: '20px', 
+                borderTop: '1px solid #1e293b', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center'
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#fbbf24', fontWeight: '700', textTransform: 'uppercase' }}>From</span>
+                  <span style={{ fontSize: '1.75rem', fontWeight: '900', color: '#ffffff' }}>
+                    ${tour.price}
+                  </span>
+                </div>
+
+                <button
+                  style={{
+                    backgroundColor: '#fbbf24', // Golden Button
+                    color: '#020617', // Midnight Navy Text
+                    padding: '14px 28px',
+                    borderRadius: '14px',
+                    fontWeight: '800',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={() => navigate("/contact", { state: { tour: tour.title } })}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fcd34d';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fbbf24';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  ))}
-</div>
-</div>
   );
 }
-      

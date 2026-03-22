@@ -3,3 +3,115 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
+
+/* tours.css */
+
+#tours {
+  /* Force the dark background regardless of system mode */
+  background-color: #020617 !important;
+  color: #ffffff !important;
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+  color-scheme: dark;
+}
+
+/* Background glow effect */
+#tours::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  text-align: center;
+  font-weight: 800;
+  color: #ffffff !important;
+  margin-bottom: 10px;
+}
+
+.title span {
+  color: #fbbf24 !important; /* Gold */
+}
+
+.underline {
+  width: 80px;
+  height: 4px;
+  background: #fbbf24;
+  margin: 20px auto 60px;
+  border-radius: 10px;
+}
+
+/* The Grid Fix */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Premium Card Styling */
+.card {
+  background: rgba(255, 255, 255, 0.03) !important; /* Dark Glass effect */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  border-color: #fbbf24 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card-title {
+  color: #ffffff !important;
+}
+
+.text-gray-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.border-t {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Badge Styling */
+.badge-secondary {
+  background-color: #fbbf24 !important;
+  color: #020617 !important;
+  border: none;
+  font-weight: 800;
+  padding: 12px 15px;
+}
+
+/* Price Styling */
+.text-blue-700 {
+  color: #fbbf24 !important; /* Changed from blue to gold for premium feel */
+}
+
+/* Button Styling */
+.btn-primary {
+  background-color: #fbbf24 !important;
+  border: none !important;
+  color: #020617 !important;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #ffffff !important;
+  transform: scale(1.05);
+}
