@@ -12,7 +12,6 @@ import {
     SocialIcon
 } from "./FooterStyle";
 
-// Using Music2 as a fallback for Tiktok to prevent the crash
 import { Facebook, Instagram, Twitter, Music2 as Tiktok } from "lucide-react";
 
 const Footer = () => {
@@ -26,7 +25,12 @@ const Footer = () => {
                 <Row>
                     <Column>
                         <Heading>Travel Ethiopia</Heading>
-                        <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px", lineHeight: "1.6" }}>
+                        <p style={{ 
+                            color: "rgba(255,255,255,0.7)", 
+                            fontSize: "14px", 
+                            lineHeight: "1.6",
+                            textAlign: "inherit" 
+                        }}>
                             Discover the soul of the Abyssinian highlands with the locals who know it best.
                         </p>
                     </Column>
@@ -57,7 +61,7 @@ const Footer = () => {
                 </Row>
 
                 <BottomRow>
-                    &copy; {new Date().getFullYear()} Travel Ethiopia.
+                    &copy; {new Date().getFullYear()} Travel Ethiopia. All Rights Reserved.
                 </BottomRow>
             </FooterContainer>
         </Box>
