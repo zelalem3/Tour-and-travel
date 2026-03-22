@@ -1,5 +1,5 @@
 import React from 'react';
-import './WhyChooseUs.css'; // Import the CSS file below
+import './WhyChooseUs.css';
 
 const WhyChooseUs = () => {
   const cards = [
