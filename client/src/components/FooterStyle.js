@@ -2,13 +2,20 @@ import styled from "styled-components";
 
 export const Box = styled.footer`
     width: 100%;
-    background: #020617 !important; /* Force dark background */
-    color: #ffffff !important;      /* Force white text */
-    padding: 60px 20px 40px 20px;
+    background: #020617 !important;
+    color: #ffffff !important;
+    padding: 80px 20px 40px 20px; /* Increased top padding */
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
+
+    /* ADD THIS LINE: Subtle top border */
+    border-top: 1px solid rgba(255, 255, 255, 0.08); 
+
+    /* Optional: Add a very faint glow to the border */
+    box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.5);
+
 
     /* Prevent iOS/Android from turning numbers or dates into blue/black links */
     a[x-apple-data-detectors] {

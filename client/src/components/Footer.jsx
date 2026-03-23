@@ -17,6 +17,14 @@ import { Facebook, Instagram, Twitter, Music2 as Tiktok } from "lucide-react";
 const Footer = () => {
     return (
         <Box>
+            <div style={{
+                width: '100px',
+                height: '2px',
+                background: '#fbbf24',
+                margin: '-20px auto 60px auto', // Pulls it into the top padding area
+                borderRadius: '10px',
+                opacity: '0.6'
+            }}></div>
             <FooterContainer>
                 <MottoBar>
                     <p>Authentic • Responsible • Unforgettable</p>
@@ -62,6 +70,7 @@ const Footer = () => {
 
                 <BottomRow>
                     &copy; {new Date().getFullYear()} Travel Ethiopia. All Rights Reserved.
+                    
                 </BottomRow>
             </FooterContainer>
         </Box>
