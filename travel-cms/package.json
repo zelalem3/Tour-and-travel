@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "@sanity/vision": "^5.17.1",
+    "lucide-react": "^0.577.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "sanity": "^5.17.1",
