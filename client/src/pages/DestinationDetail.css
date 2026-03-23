@@ -1,0 +1,97 @@
+/* DestinationDetail.css */
+
+/* 1. Modern Reveal Animation for Title */
+.dest-detail-title {
+  display: block;
+  overflow: hidden;
+  animation: revealText 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes revealText {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* 2. Enhanced Glassmorphism */
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.5s ease;
+}
+
+.glass-sidebar:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+}
+
+/* 3. Smooth Scale for Cards */
+.group {
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.group:hover {
+  transform: translateX(8px);
+  box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.02);
+}
+
+.zoom-container img {
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.group:hover .zoom-container img {
+  transform: scale(1.1);
+}
+
+/* 4. Pulse effect for the Best Time card */
+.pulse-amber {
+  position: relative;
+  overflow: hidden;
+}
+
+.pulse-amber::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(251, 191, 36, 0.05), transparent);
+  transform: rotate(45deg);
+  animation: shine 4s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* 5. Custom Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #fbbf24;
+  border-radius: 10px;
+}
+
+/* 6. Typography Refinement */
+.destination-description {
+  column-count: 1;
+  column-gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .destination-description::first-letter {
+    font-size: 4rem;
+    font-weight: 900;
+    float: left;
+    margin-right: 0.75rem;
+    line-height: 1;
+    color: #020617;
+  }
+}

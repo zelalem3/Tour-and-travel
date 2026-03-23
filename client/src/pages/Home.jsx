@@ -1,56 +1,44 @@
-// App.jsx
-import "../styles.css";
-import Card from "../components/Card";
-import "./home.css";
-import WhyChooseUs from "../components/Whychooeuse";
-import Destinations from "../components/Destinations";
-import Tours from "../components/Tours";
-import Cta from "../components/Cta";
+import React from "react";
 import Hero from "../components/hero";
+import WhyChooseUs from "../components/Whychooeuse";
+import Tours from "../components/Tours";
+import Destinations from "../components/Destinations";
+import Cta from "../components/Cta";
+ // Using your styled-components footer
 
-
-export default function App() {
-  
-
+const Home = () => {
   return (
-    <div className="font-sans text-gray-800 min-h-screen flex flex-col bg-gray-50">
-      {/* 1. Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-blue-950 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl md:text-3xl font-bold">Travel<span className="text-yellow-400">Ethiopia</span></h1>
-          <ul className="hidden md:flex gap-8">
-            <li><a href="#tours" className="hover:text-yellow-400 transition">Tours</a></li>
-            <li><a href="#destinations" className="hover:text-yellow-400 transition">Destinations</a></li>
-            <li><a href="#why-us" className="hover:text-yellow-400 transition">Why Us</a></li>
-            <li><a href="#contact" className="hover:text-yellow-400 transition">Contact</a></li>
-          </ul>
-         {/* Mobile menu button – can expand later */}
-        </div>
-      </nav>
-    <Hero />
-      {/* 3. Why Choose Us */}
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* The Navbar usually stays in App.jsx so it shows on ALL pages.
+          If it's inside Home, it will disappear when you go to a "Details" page.
+      */}
+      
+      <main className="flex-grow">
+        {/* Each component should have an ID that matches your Navbar links */}
+        <section id="hero">
+          <Hero />
+        </section>
 
-        <WhyChooseUs />
-         {/* 4. Featured Tours */}
-        <Tours />
-        {/* 5. Destinations */}
-        <Destinations />
-        
-      {/* 6. Contact / CTA */}
-      <Cta />
-     
+        <section id="why-us">
+          <WhyChooseUs />
+        </section>
+
+        <section id="tours">
+          <Tours />
+        </section>
+
+        <section id="destinations">
+          <Destinations />
+        </section>
+
+        <section id="contact">
+          <Cta />
+        </section>
+      </main>
 
 
-      {/* 7. Footer 
-       <footer className="bg-black text-gray-400 py-12 text-center">
-        <div className="max-w-7xl mx-auto px-6">
-          <h3 className="text-2xl font-bold text-white mb-6">TravelEthiopia</h3>
-          <p className="mb-4">Authentic • Responsible • Unforgettable</p>
-          <p className="text-sm">
-            © {new Date().getFullYear()} TravelEthiopia. All rights reserved.
-          </p>
-        </div>
-      </footer> */}
     </div>
   );
-}
+};
+
+export default Home;
