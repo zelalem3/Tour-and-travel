@@ -7,7 +7,7 @@ const Hero = () => {
       {/* 1. Background Image Container */}
       <div className="hero-background-container">
         <img
-          src="https://media.istockphoto.com/id/1323573691/photo/gheralta-mountains-tigray-region-ethiopia.jpg?s=612x612&w=0&k=20&c=P4v-wQF1IY_k3c4bFUW44k7dpHpP4uoTYn-JB0Yf2Fg="
+          src="https://t4.ftcdn.net/jpg/01/35/16/37/360_F_135163711_hRXMeVFwA20ddhBUFE9yiyirf7MhPWpw.jpg"
           alt="Ethiopian Landscape"
           className="hero-image-media interactive-zoom"
         />

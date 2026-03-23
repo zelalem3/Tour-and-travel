@@ -7,6 +7,8 @@ import NotFound from './pages/NotFound'; // Import the new page
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import "./tailwind.css";
+import DestinationDetail from './pages/DestinationDetail';
+import TourDetail from './pages/TourDetail';
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
         <Route path="/tours" element={<Tours />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        
+        <Route path="/tours/:slug" element={<TourDetail />} />
+        <Route path="/destinations/:slug" element={<DestinationDetail />} />
         {/* The 404 Route - Must be last */}
         <Route path="*" element={<NotFound />} />
       </Routes>
