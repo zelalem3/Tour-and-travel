@@ -4,19 +4,18 @@ import "./Hero.css";
 const Hero = () => {
   return (
     <section className="hero-viewport">
-      {/* 1. Background Image Container */}
       <div className="hero-background-container">
         <img
           src="https://t4.ftcdn.net/jpg/01/35/16/37/360_F_135163711_hRXMeVFwA20ddhBUFE9yiyirf7MhPWpw.jpg"
           alt="Ethiopian Landscape"
-          className="hero-image-media interactive-zoom"
+          className="hero-image-media"
         />
-        {/* Overlays for readability and branding */}
         <div className="overlay-vignette"></div>
         <div className="overlay-texture-grid"></div>
       </div>
 
-      {/* 2. Content Container */}
+      {/* The entrance animation class is now on the container 
+          and CSS handles the children stagger */}
       <div className="hero-content hero-entrance-animation">
         <span className="hero-subtitle">Discover the Cradle of Humanity</span>
         
