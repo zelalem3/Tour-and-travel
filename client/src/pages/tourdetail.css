@@ -1,29 +1,120 @@
-/* Add to your App.css or globals.css */
-
-.text-outline-gold {
-  -webkit-text-stroke: 1px rgba(251, 191, 36, 0.4);
-  color: transparent;
+/* 1. ROOT & THEME LOCK (Forces Dark Mode) */
+:root {
+  color-scheme: dark !important;
 }
 
-/* Custom rounded corners for the "Classy" look */
-.rounded-4xl {
-  border-radius: 2.5rem;
-}
-
-/* Smooth typography for deep dark backgrounds */
+/* Force dark background on the entire document */
+html, 
 body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #020617 !important; /* Midnight Navy */
+  color: #ffffff !important;
+  overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom scrollbar for premium feel */
+/* 2. UNIVERSAL TYPOGRAPHY FIX (Stops Light Mode Flipping) */
+h1, h2, h3, h4, p, span, div, li {
+  color: #ffffff !important; /* Force all text to white */
+}
+
+/* 3. ACCENTS & SPECIAL TEXT */
+.text-outline-gold {
+  -webkit-text-stroke: 1px rgba(251, 191, 36, 0.4) !important;
+  color: transparent !important;
+}
+
+.text-\[\#fbbf24\], 
+.gold-text, 
+.highlight {
+  color: #fbbf24 !important; /* Force Gold Accent */
+}
+
+/* Subtext/Secondary text (Light grey, not black) */
+.text-slate-200, 
+.text-slate-300, 
+.text-slate-400,
+.text-slate-500 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* 4. BOOKING CARD & BUTTON SPECIFICS */
+aside .bg-\[\#020617\], 
+aside div {
+  background-color: #020617 !important;
+}
+
+/* CRITICAL: The button text must be DARK for readability on Yellow */
+button.bg-\[\#fbbf24\], 
+.book-btn, 
+.hero-btn-primary {
+  background-color: #fbbf24 !important;
+  color: #020617 !important; /* Dark text on gold background */
+  border: none !important;
+}
+
+button.bg-\[\#fbbf24\] span,
+button.bg-\[\#fbbf24\] div {
+  color: #020617 !important;
+}
+
+button:hover {
+  background-color: #ffffff !important;
+  color: #020617 !important;
+}
+
+/* 5. MOBILE & GAP FIXES */
+@media (max-width: 768px) {
+  /* Remove any browser-injected spacing at the top */
+  .bg-\[\#020617\],
+  .min-h-screen {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Hero image height adjustment for mobile */
+  section.relative.h-\[75vh\],
+  section.relative.h-\[80vh\] {
+    height: 70vh !important;
+    margin-top: 0 !important;
+  }
+
+  /* Typography scaling for phones */
+  h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.05em !important;
+  }
+
+  /* Content padding reduction */
+  main {
+    padding-top: 2rem !important;
+  }
+}
+
+/* 6. PREMIUM SCROLLBAR */
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: #020617;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #fbbf24;
   border-radius: 10px;
+}
+
+/* 7. CUSTOM CLASSES */
+.rounded-4xl {
+  border-radius: 2.5rem;
+}
+
+/* Selection color */
+::selection {
+  background-color: #fbbf24;
+  color: #020617;
 }

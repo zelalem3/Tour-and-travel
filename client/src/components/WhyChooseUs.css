@@ -1,177 +1,96 @@
-:root {
-  --primary-gold: #fbbf24; 
-  --bg-dark-custom: #020617; 
-  --text-white: #ffffff;
-  --text-muted-light: rgba(255, 255, 255, 0.7);
-  --card-dark-bg: rgba(255, 255, 255, 0.03);
-}
-
+/* RESET ROOT FOR THIS SECTION */
 .why-section {
   position: relative;
-  padding: 100px 20px;
-  background-color: var(--bg-dark-custom) !important;
-  color: var(--text-white) !important;
+  padding: 120px 20px;
+  background-color: #020617 !important; /* Force the dark background */
   overflow: hidden;
-  font-family: 'Inter', sans-serif;
-  color-scheme: dark; 
-  /* This adds depth for the 3D tilt effect */
-  perspective: 1000px; 
+  display: block !important; /* Ensure it's not hidden by a parent flex/grid */
+  min-height: 500px;
+  perspective: 1000px;
+  z-index: 1;
 }
 
-/* Background Decorations */
+/* Ensure background blobs don't cover text */
 .bg-blob {
   position: absolute;
   width: 400px;
   height: 400px;
   border-radius: 50%;
   filter: blur(100px);
-  opacity: 0.12;
-  z-index: 0;
+  opacity: 0.15;
+  z-index: 0; /* Behind everything */
+  pointer-events: none;
 }
-.blob-1 { top: -50px; left: 5%; background: var(--primary-gold); }
-.blob-2 { bottom: -50px; right: 5%; background: #3b82f6; }
+.blob-1 { top: -5%; left: -5%; background: #fbbf24; }
+.blob-2 { bottom: -5%; right: -5%; background: #3b82f6; }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 10; /* Above blobs */
 }
 
-/* Header Styling */
-.section-header {
-  text-align: center;
-  margin-bottom: 70px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 8px 20px;
-  background: rgba(251, 191, 36, 0.15);
-  color: var(--primary-gold) !important;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 20px;
+/* TYPOGRAPHY FORCE-WHITE */
+.title, .card-title, .animate-word, .gold-accent {
+  color: #ffffff !important;
+  opacity: 1 !important; /* Fallback if animation fails */
 }
 
 .title {
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  color: var(--text-white) !important;
-  margin: 0;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.title span {
-  color: var(--primary-gold) !important;
+.gold-accent {
+  color: #fbbf24 !important;
 }
 
 .underline {
-  width: 60px;
   height: 4px;
-  background: var(--primary-gold);
-  margin: 25px auto 0;
+  width: 80px;
+  background: #fbbf24;
+  margin: 20px auto 60px;
   border-radius: 10px;
 }
 
-/* Grid and Cards */
+/* CARDS */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
 }
 
 .why-card {
-  background: var(--card-dark-bg);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  /* The "Magic" tilt transition */
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-  cursor: default;
+  padding: 50px 30px;
+  border-radius: 30px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s ease, border-color 0.4s ease;
 }
 
 .why-card:hover {
-  /* Added Tilt logic back in here */
-  transform: translateY(-15px) rotateX(4deg) rotateY(2deg);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--primary-gold);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  transform: translateY(-10px);
+  border-color: #fbbf24;
 }
 
 .icon-wrapper {
-  width: 65px;
-  height: 65px;
-  background: rgba(251, 191, 36, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  border-radius: 18px;
-  margin-bottom: 25px;
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  /* Makes icon pop forward slightly */
-  transform: translateZ(20px); 
+  font-size: 4rem;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .card-title {
-  font-size: 22px;
-  color: var(--text-white) !important;
+  font-size: 1.8rem;
+  font-weight: 800;
   margin-bottom: 15px;
-  font-weight: 700;
 }
 
 .card-text {
-  color: var(--text-muted-light) !important;
+  color: #94a3b8 !important;
   line-height: 1.7;
-  font-size: 16px;
-  margin: 0;
-}
-
-/* Mobile Adjustments - Disable tilt for better performance */
-@media (max-width: 768px) {
-  .why-section { padding: 80px 20px; }
-  .card-grid { gap: 20px; }
-  .why-card { padding: 30px; }
-  
-  .why-card:hover {
-    transform: translateY(-5px); /* Simple lift for mobile */
-    rotate: none;
-  }
-}
-/* Restoring the Hover Tilt and Rotation */
-.why-card:hover {
-  transform: translateY(-12px) rotateX(2deg) rotateY(2deg); /* Added subtle 3D tilt */
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--primary-gold);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-}
-
-.icon-wrapper {
-  width: 65px;
-  height: 65px;
-  background: rgba(251, 191, 36, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  border-radius: 18px;
-  margin-bottom: 25px;
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  
-  /* Critical for the smooth animation */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-}
-
-/* Restoring the specific icon rotation on hover */
-.why-card:hover .icon-wrapper {
-  transform: scale(1.2) rotate(12deg); /* This gives it that "popping" look */
-  background: var(--primary-gold);
-  color: #020617 !important; /* Makes the emoji/icon pop against the gold */
 }

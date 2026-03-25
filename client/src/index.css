@@ -21,3 +21,16 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+/* GLOBAL RESET - put this first */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;           /* helps with full-height issues */
+  overflow-x: hidden;     /* prevents horizontal scroll creating fake gaps */
+}
+
+/* Also force no top margin on common wrappers */
+* {
+  box-sizing: border-box;
+}

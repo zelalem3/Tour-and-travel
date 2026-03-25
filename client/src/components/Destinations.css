@@ -183,3 +183,161 @@
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+:root {
+  color-scheme: dark !important;
+}
+
+.dest-section {
+  overflow: hidden;
+  background: #020617 !important;
+  padding: 100px 20px;
+  color: #ffffff !important;
+}
+
+.dest-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dest-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* THE FIX: Allows words to wrap, but keeps letters together */
+.dest-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #ffffff !important;
+  margin: 0;
+}
+
+.word-wrapper {
+  display: inline-block;
+  white-space: nowrap; /* Prevents "Ethiopia" from splitting into E-t-h-i... */
+}
+
+.dest-subtitle {
+  color: #94a3b8 !important;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* GRID LOGIC */
+.dest-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .dest-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .md\:col-span-2 { grid-column: span 2 / span 2; }
+}
+
+@media (min-width: 1024px) {
+  .dest-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .lg\:col-span-3 { grid-column: span 3 / span 3; }
+  .lg\:col-span-2 { grid-column: span 2 / span 2; }
+}
+
+/* CARD STYLING */
+.dest-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+  background: #1e293b;
+  height: 450px;
+}
+
+.dest-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dest-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dest-img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+}
+
+.dest-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0.3) 50%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+}
+
+.dest-info {
+  width: 100%;
+}
+
+.dest-name {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 900;
+  color: #ffffff !important;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.dest-desc-slug {
+  color: #fbbf24 !important;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-top: 5px;
+  letter-spacing: 2px;
+}
+
+.dest-btn-link {
+  color: #ffffff !important;
+  border-bottom: 2px solid #fbbf24;
+  padding-bottom: 4px;
+  margin-top: 20px;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.dest-card:hover .dest-btn-link {
+  padding-left: 10px;
+  border-bottom-color: #ffffff;
+}
+
+/* MOBILE SPECIFIC REFINEMENT */
+@media (max-width: 640px) {
+  .dest-section {
+    padding: 60px 15px;
+  }
+  .dest-card {
+    height: 380px;
+  }
+  .dest-overlay {
+    padding: 25px;
+  }
+}
