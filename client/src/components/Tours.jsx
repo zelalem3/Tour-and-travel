@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { client, urlFor } from '../sanityClient'; 
-import { motion, AnimatePresence } from 'framer-motion'; 
+import { motion } from 'framer-motion'; 
 
-// Refined Animation Variants
 const fadeInUp = {
-  hidden: { opacity: 0, y: 50, scale: 0.95 },
+  hidden: { opacity: 0, y: 30, scale: 0.98 }, // Reduced y for mobile smoothness
   visible: { 
     opacity: 1, 
     y: 0,
     scale: 1,
     transition: { 
-      duration: 0.7, 
-      ease: [0.22, 1, 0.36, 1] // Smooth out-expo easing
+      duration: 0.5, // Faster duration for snappier mobile feel
+      ease: [0.22, 1, 0.36, 1] 
     }
   }
 };
@@ -22,7 +21,7 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15
+      staggerChildren: 0.1 // Faster stagger for mobile
     }
   }
 };
@@ -34,23 +33,21 @@ export default function Tours() {
 
   useEffect(() => {
     const query = '*[_type == "tour"] | order(_createdAt asc)';
-    client.fetch(query)
-      .then((data) => {
-        setTours(data);
-        setLoading(false);
-      })
-      .catch(console.error);
+    client.fetch(query).then((data) => {
+      setTours(data);
+      setLoading(false);
+    }).catch(console.error);
   }, []);
 
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#020617' }}>
         <motion.div 
-          animate={{ opacity: [0.4, 1, 0.4], scale: [0.98, 1, 0.98] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24', letterSpacing: '4px' }}
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+          style={{ fontSize: '1rem', fontWeight: 'bold', color: '#fbbf24', letterSpacing: '3px' }}
         >
-          LOADING TOURS...
+          LOADING...
         </motion.div>
       </div>
     );
@@ -58,44 +55,44 @@ export default function Tours() {
 
   return (
     <div style={{ 
-      padding: '100px 20px', 
+      padding: '60px 15px', // Reduced padding for mobile
       backgroundColor: '#020617', 
       minHeight: '100vh',
       fontFamily: 'Inter, sans-serif',
     }}>
       
-      {/* Header - Repeats on Scroll */}
+      {/* Header */}
       <motion.header 
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.3 }} // ✅ once: false makes it repeat
+        viewport={{ once: false, amount: 0.2 }}
         variants={fadeInUp}
-        className="section-header"
-        style={{ marginBottom: '60px' }}
+        style={{ marginBottom: '40px', textAlign: 'center' }}
       >
-        <h2 className="title" style={{ textAlign: 'center' }}>
-          Our Most Popular <span style={{ color: '#fbbf24' }}>Tours</span>
+        <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', fontWeight: '900', color: '#ffffff' }}>
+          Our Best <span style={{ color: '#fbbf24' }}>Tours</span>
         </h2>
         <motion.div 
           initial={{ width: 0 }}
-          whileInView={{ width: 80 }}
+          whileInView={{ width: 50 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ height: '4px', background: '#fbbf24', margin: '20px auto', borderRadius: '10px' }}
+          transition={{ duration: 0.8 }}
+          style={{ height: '3px', background: '#fbbf24', margin: '15px auto', borderRadius: '10px' }}
         ></motion.div>
       </motion.header>
 
-      {/* Grid - Staggered items repeat on scroll */}
+      {/* Grid - CSS Grid handles the responsive columns */}
       <motion.div 
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }} // ✅ Triggers when 10% of the grid is visible
+        viewport={{ once: false, amount: 0.05 }}
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '40px',
-          maxWidth: '1300px',
+          // Mobile: 1 col | Tablet: 2 cols | Desktop: 3 cols
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+          gap: '25px', // Tighter gap for mobile
+          maxWidth: '1200px',
           margin: '0 auto'
         }}
       >
@@ -103,81 +100,70 @@ export default function Tours() {
           <motion.div
             key={tour._id}
             variants={fadeInUp}
-            whileHover={{ 
-              y: -15, 
-              transition: { duration: 0.4, ease: "easeOut" } 
-            }}
+            whileTap={{ scale: 0.98 }} // Haptic feedback for touch
             style={{
               backgroundColor: '#0f172a',
-              borderRadius: '32px',
+              borderRadius: '24px', // Slightly smaller radius for mobile
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
               border: '1px solid #1e293b',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
             }}
           >
-            {/* Image Section */}
-            <Link to={`/tours/${tour.slug?.current}`} style={{ overflow: 'hidden', display: 'block' }}>
-              <div style={{ height: '280px', width: '100%', position: 'relative', overflow: 'hidden' }}>
-                {tour.mainImage ? (
-                  <motion.img
-                    whileHover={{ scale: 1.15 }}
-                    transition={{ duration: 0.8 }}
-                    src={urlFor(tour.mainImage).width(600).height(400).url()}
+            {/* Image */}
+            <Link to={`/tours/${tour.slug?.current}`} style={{ display: 'block', overflow: 'hidden' }}>
+              <div style={{ height: '220px', width: '100%', position: 'relative' }}>
+                {tour.mainImage && (
+                  <img
+                    src={urlFor(tour.mainImage).width(500).height(350).url()}
                     alt={tour.title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', backgroundColor: '#1e293b' }} />
                 )}
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0f172a, transparent)' }}></div>
               </div>
             </Link>
 
-            {/* Content Section */}
-            <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#ffffff', marginBottom: '12px' }}>
+            {/* Content */}
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#ffffff', marginBottom: '10px' }}>
                 {tour.title}
-              </h2>
+              </h3>
               
-              <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: '1.8', marginBottom: '30px', flexGrow: 1 }}>
-                {tour.description ? tour.description.substring(0, 100) + "..." : "Explore the beauty of Ethiopia."}
+              <p style={{ fontSize: '0.95rem', color: '#94a3b8', lineHeight: '1.6', marginBottom: '20px' }}>
+                {tour.description ? tour.description.substring(0, 80) + "..." : "Explore Ethiopia."}
               </p>
 
               <div style={{ 
                 marginTop: 'auto', 
-                paddingTop: '24px', 
+                paddingTop: '20px', 
                 borderTop: '1px solid #1e293b', 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center'
               }}>
                 <div>
-                  <span style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase' }}>Price</span>
-                  <span style={{ fontSize: '2rem', fontWeight: '900', color: '#ffffff', display: 'block' }}>
+                  <span style={{ fontSize: '0.65rem', color: '#fbbf24', fontWeight: 'bold', textTransform: 'uppercase' }}>Price</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: '900', color: '#ffffff', display: 'block' }}>
                     ${tour.price}
                   </span>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(251, 191, 36, 0.4)" }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   style={{
                     backgroundColor: '#fbbf24',
                     color: '#020617',
-                    padding: '16px 28px',
-                    borderRadius: '16px',
-                    fontWeight: '900',
+                    padding: '12px 20px',
+                    borderRadius: '12px',
+                    fontWeight: '800',
                     border: 'none',
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
                     fontSize: '0.75rem',
+                    textTransform: 'uppercase'
                   }}
                   onClick={() => navigate("/contact", { state: { tour: tour.title } })}
                 >
-                  Book Now
-                </motion.button>
+                  Book
+                </button>
               </div>
             </div>
           </motion.div>

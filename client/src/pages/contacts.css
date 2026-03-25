@@ -144,3 +144,89 @@
 
 .animate-spin { animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+input, select, textarea {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+}
+.premium-input {
+  width: 100%;
+  padding: 16px;
+  background: rgba(30, 41, 59, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.premium-input:focus {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+  transform: translateY(-2px);
+}
+
+.premium-input::placeholder {
+  color: #475569;
+}
+
+/* For the Success Screen Button */
+.submit-btn {
+  background: #fbbf24;
+  color: #020617;
+  padding: 15px 30px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+}
+/* ADD TO YOUR EXISTING CSS */
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: #25D366;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(37,211,102,0.3);
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 100;
+}
+
+.contact-form label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fbbf24 !important; /* Gold labels for better contrast */
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.premium-input::placeholder {
+  color: #64748b !important;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.contact-card.success-card {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+/* Ensure progress bar transition is smooth */
+.contact-viewport > div:first-child motion.div {
+  transition: width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}

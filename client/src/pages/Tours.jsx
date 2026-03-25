@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from "react-router-dom"; // ✅ Added Link
+import { useNavigate, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import { client, urlFor } from '../sanityClient'; 
 
 export default function Tours() {
@@ -17,135 +18,194 @@ export default function Tours() {
       .catch(console.error);
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#020617' }}>
-        <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24', letterSpacing: '2px' }} className="animate-pulse">
-          LOADING TOURS...
-        </div>
-      </div>
-    );
-  }
+  // --- NEW RENDER EFFECT VARIANT ---
+  const pageRenderProps = {
+    initial: { opacity: 0, filter: "blur(20px)", scale: 1.05 },
+    animate: { opacity: 1, filter: "blur(0px)", scale: 1 },
+    transition: { duration: 1.2, ease: "easeOut" }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 100, 
+      rotateX: 45, 
+      scale: 0.9,
+      filter: "blur(10px)"
+    },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      rotateX: 0, 
+      scale: 1, 
+      filter: "blur(0px)",
+      transition: { 
+        type: "spring", 
+        stiffness: 50, 
+        damping: 20,
+        duration: 1 
+      }
+    }
+  };
+
+  const imageHover = {
+    rest: { scale: 1 },
+    hover: { 
+      scale: 1.1, 
+      transition: { duration: 1.5, ease: "easeOut" } 
+    }
+  };
 
   return (
-    <div style={{ 
-      padding: '100px 20px', 
-      backgroundColor: '#020617', 
-      minHeight: '100vh',
-      fontFamily: 'Inter, sans-serif'
-    }}>
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-        <span style={{ color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '4px', fontSize: '0.75rem' }}>
-          Land of Origins
-        </span>
-        <h1 style={{ fontSize: '4rem', fontWeight: '900', color: '#ffffff', marginTop: '15px', letterSpacing: '-2px' }}>
-          OUR <span style={{ color: '#fbbf24' }}>TOURS</span>
-        </h1>
-      </div>
+    <AnimatePresence mode="wait">
+      {loading ? (
+        <motion.div 
+          key="loader"
+          exit={{ opacity: 0, filter: "blur(10px)" }} // Smooth transition from loader
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#020617' }}
+        >
+          <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24', letterSpacing: '2px' }} className="animate-pulse">
+            PREPARING YOUR ADVENTURES...
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div 
+          key="content"
+          {...pageRenderProps} // Applying the Lens Blur Render Effect
+          style={{ 
+            padding: '120px 20px', 
+            backgroundColor: '#020617', 
+            minHeight: '100vh',
+            perspective: '1200px'
+          }}
+        >
+          {/* Header */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "circOut" }}
+            style={{ textAlign: 'center', marginBottom: '80px' }}
+          >
+            <span style={{ color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '6px', fontSize: '0.7rem' }}>
+              Unrivaled Expeditions
+            </span>
+            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '900', color: '#ffffff', marginTop: '10px', letterSpacing: '-4px', lineHeight: 0.9 }}>
+              CHOOSE YOUR <span style={{ color: '#fbbf24' }}>LEGACY</span>
+            </h1>
+          </motion.div>
 
-      {/* THE GRID */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-        gap: '40px',
-        maxWidth: '1300px',
-        margin: '0 auto'
-      }}>
-        {tours.map((tour) => (
-          <div
-            key={tour._id}
+          {/* THE GRID */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.1 }}
             style={{
-              backgroundColor: '#0f172a',
-              borderRadius: '32px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              border: '1px solid #1e293b',
-              transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            }}
-            onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-12px)';
-                e.currentTarget.style.borderColor = '#fbbf24';
-                e.currentTarget.style.boxShadow = '0 30px 60px -15px rgba(0,0,0,0.5)';
-            }}
-            onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.borderColor = '#1e293b';
-                e.currentTarget.style.boxShadow = 'none';
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+              gap: '50px',
+              maxWidth: '1400px',
+              margin: '0 auto'
             }}
           >
-            {/* ✅ Image Wrap with Link */}
-            <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none', display: 'block', overflow: 'hidden' }}>
-              <div style={{ height: '280px', width: '100%', position: 'relative' }}>
-                {tour.mainImage ? (
-                  <img
-                    src={urlFor(tour.mainImage).width(600).height(400).url()}
-                    alt={tour.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', backgroundColor: '#1e293b', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    No Image
+            {tours.map((tour) => (
+              <motion.div
+                key={tour._id}
+                variants={cardVariants}
+                whileHover="hover"
+                initial="rest"
+                style={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '40px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  position: 'relative'
+                }}
+              >
+                {/* Image Wrap */}
+                <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none', display: 'block', overflow: 'hidden' }}>
+                  <div style={{ height: '320px', width: '100%', position: 'relative', overflow: 'hidden' }}>
+                    <motion.img
+                      variants={imageHover}
+                      src={urlFor(tour.mainImage).width(800).url()}
+                      alt={tour.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ 
+                      position: 'absolute', 
+                      inset: 0, 
+                      background: 'linear-gradient(to top, #0f172a 5%, transparent 60%)' 
+                    }}></div>
+                    
+                    <div style={{ 
+                      position: 'absolute', top: '25px', right: '25px', 
+                      background: 'rgba(2, 6, 23, 0.8)', backdropFilter: 'blur(10px)',
+                      padding: '8px 20px', borderRadius: '50px', border: '1px solid #fbbf24'
+                    }}>
+                      <span style={{ color: '#fbbf24', fontWeight: '900' }}>${tour.price}</span>
+                    </div>
                   </div>
-                )}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0f172a, transparent)' }}></div>
-              </div>
-            </Link>
+                </Link>
 
-            {/* Content Section */}
-            <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-              
-              {/* ✅ Title Wrap with Link */}
-              <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none' }}>
-                <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#ffffff', marginBottom: '12px', lineHeight: '1.1' }}>
-                  {tour.title}
-                </h2>
-              </Link>
-              
-              <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: '1.8', marginBottom: '30px', flexGrow: 1 }}>
-                {tour.description ? tour.description.substring(0, 100) + "..." : "Explore the beauty of Ethiopia on this curated tour."}
-              </p>
+                {/* Content Section */}
+                <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none' }}>
+                    <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#ffffff', marginBottom: '15px', letterSpacing: '-1px' }}>
+                      {tour.title}
+                    </h2>
+                  </Link>
+                  
+                  <p style={{ fontSize: '1.05rem', color: '#64748b', lineHeight: '1.8', marginBottom: '30px', flexGrow: 1 }}>
+                    {tour.description ? tour.description.substring(0, 120) + "..." : "Unlock the secrets of Ethiopia's ancient landscapes."}
+                  </p>
 
-              {/* Price & Button Row */}
-              <div style={{ 
-                marginTop: 'auto', 
-                paddingTop: '24px', 
-                borderTop: '1px solid #1e293b', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center'
-              }}>
-                <div>
-                  <span style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', display: 'block' }}>Investment</span>
-                  <span style={{ fontSize: '2rem', fontWeight: '900', color: '#ffffff' }}>
-                    ${tour.price}
-                  </span>
+                  <div style={{ 
+                    marginTop: 'auto', 
+                    paddingTop: '30px', 
+                    borderTop: '1px solid rgba(255,255,255,0.05)', 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center'
+                  }}>
+                    <Link to={`/tours/${tour.slug?.current}`} style={{ color: '#fbbf24', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', textDecoration: 'none' }}>
+                      View Details →
+                    </Link>
+
+                    <motion.button
+                      whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(251, 191, 36, 0.4)" }}
+                      whileTap={{ scale: 0.95 }}
+                      style={{
+                        backgroundColor: '#fbbf24',
+                        color: '#020617',
+                        padding: '18px 35px',
+                        borderRadius: '20px',
+                        fontWeight: '900',
+                        border: 'none',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        fontSize: '0.8rem'
+                      }}
+                      onClick={() => navigate("/contact", { state: { tour: tour.title } })}
+                    >
+                      Reserve Spot
+                    </motion.button>
+                  </div>
                 </div>
-
-                <button
-                  style={{
-                    backgroundColor: '#fbbf24',
-                    color: '#020617',
-                    padding: '16px 32px',
-                    borderRadius: '18px',
-                    fontWeight: '900',
-                    border: 'none',
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
-                    fontSize: '0.75rem',
-                    letterSpacing: '1px',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onClick={() => navigate("/contact", { state: { tour: tour.title } })}
-                >
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

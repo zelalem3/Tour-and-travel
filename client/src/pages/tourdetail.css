@@ -1,0 +1,29 @@
+/* Add to your App.css or globals.css */
+
+.text-outline-gold {
+  -webkit-text-stroke: 1px rgba(251, 191, 36, 0.4);
+  color: transparent;
+}
+
+/* Custom rounded corners for the "Classy" look */
+.rounded-4xl {
+  border-radius: 2.5rem;
+}
+
+/* Smooth typography for deep dark backgrounds */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #fbbf24;
+  border-radius: 10px;
+}
