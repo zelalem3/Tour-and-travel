@@ -3,7 +3,6 @@ import "./cta.css";
 import { motion } from "framer-motion";
 
 const Cta = () => {
-  // Variants for the heading "unsqueeze" effect
   const titleVariants = {
     hidden: { opacity: 0, letterSpacing: "-0.05em", y: 30, filter: "blur(10px)" },
     visible: { 
@@ -16,7 +15,7 @@ const Cta = () => {
   };
 
   return (
-    <section id="contact" className="cta-section" style={{ position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" className="cta-section">
       
       {/* Animated Background Glows */}
       <motion.div 
@@ -38,7 +37,6 @@ const Cta = () => {
       ></motion.div>
       
       <div className="cta-container">
-        {/* Label Slide In */}
         <motion.span 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -49,7 +47,6 @@ const Cta = () => {
           Adventure Awaits
         </motion.span>
         
-        {/* Heading with Reveal */}
         <motion.h2 
           variants={titleVariants}
           initial="hidden"
@@ -61,7 +58,6 @@ const Cta = () => {
           <span className="cta-gradient-text">Ethiopia?</span>
         </motion.h2>
         
-        {/* Description Fade */}
         <motion.p 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -73,9 +69,8 @@ const Cta = () => {
           start your journey with the local experts.
         </motion.p>
 
-        {/* Button with Pulse & Hover */}
+        {/* --- PREMIUM BUTTON START --- */}
         <motion.div 
-          className="hero-actions"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false }}
@@ -83,29 +78,26 @@ const Cta = () => {
         >
           <motion.a 
             href="#tours" 
-            className="hero-btn-primary"
+            className="hero-btn-premium" /* Using the premium class */
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            // Subtle infinite pulse to draw the eye
-            animate={{ 
-              boxShadow: ["0px 0px 0px rgba(251,191,36,0)", "0px 0px 20px rgba(251,191,36,0.3)", "0px 0px 0px rgba(251,191,36,0)"] 
-            }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <span>Explore Tours Now</span>
-            <motion.svg 
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              xmlns="http://www.w3.org/2000/svg" 
-              className="btn-icon" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </motion.svg>
+            <span className="btn-text">Start Your Journey</span>
+            
+            <div className="btn-icon-wrapper">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="btn-icon" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
           </motion.a>
         </motion.div>
+        {/* --- PREMIUM BUTTON END --- */}
       </div>
     </section>
   );
