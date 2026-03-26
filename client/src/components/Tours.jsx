@@ -3,12 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { client, urlFor } from '../sanityClient'; 
 import { motion } from 'framer-motion'; 
 
-// 1. Zipper Slide Variants
+// 1. Individual Letter Variants with Random Delay
+const letterVariants = {
+  hidden: { 
+    y: -100, 
+    opacity: 0,
+    rotate: -15 
+  },
+  visible: (i) => ({
+    y: 0,
+    opacity: 1,
+    rotate: 0,
+    transition: {
+      // Creates a random delay between 0 and 0.8 seconds
+      delay: Math.random() * 0.8, 
+      type: "spring",
+      damping: 12,
+      stiffness: 100,
+    }
+  })
+};
+
+// 2. Tour Card Variants
 const cardVariants = {
   hidden: (i) => ({
     opacity: 0,
-    x: i % 2 === 0 ? -100 : 100, // Even cards from left, odd from right
-    rotate: i % 2 === 0 ? -5 : 5,  // Slight tilt while sliding
+    x: i % 2 === 0 ? -100 : 100,
+    rotate: i % 2 === 0 ? -5 : 5,
   }),
   visible: {
     opacity: 1,
@@ -16,7 +37,7 @@ const cardVariants = {
     rotate: 0,
     transition: {
       type: "spring",
-      stiffness: 50,
+      stiffness: 40,
       damping: 20,
       duration: 1
     }
@@ -43,7 +64,11 @@ export default function Tours() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[#020617]">
-      <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="text-[#fbbf24] font-black tracking-widest text-xs">
+      <motion.div 
+        animate={{ opacity: [0, 1, 0] }} 
+        transition={{ repeat: Infinity, duration: 1 }} 
+        className="text-[#fbbf24] font-black tracking-widest text-xs"
+      >
         LOADING EXPEDITIONS...
       </motion.div>
     </div>
@@ -52,6 +77,70 @@ export default function Tours() {
   return (
     <div style={{ padding: '120px 20px', backgroundColor: '#020617', minHeight: '100vh', overflowX: 'hidden' }}>
       
+      {/* --- Header Section --- */}
+      <header style={{ 
+        maxWidth: '1400px', 
+        margin: '0 auto 80px auto', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        textAlign: 'center' 
+      }}>
+        <motion.h2 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, margin: "-100px" }}
+          style={{
+            fontSize: "clamp(40px, 9vw, 75px)",
+            fontWeight: '900',
+            color: '#ffffff',
+            textTransform: 'uppercase',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center', 
+            lineHeight: '1',
+            marginBottom: '25px',
+            width: '100%' 
+          }}
+        >
+          {"Our Tours".split(" ").map((word, wordIdx) => (
+            <span key={wordIdx} style={{ display: 'flex', whiteSpace: 'pre' }}>
+              {word.split("").map((char, charIdx) => (
+                <span key={charIdx} style={{ overflow: 'hidden', display: 'inline-block' }}>
+                  <motion.span 
+                    custom={charIdx} // Needed to trigger the variant function
+                    variants={letterVariants}
+                    style={{ 
+                      display: 'inline-block',
+                      color: word === "Tours" ? '#fbbf24' : '#ffffff',
+                      fontStyle: word === "Tours" ? 'italic' : 'normal',
+                      paddingRight: '0.02em'
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                </span>
+              ))}
+              <span>&nbsp;</span>
+            </span>
+          ))}
+        </motion.h2>
+
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: false }}
+          transition={{ duration: 1, delay: 1, ease: "circOut" }}
+          style={{ 
+            height: '6px', 
+            width: '140px', 
+            backgroundColor: '#fbbf24', 
+            borderRadius: '4px' 
+          }}
+        />
+      </header>
+
+      {/* --- Tours Grid --- */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
@@ -62,7 +151,7 @@ export default function Tours() {
         {tours.map((tour, i) => (
           <motion.div
             key={tour._id}
-            custom={i} // Pass the index to the variant for the L/R logic
+            custom={i}
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
@@ -78,8 +167,7 @@ export default function Tours() {
               cursor: 'pointer'
             }}
           >
-            {/* Image Section */}
-            <div style={{ height: '300px', overflow: 'hidden', position: 'relative' }}>
+            <div style={{ height: '320px', overflow: 'hidden', position: 'relative' }}>
               <motion.div 
                 whileHover={{ scale: 1.1 }} 
                 transition={{ duration: 0.8 }} 
@@ -93,29 +181,53 @@ export default function Tours() {
                   />
                 )}
               </motion.div>
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0f172a, transparent)' }} />
+              <div style={{ 
+                position: 'absolute', 
+                inset: 0, 
+                background: 'linear-gradient(to top, #0f172a 5%, transparent 40%)' 
+              }} />
             </div>
 
-            {/* Content Section */}
-            <div style={{ padding: '40px' }}>
-              <h3 style={{ fontSize: '2rem', fontWeight: '900', color: '#ffffff', marginBottom: '10px', letterSpacing: '-1px' }}>
+            <div style={{ padding: '45px 40px' }}>
+              <h3 style={{ 
+                fontSize: '2.2rem', 
+                fontWeight: '900', 
+                color: '#ffffff', 
+                marginBottom: '12px', 
+                letterSpacing: '-1.5px',
+                lineHeight: '1.1'
+              }}>
                 {tour.title}
               </h3>
               
-              <p style={{ color: '#94a3b8', fontSize: '1rem', lineHeight: '1.6', marginBottom: '30px' }}>
-                {tour.description ? tour.description.substring(0, 100) + "..." : "A masterclass in exploration."}
+              <p style={{ 
+                color: '#94a3b8', 
+                fontSize: '1rem', 
+                lineHeight: '1.7', 
+                marginBottom: '35px'
+              }}>
+                {tour.description ? tour.description.substring(0, 110) + "..." : "Embark on an unparalleled journey through history."}
               </p>
 
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center', 
-                borderTop: '1px solid rgba(255,255,255,0.05)', 
-                paddingTop: '30px' 
+                borderTop: '1px solid rgba(255,255,255,0.08)', 
+                paddingTop: '35px' 
               }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '1.2rem', fontWeight: '900', color: '#ffffff' }}>${tour.price}</span>
-                  <span style={{ fontSize: '10px', color: '#fbbf24', fontWeight: 'bold', textTransform: 'uppercase' }}>Per Person</span>
+                  <span style={{ fontSize: '1.4rem', fontWeight: '900', color: '#ffffff' }}>
+                    ${tour.price}
+                  </span>
+                  <span style={{ 
+                    fontSize: '11px', 
+                    color: '#fbbf24', 
+                    fontWeight: '800', 
+                    textTransform: 'uppercase'
+                  }}>
+                    Per Explorer
+                  </span>
                 </div>
                 
                 <button
@@ -123,13 +235,14 @@ export default function Tours() {
                   style={{
                     backgroundColor: '#fbbf24',
                     color: '#020617',
-                    padding: '16px 32px',
-                    borderRadius: '24px',
+                    padding: '18px 36px',
+                    borderRadius: '26px',
                     fontWeight: '900',
                     border: 'none',
-                    fontSize: '12px',
+                    fontSize: '13px',
                     letterSpacing: '1px',
-                    boxShadow: '0 10px 20px rgba(251,191,36,0.1)'
+                    boxShadow: '0 15px 30px rgba(251,191,36,0.15)',
+                    cursor: 'pointer'
                   }}
                 >
                   VIEW MISSION

@@ -10,12 +10,11 @@
   background-color: #020617;
 }
 
-/* --- 2. INTERACTIVE IMAGE EFFECTS --- */
+/* --- 2. BACKGROUND & CINEMATICS --- */
 .hero-background-container {
   position: absolute;
-  inset: -8%; /* Increased inset for safer movement */
+  inset: -10%; 
   z-index: 1;
-  overflow: hidden;
 }
 
 .hero-image-media {
@@ -23,25 +22,19 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: brightness(0.6) contrast(1.1); /* Slightly moodier */
-  animation: breathingEffect 40s ease-in-out infinite alternate;
-  transition: transform 2s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-.hero-viewport:hover .hero-image-media {
-  transform: scale(1.1) rotate(-1deg);
+  filter: brightness(0.4) contrast(1.1) saturate(1.2);
+  animation: breathingEffect 35s ease-in-out infinite alternate;
 }
 
 @keyframes breathingEffect {
-  0% { transform: scale(1.1) translate(0, 0); }
-  100% { transform: scale(1.2) translate(-2%, -1%); }
+  0% { transform: scale(1.1) translateX(0); }
+  100% { transform: scale(1) translateX(-2%); }
 }
 
-/* --- 3. OVERLAYS --- */
 .overlay-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(2, 6, 23, 0.4) 50%, #020617 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(2, 6, 23, 0.5) 60%, #020617 100%);
   z-index: 2;
 }
 
@@ -50,63 +43,33 @@
   inset: 0;
   background-image: radial-gradient(rgba(251, 191, 36, 0.2) 1px, transparent 1px);
   background-size: 50px 50px;
-  opacity: 0.4;
+  opacity: 0.3;
   z-index: 3;
-  pointer-events: none;
-  /* Floating animation for the grid dots */
-  animation: gridFloat 20s linear infinite;
 }
 
-@keyframes gridFloat {
-  from { background-position: 0 0; }
-  to { background-position: 50px 100px; }
-}
-
-/* --- 4. CONTENT & STAGGERED ANIMATIONS --- */
+/* --- 3. TYPOGRAPHY --- */
 .hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
   padding: 0 24px;
-  max-width: 1000px;
 }
 
-/* Target children for staggered entrance */
-.hero-entrance-animation > * {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.hero-subtitle { animation-delay: 0.2s; }
-.hero-title    { animation-delay: 0.4s; }
-.hero-text     { animation-delay: 0.6s; }
-.hero-actions  { animation-delay: 0.8s; }
-
-@keyframes heroFadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- 5. TYPOGRAPHY --- */
 .hero-subtitle {
   color: #fbbf24;
   text-transform: uppercase;
-  letter-spacing: 0.6em;
   font-weight: 800;
-  font-size: 0.7rem;
-  margin-bottom: 24px;
+  font-size: 0.8rem;
+  margin-bottom: 25px;
   display: block;
 }
 
 .hero-title {
   color: white;
-  font-size: clamp(2.8rem, 9vw, 6rem);
+  font-size: clamp(3rem, 10vw, 7.5rem);
   font-weight: 900;
-  line-height: 0.95;
-  margin-bottom: 28px;
+  line-height: 0.85;
+  margin-bottom: 30px;
   letter-spacing: -0.04em;
   text-transform: uppercase;
 }
@@ -114,73 +77,138 @@
 .highlight { 
   color: #fbbf24;
   font-style: italic;
-  /* Subtle glow to the text */
-  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  font-family: serif;
+}
+
+.outline-text {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
+  color: transparent;
 }
 
 .hero-text {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  max-width: 700px;
+  color: #94a3b8;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  max-width: 600px;
   margin: 0 auto 50px auto;
-  line-height: 1.8;
-  font-weight: 300;
+  line-height: 1.7;
 }
 
-/* --- 6. MODERN GOLDEN BUTTON --- */
-.hero-btn-primary {
+/* --- 4. THE PREMIUM BUTTON (Error Fixes Applied) --- */
+.hero-btn-premium {
   position: relative;
   display: inline-flex;
   align-items: center;
-  background-color: #fbbf24;
-  color: #020617;
-  padding: 22px 48px;
-  border-radius: 100px; /* More modern pill shape */
-  font-weight: 900;
-  font-size: 0.9rem;
+  padding: 22px 42px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 100px;
+  color: #ffffff;
   text-decoration: none;
+  font-weight: 800;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
 
-/* The Sweep Shine Effect */
-.hero-btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  transform: skewX(-25deg);
-  transition: 0.5s;
+/* This ensures text and icon circle stay on top of the gold fill */
+.btn-text, .btn-icon-wrapper {
+  position: relative;
+  z-index: 2; 
 }
 
-.hero-btn-primary:hover::before {
-  left: 150%;
-}
-
-.hero-btn-primary:hover {
-  background-color: #ffffff;
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+.btn-icon-wrapper {
+  margin-left: 15px;
+  width: 30px;
+  height: 30px;
+  background: rgba(251, 191, 36, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease;
 }
 
 .btn-icon {
-  width: 20px;
-  height: 20px;
-  margin-left: 14px;
-  transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  width: 14px;
+  height: 14px;
+  color: #fbbf24;
 }
 
-.hero-btn-primary:hover .btn-icon {
-  transform: translateX(8px);
+/* The Animated Golden Fill Background */
+.hero-btn-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
+  background-size: 200% auto;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1; /* Sits behind text, but above button background */
+}
+
+/* --- HOVER STATES --- */
+.hero-btn-premium:hover {
+  border-color: #fbbf24;
+  color: #020617;
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
+}
+
+.hero-btn-premium:hover::before {
+  opacity: 1;
+  animation: shimmerMove 2s linear infinite;
+}
+
+.hero-btn-premium:hover .btn-icon-wrapper {
+  background: #020617;
+}
+
+.hero-btn-premium:hover .btn-icon {
+  color: #fbbf24;
+  transform: translateX(3px);
+}
+
+@keyframes shimmerMove {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* --- 5. SCROLL MOUSE --- */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.mouse {
+  width: 24px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 7px;
+}
+
+.wheel {
+  width: 3px;
+  height: 6px;
+  background: #fbbf24;
+  border-radius: 2px;
+  animation: scrollAnim 2s infinite;
+}
+
+@keyframes scrollAnim {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(14px); }
 }
