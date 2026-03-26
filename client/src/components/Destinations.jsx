@@ -16,144 +16,137 @@ const Destinations = () => {
 
     client.fetch(query)
       .then((data) => {
-        const formatted = data.map((item, i) => ({
-          ...item,
-          link: `/destinations/${item.slug}`,
-          gridSpan: i % 4 === 0 ? "md:col-span-2 lg:col-span-3" : "md:col-span-1 lg:col-span-2"
-        }));
-        setDestinations(formatted);
+        setDestinations(data);
       })
       .catch((err) => console.error("Sanity error:", err));
   }, []);
 
-  // --- ANIMATION VARIANTS ---
-  const slugVariant = {
-    hidden: { opacity: 0, letterSpacing: "15px", filter: "blur(8px)", x: 20 },
-    show: { 
-      opacity: 1, letterSpacing: "2px", filter: "blur(0px)", x: 0,
-      transition: { duration: 1.2, ease: "easeOut", delay: 0.4 }
-    }
-  };
-
-  const titleContainer = {
+  // --- HEADER ANIMATIONS ---
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.04, delayChildren: 0.2 }
     }
   };
 
-  const letterVariant = {
-    hidden: { opacity: 0, y: 20, filter: "blur(5px)" },
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
     visible: { 
       opacity: 1, y: 0, filter: "blur(0px)",
       transition: { type: "spring", damping: 12, stiffness: 200 }
     }
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9, filter: "blur(8px)" },
+  // --- NEW SLUG RENDER EFFECT ---
+  const slugRenderVariant = {
+    hidden: { 
+      opacity: 0, 
+      x: 40, 
+      letterSpacing: "1.5em", 
+      filter: "blur(12px)" 
+    },
     show: { 
-      opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+      opacity: 1, 
+      x: 0, 
+      letterSpacing: "0.3em", 
+      filter: "blur(0px)",
+      transition: { 
+        duration: 1.2, 
+        ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for "sliding into place"
+        delay: 0.4 
+      }
     }
   };
 
   return (
-    <section id="destinations" className="dest-section">
+    <section id="destinations" className="dest-section font-inter">
       <div className="dest-container">
         
-        {/* Header Section */}
-        <div className="dest-header">
+        <header className="dest-header">
           <motion.h2 
-            className="dest-title"
-            variants={titleContainer}
+            className="dest-title font-black uppercase italic"
+            variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.5 }}
           >
-            {"Top Destinations in Ethiopia".split(" ").map((word, wordIndex) => (
-              /* Wrap each word in a span to prevent it from breaking mid-word */
-              <span key={wordIndex} className="word-wrapper">
-                {word.split("").map((char, charIndex) => (
-                  <motion.span 
-                    key={charIndex} 
-                    variants={letterVariant} 
-                    style={{ 
-                      display: 'inline-block',
-                      color: wordIndex === 3 ? '#fbbf24' : 'white' 
-                    }}
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-                {/* Add a space after each word except the last one */}
-                <span style={{ display: 'inline-block' }}>&nbsp;</span>
-              </span>
-            ))}
+            <span className="word-wrapper">
+              {"Explore".split("").map((char, i) => (
+                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-block' }}>
+                  {char}
+                </motion.span>
+              ))}
+              &nbsp;
+            </span>
+
+            <span className="word-wrapper font-playfair gold-text normal-case">
+              {"Ethiopia".split("").map((char, i) => (
+                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-block' }}>
+                  {char}
+                </motion.span>
+              ))}
+            </span>
           </motion.h2>
           
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ delay: 0.5 }}
-            className="dest-subtitle"
+            transition={{ delay: 0.8 }}
+            className="dest-subtitle font-light tracking-wide"
           >
-            Explore the most breathtaking corners of the Horn of Africa.
+            Curated territories for the modern explorer.
           </motion.p>
-        </div>
+        </header>
 
-        {/* The Grid */}
-        <motion.div
-          className="dest-grid"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
-        >
+        {/* DUAL GRID */}
+        <div className="dest-dual-grid">
           {destinations.map((dest, i) => (
             <motion.a
-              href={dest.link}
+              href={`/destinations/${dest.slug}`}
               key={i}
-              variants={cardVariants}
-              className={`dest-card ${dest.gridSpan}`}
-              whileHover={{ y: -8 }}
+              className="dest-item-card"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+              }}
             >
-              <div className="dest-image-wrapper">
-                {dest.img ? (
-                  <motion.img
-                    src={dest.img}
-                    alt={dest.name}
-                    className="dest-img"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.8 }}
-                  />
-                ) : (
-                  <div className="dest-img-placeholder" />
+              <div className="dest-img-container">
+                {dest.img && (
+                  <img src={dest.img} alt={dest.name} className="dest-parallax-img" />
                 )}
-
-                <div className="dest-overlay">
-                  <div className="dest-info">
-                    <h3 className="dest-name">{dest.name}</h3>
+                <div className="dest-content-overlay">
+                  <div className="dest-text-box">
                     
-                    <motion.p variants={slugVariant} className="dest-desc-slug">
-                      {dest.slug}
-                    </motion.p>
-
+                    {/* THE SLUG EFFECT: Renders from side on scroll */}
                     <motion.span 
-                      className="dest-btn-link"
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.6 }}
+                      variants={slugRenderVariant}
+                      className="dest-slug-tag font-bold font-inter"
                     >
-                      View Details →
+                      {dest.slug}
                     </motion.span>
+
+                    <h3 className="dest-display-name font-black font-inter italic uppercase">
+                      {dest.name}
+                    </h3>
+
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 0.6 }}
+                      transition={{ delay: 1 }}
+                      className="dest-link-action font-bold uppercase text-[10px] tracking-widest"
+                    >
+                      Explore Territory →
+                    </motion.div>
                   </div>
                 </div>
               </div>
             </motion.a>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

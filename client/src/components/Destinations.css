@@ -1,198 +1,7 @@
-/* Destinations.css */
-
 .dest-section {
-  padding: 100px 20px;
-  /* FORCED DARK THEME - Matches your other sections */
-  background-color: #020617 !important; 
-  color: #ffffff !important;
-  position: relative;
-  overflow: hidden;
-  /* Prevents mobile browsers from trying to "invert" colors */
-  color-scheme: dark; 
-}
-
-/* Subtle background glow to match "Why Choose Us" */
-.dest-section::before {
-  content: "";
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 50%;
-  height: 50%;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.dest-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.dest-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.dest-title {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
-  /* Force white text regardless of system mode */
-  color: #ffffff !important; 
-  margin-bottom: 15px;
-}
-
-.dest-title span {
-  color: #fbbf24 !important; /* Premium Gold */
-}
-
-.dest-subtitle {
-  /* Muted white/grey for readability */
-  color: rgba(255, 255, 255, 0.6) !important;
-  font-size: 1.1rem;
-}
-
-/* Dynamic Grid Logic */
-.dest-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-@media (min-width: 768px) {
-  .dest-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  /* Custom Spans for Mosaic Layout */
-  .md\:col-span-2 { grid-column: span 2; }
-}
-
-@media (min-width: 1024px) {
-  .dest-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .lg\:col-span-3 { grid-column: span 3; }
-  .lg\:col-span-2 { grid-column: span 2; }
-}
-
-/* Card Styling */
-.dest-card {
-  position: relative;
-  display: block;
-  height: 450px; /* Slightly taller for more impact */
-  border-radius: 28px;
-  overflow: hidden;
-  text-decoration: none;
-  opacity: 0;
-  animation: fadeIn 0.8s forwards ease-out;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for dark mode */
-}
-
-.dest-image-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.dest-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dest-overlay {
-  position: absolute;
-  inset: 0;
-  /* Darker gradient to make text pop against the background */
-  background: linear-gradient(
-    to top, 
-    rgba(2, 6, 23, 0.95) 0%, 
-    rgba(2, 6, 23, 0.3) 50%, 
-    transparent 100%
-  );
-  display: flex;
-  align-items: flex-end;
-  padding: 35px;
-  transition: all 0.4s ease;
-}
-
-.dest-info {
-  transform: translateY(20px);
-  transition: transform 0.4s ease;
-  width: 100%;
-}
-
-.dest-name {
-  color: #ffffff !important;
-  font-size: 1.85rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-.dest-desc {
-  color: rgba(255, 255, 255, 0.8) !important;
-  margin: 10px 0 20px 0;
-  font-size: 1.05rem;
-  line-height: 1.4;
-}
-
-.dest-btn {
-  display: inline-block;
-  color: #fbbf24 !important;
-  font-weight: 700;
-  font-size: 0.95rem;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-/* Hover States (Desktop Only for better mobile UX) */
-@media (hover: hover) {
-  .dest-card:hover .dest-img {
-    transform: scale(1.15);
-  }
-
-  .dest-card:hover .dest-overlay {
-    background: linear-gradient(
-      to top, 
-      rgba(2, 6, 23, 1) 0%, 
-      rgba(2, 6, 23, 0.5) 100%
-    );
-  }
-
-  .dest-card:hover .dest-info {
-    transform: translateY(0);
-  }
-
-  .dest-card:hover .dest-btn {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Show details by default on Mobile touch devices */
-@media (hover: none) {
-    .dest-info { transform: translateY(0); }
-    .dest-btn { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-:root {
-  color-scheme: dark !important;
-}
-
-.dest-section {
-  overflow: hidden;
-  background: #020617 !important;
-  padding: 100px 20px;
-  color: #ffffff !important;
+  background-color: #020617;
+  padding: 120px 24px;
+  color: #ffffff;
 }
 
 .dest-container {
@@ -201,143 +10,111 @@
 }
 
 .dest-header {
+  margin-bottom: 80px;
   text-align: center;
-  margin-bottom: 60px;
 }
 
-/* THE FIX: Allows words to wrap, but keeps letters together */
 .dest-title {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 900;
-  line-height: 1.1;
-  color: #ffffff !important;
-  margin: 0;
-}
-
-.word-wrapper {
-  display: inline-block;
-  white-space: nowrap; /* Prevents "Ethiopia" from splitting into E-t-h-i... */
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  margin-bottom: 20px;
 }
 
 .dest-subtitle {
-  color: #94a3b8 !important;
+  color: #94a3b8;
   font-size: 1.1rem;
-  margin-top: 20px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 
-/* GRID LOGIC */
-.dest-grid {
+/* --- THE TWO-COLUMN GRID --- */
+.dest-dual-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr); /* Forces side-by-side */
+  gap: 30px;
 }
 
-@media (min-width: 768px) {
-  .dest-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .md\:col-span-2 { grid-column: span 2 / span 2; }
-}
-
-@media (min-width: 1024px) {
-  .dest-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .lg\:col-span-3 { grid-column: span 3 / span 3; }
-  .lg\:col-span-2 { grid-column: span 2 / span 2; }
-}
-
-/* CARD STYLING */
-.dest-card {
-  display: block;
-  text-decoration: none;
-  border-radius: 32px;
+.dest-item-card {
+  position: relative;
+  height: 600px; /* Taller editorial look */
+  border-radius: 40px;
   overflow: hidden;
-  position: relative;
-  background: #1e293b;
-  height: 450px;
+  text-decoration: none;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.dest-image-wrapper {
-  position: relative;
+.dest-img-container {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
-.dest-img {
+.dest-parallax-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dest-img-placeholder {
-  width: 100%;
-  height: 100%;
-  background: #0f172a;
+.dest-item-card:hover .dest-parallax-img {
+  transform: scale(1.1) rotate(1deg);
 }
 
-.dest-overlay {
+/* --- CONTENT OVERLAY --- */
+.dest-content-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0.3) 50%, transparent 100%);
+  background: linear-gradient(
+    to top, 
+    rgba(2, 6, 23, 0.9) 0%, 
+    rgba(2, 6, 23, 0.2) 60%, 
+    transparent 100%
+  );
   display: flex;
   align-items: flex-end;
-  padding: 40px;
+  padding: 50px;
 }
 
-.dest-info {
-  width: 100%;
+.dest-slug-tag {
+  color: #fbbf24;
+  font-size: 0.7rem;
+  display: block;
+  margin-bottom: 10px;
 }
 
-.dest-name {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 900;
-  color: #ffffff !important;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: -1px;
+.dest-display-name {
+  font-size: clamp(2rem, 3vw, 3.5rem);
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 25px;
 }
 
-.dest-desc-slug {
-  color: #fbbf24 !important;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  font-weight: 800;
-  margin-top: 5px;
-  letter-spacing: 2px;
-}
-
-.dest-btn-link {
-  color: #ffffff !important;
-  border-bottom: 2px solid #fbbf24;
-  padding-bottom: 4px;
-  margin-top: 20px;
+.dest-link-action {
+  color: #ffffff;
+  opacity: 0.6;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 20px;
   display: inline-block;
-  font-weight: 700;
-  font-size: 0.9rem;
   transition: all 0.3s ease;
 }
 
-.dest-card:hover .dest-btn-link {
+.dest-item-card:hover .dest-link-action {
+  opacity: 1;
+  color: #fbbf24;
+  border-top-color: #fbbf24;
   padding-left: 10px;
-  border-bottom-color: #ffffff;
 }
 
-/* MOBILE SPECIFIC REFINEMENT */
-@media (max-width: 640px) {
-  .dest-section {
-    padding: 60px 15px;
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 1024px) {
+    .dest-item-card { height: 450px; }
+}
+
+@media (max-width: 768px) {
+  .dest-dual-grid {
+    grid-template-columns: 1fr; /* Stack on small screens for usability */
   }
-  .dest-card {
-    height: 380px;
-  }
-  .dest-overlay {
-    padding: 25px;
-  }
+  .dest-content-overlay { padding: 30px; }
 }
