@@ -7,6 +7,7 @@ import {
   Sparkles, Compass, Globe, ShieldCheck
 } from "lucide-react";
 import "./tourdetail.css";
+import {Link} from "react-router-dom";
 
 const TourDetail = () => {
   const { slug } = useParams();
@@ -29,10 +30,7 @@ const TourDetail = () => {
     }
   }, [loading, slug]); // Trigger whenever loading finishes or slug changes
 
-  useEffect(() => {
-    const query = `*[ _type == "tour" && slug.current == $slug ][0]`;
-    // ... your fetch logic ...
-  }, [slug]);
+ 
   useEffect(() => {
     const query = `*[ _type == "tour" && slug.current == $slug ][0]`;
     client.fetch(query, { slug })
@@ -221,13 +219,15 @@ const TourDetail = () => {
                 Pricing includes all permits, professional logistics, and private expedition management.
               </p>
 
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="booking-btn"
-              >
-                Reserve Departure
-              </motion.button>
+            <motion.div 
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  className="w-full" // Added to ensure the link spans the card width
+>
+  <Link to="/contact" className="booking-btn block text-center no-underline">
+    Reserve Departure
+  </Link>
+</motion.div>
             </div>
           </motion.div>
         </aside>
