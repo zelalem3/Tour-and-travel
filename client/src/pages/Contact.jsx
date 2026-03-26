@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 import { Mail, Phone, MessageSquare, Send, MapPin, Loader2, CheckCircle, User, Globe, Users, PenTool } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import "./contacts.css";
 
 export default function Contact() {
@@ -58,7 +58,6 @@ export default function Contact() {
       });
   };
 
-  // Staggered Animation Variants
   const containerVars = {
     hidden: { opacity: 0 },
     show: {
@@ -80,13 +79,15 @@ export default function Contact() {
           animate={{ opacity: 1, scale: 1 }}
           className="contact-card success-card"
         >
-          <CheckCircle size={80} className="success-icon" style={{ color: '#fbbf24', margin: '0 auto 20px' }} />
-          <h1 className="contact-title">Your Journey Begins!</h1>
+          <CheckCircle size={80} className="success-icon" />
+          <h1 className="contact-title">Your <span className="highlight">Journey</span> Begins!</h1>
           <p className="contact-description">
             We've received your inquiry for <strong>{selectedTour}</strong>. 
             A local expert will reach out within 24 hours to finalize your itinerary.
           </p>
-          <button onClick={() => setSubmitted(false)} className="submit-btn">Plan Another Adventure</button>
+          <button onClick={() => setSubmitted(false)} className="submit-btn success-btn">
+            Plan Another Adventure
+          </button>
         </motion.div>
       </div>
     );
@@ -96,11 +97,11 @@ export default function Contact() {
     <div className="contact-viewport">
       
       {/* --- DYNAMIC PROGRESS BAR --- */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '6px', background: 'rgba(255,255,255,0.05)', zIndex: 1000 }}>
+      <div className="progress-bar-container">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
-          style={{ height: '100%', background: '#fbbf24', boxShadow: '0 0 15px #fbbf24' }}
+          className="progress-bar-fill"
         />
       </div>
 
@@ -110,7 +111,7 @@ export default function Contact() {
         animate="show"
         className="contact-card"
       >
-        <motion.div variants={itemVars} className="contact-header" style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <motion.div variants={itemVars} className="contact-header">
           <span className="contact-subtitle">Expert-Led Expeditions</span>
           <h1 className="contact-title">
             Craft Your <span className="highlight">Ethiopian Odyssey</span>
@@ -119,15 +120,14 @@ export default function Contact() {
         </motion.div>
 
         <form ref={form} onSubmit={sendEmail} className="contact-form">
-          
           <div className="form-row">
             <motion.div variants={itemVars} className="form-group">
               <label><User size={14}/> Adventurer Name</label>
               <input type="text" name="user_name" placeholder="Enter your full name" onChange={handleInputChange} required className="premium-input" />
             </motion.div>
             <motion.div variants={itemVars} className="form-group">
-              <label><Mail size={14}/> Email</label>
-              <input type="email" name="user_email" placeholder="where should we send the quote?" onChange={handleInputChange} required className="premium-input" />
+              <label><Mail size={14}/> Email Address</label>
+              <input type="email" name="user_email" placeholder="Where should we send the quote?" onChange={handleInputChange} required className="premium-input" />
             </motion.div>
           </div>
 
@@ -141,8 +141,8 @@ export default function Contact() {
               <select name="tour_interest" value={selectedTour} onChange={(e) => setSelectedTour(e.target.value)} className="premium-input custom-select">
                 <option value="custom">Tailor-Made Journey</option>
                 <option value="Lalibela Adventure">Lalibela (Rock-Hewn Churches)</option>
-                <option value="Simien Mountains Trek">Simien Mountains (The Roof of Africa)</option>
-                <option value="Danakil Depression Tour">Danakil (The Salt Desert & Volcanoes)</option>
+                <option value="Simien Mountains Trek">Simien Mountains (Roof of Africa)</option>
+                <option value="Danakil Depression Tour">Danakil (The Salt Desert)</option>
                 <option value="Omo Valley Cultural">Omo Valley (Ancient Cultures)</option>
               </select>
             </motion.div>
@@ -154,7 +154,7 @@ export default function Contact() {
           </motion.div>
 
           <motion.div variants={itemVars} className="form-group">
-            <label><PenTool size={14}/> The Details</label>
+            <label><PenTool size={14}/> Expedition Details</label>
             <textarea name="message" rows={4} placeholder="Describe your dream trip: dates, interests, or special requirements..." onChange={handleInputChange} required className="premium-input" style={{ resize: 'none' }}></textarea>
           </motion.div>
 
@@ -166,17 +166,18 @@ export default function Contact() {
             disabled={isSubmitting}
             className="submit-btn"
             style={{ 
-              background: progress === 100 ? '#fbbf24' : '#1e293b', 
-              color: progress === 100 ? '#020617' : '#94a3b8', 
+              background: progress === 100 ? '#fbbf24' : 'rgba(255,255,255,0.05)', 
+              color: progress === 100 ? '#020617' : '#64748b', 
+              opacity: progress === 100 ? 1 : 0.7
             }}
           >
-            {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={20} /> Request Your Private Itinerary</>}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Request Your Private Itinerary</>}
           </motion.button>
         </form>
 
         <motion.div variants={itemVars} className="contact-footer">
           <div className="info-item"><Mail size={16}/> hello@travelethiopia.com</div>
-          <div className="info-item"><MessageSquare size={16}/> WhatsApp: +251 911 22 33 44</div>
+          <div className="info-item"><MessageSquare size={16}/> +251 911 22 33 44</div>
           <div className="info-item"><MapPin size={16}/> Addis Ababa HQ</div>
         </motion.div>
       </motion.div>
@@ -184,8 +185,8 @@ export default function Contact() {
       {/* --- FLOATING WHATSAPP --- */}
       <motion.a 
         href="https://wa.me/251911223344" target="_blank"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
         className="whatsapp-float"
       >

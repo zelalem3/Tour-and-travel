@@ -5,8 +5,6 @@ import gsap from "gsap";
 
 const About = () => {
   const statsRef = useRef(null);
-  
-  // FIXED: Removed { once: true } so isInView toggles every time
   const isInView = useInView(statsRef, { margin: "-100px" });
 
   useEffect(() => {
@@ -33,13 +31,11 @@ const About = () => {
       }, statsRef);
       return () => ctx.revert();
     } else {
-      // OPTIONAL: Reset numbers to 0 when they leave the view so they can count up again
       const stats = document.querySelectorAll(".stat-num");
       stats.forEach(s => s.textContent = "0");
     }
   }, [isInView]);
 
-  // Framer Motion Variants
   const sideReveal = (direction) => ({
     hidden: { 
       opacity: 0, 
@@ -74,17 +70,18 @@ const About = () => {
   return (
     <div className="about-page">
       
+      {/* --- HERO SECTION --- */}
       <section className="about-hero">
         <div className="hero-overlay"></div>
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }} // Repeat Hero if scrolled back up
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
           className="about-hero-content"
         >
           <span className="subtitle">Our Story</span>
           <h1 className="title">
-            Preserving the Soul of <span className="highlight">Ethiopia</span>
+            Preserving the <span className="highlight">Soul</span> of Ethiopia
           </h1>
           <p className="hero-desc">
             We are more than a travel agency. We are storytellers, mountain guides, 
@@ -93,6 +90,7 @@ const About = () => {
         </motion.div>
       </section>
 
+      {/* --- MISSION SECTION --- */}
       <section className="mission-section">
         <div className="container">
           <div className="mission-grid">
@@ -101,28 +99,30 @@ const About = () => {
               variants={sideReveal("left")}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }} // FIXED: once: false
+              viewport={{ once: false, amount: 0.3 }}
               className="mission-text"
             >
-              <h2 className="section-title">Why We Do What We Do</h2>
-              <p>
-                Founded in the heart of Addis Ababa, our mission is to provide 
+              <h2 className="section-title">
+                Why We Do <span className="highlight">What We Do</span>
+              </h2>
+              <p className="body-text">
+                Founded in the heart of Addis Ababa, our <span className="highlight">Mission</span> is to provide 
                 authentic, sustainable, and transformative travel experiences. 
               </p>
               
               <div className="stats-container" ref={statsRef}>
                 <div className="stat-card">
                   <div className="stat-flex">
-                    <span className="stat-num" data-target="10">0</span>
-                    <span className="plus">+</span>
+                    <span className="stat-num highlight" data-target="10">0</span>
+                    <span className="plus highlight">+</span>
                   </div>
                   <span className="stat-label">Years Experience</span>
                 </div>
 
                 <div className="stat-card">
                   <div className="stat-flex">
-                    <span className="stat-num" data-target="500">0</span>
-                    <span className="plus">+</span>
+                    <span className="stat-num highlight" data-target="500">0</span>
+                    <span className="plus highlight">+</span>
                   </div>
                   <span className="stat-label">Guided Tours</span>
                 </div>
@@ -133,9 +133,10 @@ const About = () => {
               variants={sideReveal("right")}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }} // FIXED: once: false
+              viewport={{ once: false, amount: 0.3 }}
               className="mission-image-wrapper"
             >
+              <div className="image-border-accent"></div>
               <img 
                 src="https://images.unsplash.com/photo-1523438097201-512ae7d59c44?auto=format&fit=crop&w=800" 
                 alt="Ethiopian Landscape" 
@@ -146,22 +147,23 @@ const About = () => {
         </div>
       </section>
 
+      {/* --- VALUES SECTION --- */}
       <section className="values-section">
         <div className="container">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }} // FIXED: once: false
+            viewport={{ once: false }}
             className="section-title centered"
           >
-            Our Core Values
+            Our <span className="highlight">Core</span> Values
           </motion.h2>
 
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }} // FIXED: once: false
+            viewport={{ once: false, amount: 0.2 }}
             className="values-grid"
           >
             {[
@@ -172,12 +174,13 @@ const About = () => {
               <motion.div 
                 key={i}
                 variants={itemVariants}
-                whileHover={{ y: -10, borderColor: "#fbbf24" }}
-                className="value-card"
+                whileHover={{ y: -10 }}
+                className="value-card-premium"
               >
-                <div className="icon">{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.desc}</p>
+                <div className="icon-wrapper">{value.icon}</div>
+                <h3 className="value-title">{value.title}</h3>
+                <p className="value-desc">{value.desc}</p>
+                <div className="card-glow"></div>
               </motion.div>
             ))}
           </motion.div>

@@ -182,3 +182,38 @@
     border-right-color: var(--border);
   }
 }
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap');
+/* Global Body - Clean & Readable */
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* All Main Headings - Bold & Powerful */
+h1, h2, h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 100 !important;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+}
+
+/* The "Gold Accent" Style - Elegant & Historical */
+/* Apply this class to any word you want to highlight (like "Tours" or "History") */
+.highlight, .serif-gold {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 400;
+  color: #fbbf24;
+  text-transform: capitalize; /* Looks better in serif than all-caps */
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+/* Buttons & Labels - High Tracking (Spaced out) */
+.hero-btn-premium, .cta-label, .hero-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}

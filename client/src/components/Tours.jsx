@@ -84,7 +84,8 @@ export default function Tours() {
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
-        textAlign: 'center' 
+        textAlign: 'center' ,
+        
       }}>
         <motion.h2 
           initial="hidden"
