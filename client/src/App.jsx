@@ -9,10 +9,12 @@ import Navbar from './components/Navbar';
 import "./tailwind.css";
 import DestinationDetail from './pages/DestinationDetail';
 import TourDetail from './pages/TourDetail';
+import ScrollToTop from './ScrollToTop';
 
 function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

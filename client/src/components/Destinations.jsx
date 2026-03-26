@@ -82,7 +82,7 @@ const Destinations = () => {
 
             <span className="word-wrapper font-playfair gold-text normal-case">
               {"Ethiopia".split("").map((char, i) => (
-                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-block' }}>
+                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-block', color: '#fbbf24' }}>
                   {char}
                 </motion.span>
               ))}

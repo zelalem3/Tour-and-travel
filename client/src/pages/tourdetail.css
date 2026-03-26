@@ -1,120 +1,182 @@
-/* 1. ROOT & THEME LOCK (Forces Dark Mode) */
-:root {
-  color-scheme: dark !important;
-}
+/* --- 1. ROOT & RESET --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { color-scheme: dark !important; }
 
-/* Force dark background on the entire document */
-html, 
-body {
+html, body {
+  background-color: #020617 !important;
+  color: #ffffff !important;
   margin: 0 !important;
   padding: 0 !important;
-  background-color: #020617 !important; /* Midnight Navy */
-  color: #ffffff !important;
   overflow-x: hidden;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 2. UNIVERSAL TYPOGRAPHY FIX (Stops Light Mode Flipping) */
-h1, h2, h3, h4, p, span, div, li {
-  color: #ffffff !important; /* Force all text to white */
+.tour-wrapper {
+  background-color: #020617;
+  min-height: 100vh;
+  position: relative;
+  top: 0;
+  width: 100%;
 }
 
-/* 3. ACCENTS & SPECIAL TEXT */
+/* --- 2. HERO SECTION & KEN BURNS --- */
+.hero-container {
+  position: relative;
+  height: 75vh;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) { .hero-container { height: 95vh; } }
+
+.hero-image-wrapper {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  z-index: 0;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  /* Repeatable Zoom Effect */
+  animation: kenBurns 20s infinite alternate ease-in-out;
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #020617 10%, rgba(2, 6, 23, 0.3) 50%, transparent 100%);
+}
+
+.hero-content-inner {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem 1.5rem;
+}
+
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fbbf24;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 10vw, 8rem);
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
 .text-outline-gold {
-  -webkit-text-stroke: 1px rgba(251, 191, 36, 0.4) !important;
+  -webkit-text-stroke: 1px rgba(251, 191, 36, 0.4);
   color: transparent !important;
 }
 
-.text-\[\#fbbf24\], 
-.gold-text, 
-.highlight {
-  color: #fbbf24 !important; /* Force Gold Accent */
+/* --- 3. CONTENT AREA --- */
+.tour-main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
 }
 
-/* Subtext/Secondary text (Light grey, not black) */
-.text-slate-200, 
-.text-slate-300, 
-.text-slate-400,
-.text-slate-500 {
-  color: rgba(255, 255, 255, 0.7) !important;
+@media (min-width: 1024px) {
+  .tour-main-content { grid-template-columns: repeat(12, 1fr); padding: 8rem 1.5rem; gap: 6rem; }
+  .content-left { grid-column: span 7; }
+  .content-right { grid-column: span 5; }
 }
 
-/* 4. BOOKING CARD & BUTTON SPECIFICS */
-aside .bg-\[\#020617\], 
-aside div {
-  background-color: #020617 !important;
+/* Stats Cards */
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(12px);
 }
 
-/* CRITICAL: The button text must be DARK for readability on Yellow */
-button.bg-\[\#fbbf24\], 
-.book-btn, 
-.hero-btn-primary {
-  background-color: #fbbf24 !important;
-  color: #020617 !important; /* Dark text on gold background */
-  border: none !important;
+.stat-val { font-size: 1.25rem; font-weight: 900; color: white; }
+.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
+
+/* Narrative */
+.narrative-section { margin-top: 6rem; }
+.section-heading { display: flex; align-items: center; gap: 1.5rem; font-size: 2rem; font-weight: 900; color: white; }
+.heading-line { width: 80px; height: 3px; background: #fbbf24; }
+.narrative-highlight { font-family: serif; font-style: italic; font-size: 3.5rem; color: #fbbf24; }
+.narrative-text { font-size: 1.25rem; color: rgba(255, 255, 255, 0.8); line-height: 1.7; margin-top: 2rem; max-width: 650px; }
+
+/* --- 4. BOOKING CARD & SHIMMER --- */
+.booking-card-wrapper { position: sticky; top: 8rem; background: #fbbf24; padding: 1.5px; border-radius: 3.5rem; }
+.booking-card { background: #020617; border-radius: 3.4rem; padding: 2.5rem; position: relative; overflow: hidden; }
+.globe-bg { position: absolute; top: -3rem; right: -3rem; opacity: 0.05; pointer-events: none; }
+
+.price-display { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 3rem; }
+
+/* Golden Shimmer Effect */
+.price-amount {
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.05em;
+  background: linear-gradient(to right, #fff 20%, #fbbf24 40%, #fbbf24 60%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
 }
 
-button.bg-\[\#fbbf24\] span,
-button.bg-\[\#fbbf24\] div {
-  color: #020617 !important;
-}
+@keyframes shine { to { background-position: 200% center; } }
 
-button:hover {
-  background-color: #ffffff !important;
-  color: #020617 !important;
-}
-
-/* 5. MOBILE & GAP FIXES */
-@media (max-width: 768px) {
-  /* Remove any browser-injected spacing at the top */
-  .bg-\[\#020617\],
-  .min-h-screen {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  /* Hero image height adjustment for mobile */
-  section.relative.h-\[75vh\],
-  section.relative.h-\[80vh\] {
-    height: 70vh !important;
-    margin-top: 0 !important;
-  }
-
-  /* Typography scaling for phones */
-  h1 {
-    font-size: clamp(2.5rem, 10vw, 4rem) !important;
-    line-height: 1 !important;
-    letter-spacing: -0.05em !important;
-  }
-
-  /* Content padding reduction */
-  main {
-    padding-top: 2rem !important;
-  }
-}
-
-/* 6. PREMIUM SCROLLBAR */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-
-::-webkit-scrollbar-thumb {
+.booking-btn {
+  width: 100%;
   background: #fbbf24;
-  border-radius: 10px;
-}
-
-/* 7. CUSTOM CLASSES */
-.rounded-4xl {
-  border-radius: 2.5rem;
-}
-
-/* Selection color */
-::selection {
-  background-color: #fbbf24;
   color: #020617;
+  padding: 1.75rem;
+  border-radius: 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.booking-btn:hover { background: #ffffff; }
+
+/* Global Screens */
+.loading-screen, .error-screen {
+  min-height: 100vh;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

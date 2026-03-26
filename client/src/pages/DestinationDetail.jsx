@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { client, urlFor } from '../sanityClient'; 
 import { MapPin, Calendar, ArrowRight, ChevronLeft, Share2, Check } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './DestinationDetail.css';
 
 const DestinationDetail = () => {
@@ -58,7 +58,7 @@ const DestinationDetail = () => {
     <div className="loading-screen">
       <motion.div 
         animate={{ opacity: [0, 1, 0] }} 
-        transition={{ repeat: Infinity, duration: 1 }} 
+        transition={{ repeat: Infinity, duration: 1.5 }} 
         className="loading-text"
       >
         MAPPING THE ROUTE...
@@ -66,7 +66,7 @@ const DestinationDetail = () => {
     </div>
   );
 
-  if (!destination) return <div className="loading-screen">Destination not found.</div>;
+  if (!destination) return <div className="loading-screen">DESTINATION NOT FOUND</div>;
 
   return (
     <div className="destination-page">
@@ -75,21 +75,29 @@ const DestinationDetail = () => {
         <div className="progress" style={{ width: `${scrollProgress}%` }}></div>
       </div>
 
-      {/* Toast */}
+      {/* Toast Notification */}
       <div className={`toast ${showToast ? 'show' : ''}`}>
-        <Check size={16} className="toast-icon" />
-        <span>LINK SECURED</span>
+        <Check size={16} />
+        <span>LINK COPIED TO CLIPBOARD</span>
       </div>
 
-      {/* Hero Section */}
+      {/* 1. HERO SECTION */}
       <div className="dest-hero">
         <div className="hero-controls">
-          <button className="control-btn" onClick={() => navigate(-1)}><ChevronLeft size={24} /></button>
-          <button className="control-btn" onClick={handleShare}><Share2 size={20} /></button>
+          <button className="control-btn" onClick={() => navigate(-1)}>
+            <ChevronLeft size={24} />
+          </button>
+          <button className="control-btn" onClick={handleShare}>
+            <Share2 size={20} />
+          </button>
         </div>
         
         {destination.mainImage && (
-          <img src={urlFor(destination.mainImage).url()} alt="" className="dest-hero-image" />
+          <img 
+            src={urlFor(destination.mainImage).url()} 
+            alt={destination.name} 
+            className="dest-hero-image" 
+          />
         )}
         
         <div className="dest-hero-overlay">
@@ -107,21 +115,23 @@ const DestinationDetail = () => {
               transition={{ delay: 0.2 }}
               className="dest-hero-title"
             >
-              {destination.name.split(' ').map((word, i) => (
-                <span key={i} className={i === destination.name.split(' ').length - 1 ? "highlight" : ""}>
-                  {word}{' '}
-                </span>
-              ))}
+              {destination.name}
             </motion.h1>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* 2. MAIN CONTENT WRAPPER */}
       <main className="dest-main">
         <div className="dest-grid">
           
-          <div className="dest-left">
+          {/* NARRATIVE SECTION */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="dest-left"
+          >
             <section className="dest-section">
               <span className="section-label">The Narrative</span>
               <p className="dest-description">{destination.description}</p>
@@ -129,47 +139,65 @@ const DestinationDetail = () => {
 
             <section className="season-box">
               <div className="calendar-icon-wrapper">
-                <Calendar size={32} />
+                <Calendar size={28} />
               </div>
               <div className="season-text">
                 <span className="season-label">Ideal Season</span>
                 <p>{destination.bestTimeToVisit}</p>
               </div>
             </section>
-          </div>
+          </motion.div>
 
-          <aside className="dest-right">
-            <div className="curation-card">
-              <h3 className="curation-title">Curated <span className="highlight">Expeditions</span></h3>
-              <div className="tours-stack">
-                {destination.relatedTours?.length > 0 ? (
-                  destination.relatedTours.map((tour, i) => (
-                    <Link key={i} to={`/tours/${tour.slug}`} className="related-tour-item">
+          {/* RELATED TOURS SECTION (Now at the Bottom) */}
+          <section className="dest-right">
+            <h3 className="curation-title">
+              Curated <span className="highlight">Expeditions</span>
+            </h3>
+            
+            <div className="tours-stack">
+              {destination.relatedTours?.length > 0 ? (
+                destination.relatedTours.map((tour, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <Link to={`/tours/${tour.slug}`} className="related-tour-item">
                       <div className="tour-thumb">
-                        {tour.mainImage && <img src={urlFor(tour.mainImage).width(150).url()} alt="" />}
+                        {tour.mainImage && (
+                          <img src={urlFor(tour.mainImage).width(200).url()} alt={tour.title} />
+                        )}
                       </div>
                       <div className="tour-meta">
                         <h4>{tour.title}</h4>
                         <div className="tour-stats">
                           <span className="price">${tour.price}</span>
-                          <span className="divider">/</span>
+                          <span className="divider">•</span>
                           <span className="duration">{tour.duration}</span>
                         </div>
                       </div>
-                      <ArrowRight size={16} className="tour-arrow" />
+                      <ArrowRight size={18} className="tour-arrow" />
                     </Link>
-                  ))
-                ) : (
-                  <p className="no-tours">Custom routes available upon request.</p>
-                )}
-              </div>
-
-              <Link to="/contact" className="dest-inquiry-btn">
-                <span>Private Inquiry</span>
-                <ArrowRight size={18} />
-              </Link>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="no-tours">Custom itineraries available upon private request.</p>
+              )}
             </div>
-          </aside>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <Link to="/contact" className="dest-inquiry-btn">
+                <span>Start Private Inquiry</span>
+                <ArrowRight size={20} />
+              </Link>
+            </motion.div>
+          </section>
 
         </div>
       </main>

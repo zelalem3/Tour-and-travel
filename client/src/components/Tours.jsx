@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Added Link
 import { client, urlFor } from '../sanityClient'; 
 import { motion } from 'framer-motion'; 
 
 // 1. Individual Letter Variants with Random Delay
 const letterVariants = {
-  hidden: { 
-    y: -100, 
-    opacity: 0,
-    rotate: -15 
-  },
+  hidden: { y: -100, opacity: 0, rotate: -15 },
   visible: (i) => ({
     y: 0,
     opacity: 1,
     rotate: 0,
     transition: {
-      // Creates a random delay between 0 and 0.8 seconds
       delay: Math.random() * 0.8, 
       type: "spring",
       damping: 12,
@@ -35,24 +30,27 @@ const cardVariants = {
     opacity: 1,
     x: 0,
     rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 40,
-      damping: 20,
-      duration: 1
-    }
+    transition: { type: "spring", stiffness: 40, damping: 20, duration: 1 }
   },
   hover: {
     y: -15,
     scale: 1.02,
     transition: { duration: 0.4, ease: "easeOut" }
-  }
+  },
+  tap: { scale: 0.98, y: -5 }
 };
 
 export default function Tours() {
   const navigate = useNavigate();
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // --- SCROLL FIX ---
+  // This ensures that if you clicked from a lower position, 
+  // you start at the top of the Tours page.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const query = '*[_type == "tour"] | order(_createdAt asc)';
@@ -75,7 +73,12 @@ export default function Tours() {
   );
 
   return (
-    <div style={{ padding: '120px 20px', backgroundColor: '#020617', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ 
+      padding: '120px 20px', 
+      backgroundColor: '#020617', 
+      minHeight: '100vh', 
+      overflowX: 'hidden' 
+    }}>
       
       {/* --- Header Section --- */}
       <header style={{ 
@@ -84,8 +87,7 @@ export default function Tours() {
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
-        textAlign: 'center' ,
-        
+        textAlign: 'center' 
       }}>
         <motion.h2 
           initial="hidden"
@@ -109,7 +111,7 @@ export default function Tours() {
               {word.split("").map((char, charIdx) => (
                 <span key={charIdx} style={{ overflow: 'hidden', display: 'inline-block' }}>
                   <motion.span 
-                    custom={charIdx} // Needed to trigger the variant function
+                    custom={charIdx} 
                     variants={letterVariants}
                     style={{ 
                       display: 'inline-block',
@@ -132,12 +134,7 @@ export default function Tours() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: false }}
           transition={{ duration: 1, delay: 1, ease: "circOut" }}
-          style={{ 
-            height: '6px', 
-            width: '140px', 
-            backgroundColor: '#fbbf24', 
-            borderRadius: '4px' 
-          }}
+          style={{ height: '6px', width: '140px', backgroundColor: '#fbbf24', borderRadius: '4px' }}
         />
       </header>
 
@@ -150,107 +147,113 @@ export default function Tours() {
         margin: '0 auto'
       }}>
         {tours.map((tour, i) => (
-          <motion.div
-            key={tour._id}
-            custom={i}
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="hover"
-            viewport={{ once: false, amount: 0.1 }}
-            style={{
-              backgroundColor: '#0f172a',
-              borderRadius: '48px',
-              overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.03)',
-              position: 'relative',
-              boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
-              cursor: 'pointer'
-            }}
+          <Link 
+            key={tour._id} 
+            to={`/tours/${tour.slug?.current}`} 
+            style={{ textDecoration: 'none' }}
           >
-            <div style={{ height: '320px', overflow: 'hidden', position: 'relative' }}>
-              <motion.div 
-                whileHover={{ scale: 1.1 }} 
-                transition={{ duration: 0.8 }} 
-                style={{ height: '100%', width: '100%' }}
-              >
-                {tour.mainImage && (
-                  <img
-                    src={urlFor(tour.mainImage).width(800).url()}
-                    alt={tour.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                )}
-              </motion.div>
-              <div style={{ 
-                position: 'absolute', 
-                inset: 0, 
-                background: 'linear-gradient(to top, #0f172a 5%, transparent 40%)' 
-              }} />
-            </div>
-
-            <div style={{ padding: '45px 40px' }}>
-              <h3 style={{ 
-                fontSize: '2.2rem', 
-                fontWeight: '900', 
-                color: '#ffffff', 
-                marginBottom: '12px', 
-                letterSpacing: '-1.5px',
-                lineHeight: '1.1'
-              }}>
-                {tour.title}
-              </h3>
-              
-              <p style={{ 
-                color: '#94a3b8', 
-                fontSize: '1rem', 
-                lineHeight: '1.7', 
-                marginBottom: '35px'
-              }}>
-                {tour.description ? tour.description.substring(0, 110) + "..." : "Embark on an unparalleled journey through history."}
-              </p>
-
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                borderTop: '1px solid rgba(255,255,255,0.08)', 
-                paddingTop: '35px' 
-              }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '1.4rem', fontWeight: '900', color: '#ffffff' }}>
-                    ${tour.price}
-                  </span>
-                  <span style={{ 
-                    fontSize: '11px', 
-                    color: '#fbbf24', 
-                    fontWeight: '800', 
-                    textTransform: 'uppercase'
-                  }}>
-                    Per Explorer
-                  </span>
-                </div>
-                
-                <button
-                  onClick={() => navigate(`/tours/${tour.slug?.current}`)}
-                  style={{
-                    backgroundColor: '#fbbf24',
-                    color: '#020617',
-                    padding: '18px 36px',
-                    borderRadius: '26px',
-                    fontWeight: '900',
-                    border: 'none',
-                    fontSize: '13px',
-                    letterSpacing: '1px',
-                    boxShadow: '0 15px 30px rgba(251,191,36,0.15)',
-                    cursor: 'pointer'
-                  }}
+            <motion.div
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              whileTap="tap"
+              viewport={{ once: false, amount: 0.1 }}
+              style={{
+                backgroundColor: '#0f172a',
+                borderRadius: '48px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255,255,255,0.03)',
+                position: 'relative',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+                cursor: 'pointer',
+                transition: 'border-color 0.3s ease'
+              }}
+            >
+              <div style={{ height: '320px', overflow: 'hidden', position: 'relative' }}>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }} 
+                  transition={{ duration: 0.8 }} 
+                  style={{ height: '100%', width: '100%' }}
                 >
-                  VIEW MISSION
-                </button>
+                  {tour.mainImage && (
+                    <img
+                      src={urlFor(tour.mainImage).width(800).url()}
+                      alt={tour.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  )}
+                </motion.div>
+                <div style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  background: 'linear-gradient(to top, #0f172a 5%, transparent 40%)' 
+                }} />
               </div>
-            </div>
-          </motion.div>
+
+              <div style={{ padding: '45px 40px' }}>
+                <h3 style={{ 
+                  fontSize: '2.2rem', 
+                  fontWeight: '900', 
+                  color: '#ffffff', 
+                  marginBottom: '12px', 
+                  letterSpacing: '-1.5px',
+                  lineHeight: '1.1'
+                }}>
+                  {tour.title}
+                </h3>
+                
+                <p style={{ 
+                  color: '#94a3b8', 
+                  fontSize: '1rem', 
+                  lineHeight: '1.7', 
+                  marginBottom: '35px'
+                }}>
+                  {tour.description ? tour.description.substring(0, 110) + "..." : "Embark on an unparalleled journey through history."}
+                </p>
+
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  borderTop: '1px solid rgba(255,255,255,0.08)', 
+                  paddingTop: '35px' 
+                }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '1.4rem', fontWeight: '900', color: '#ffffff' }}>
+                      ${tour.price}
+                    </span>
+                    <span style={{ 
+                      fontSize: '11px', 
+                      color: '#fbbf24', 
+                      fontWeight: '800', 
+                      textTransform: 'uppercase'
+                    }}>
+                      Per Explorer
+                    </span>
+                  </div>
+                  
+                  <button
+                    style={{
+                      backgroundColor: '#fbbf24',
+                      color: '#020617',
+                      padding: '18px 36px',
+                      borderRadius: '26px',
+                      fontWeight: '900',
+                      border: 'none',
+                      fontSize: '13px',
+                      letterSpacing: '1px',
+                      boxShadow: '0 15px 30px rgba(251,191,36,0.15)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    VIEW MISSION
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
         ))}
       </div>
     </div>
