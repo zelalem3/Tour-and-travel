@@ -4,6 +4,7 @@ import { client, urlFor } from '../sanityClient';
 import { MapPin, Calendar, ArrowRight, ChevronLeft, Share2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './DestinationDetail.css';
+import { Helmet } from 'react-helmet-async';
 
 const DestinationDetail = () => {
   const { slug } = useParams();
@@ -78,6 +79,21 @@ const DestinationDetail = () => {
 
   return (
     <div className="destination-page">
+      <Helmet>
+      <title>{`${destination.name} | TravelEthiopia`}</title>
+      <meta 
+        name="description" 
+        content={`Discover ${destination.name} in ${destination.location}. ${destination.description?.substring(0, 150)}...`} 
+      />
+      
+      {/* Open Graph (Social Media) */}
+      <meta property="og:title" content={`${destination.name} - Explore Ethiopia`} />
+      <meta property="og:description" content={`Plan your visit to ${destination.name}. Best time to visit: ${destination.bestTimeToVisit}.`} />
+      {destination.mainImage && (
+        <meta property="og:image" content={urlFor(destination.mainImage).width(1200).url()} />
+      )}
+      <link rel="canonical" href={`https://travelethiopia.com/destinations/${slug}`} />
+    </Helmet>
       {/* Scroll Progress Bar */}
       <div className="progress-bar">
         <motion.div 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./About.css";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
+import { Helmet } from "react-helmet-async"; // 1. Import Helmet
 
 const About = () => {
   const statsRef = useRef(null);
@@ -11,7 +12,7 @@ const About = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // GSAP Counter Animation
+  // GSAP Counter Animation logic remains the same...
   useEffect(() => {
     if (isInView) {
       const ctx = gsap.context(() => {
@@ -36,39 +37,38 @@ const About = () => {
     }
   }, [isInView]);
 
+  // Framer Motion Variants...
   const sideReveal = (direction) => ({
-    hidden: { 
-      opacity: 0, 
-      x: direction === "left" ? -80 : 80, 
-      filter: "blur(10px)" 
-    },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      filter: "blur(0px)",
-      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } 
-    }
+    hidden: { opacity: 0, x: direction === "left" ? -80 : 80, filter: "blur(10px)" },
+    visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } }
   });
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.1 } }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: "easeOut" } 
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
   return (
     <div className="about-page">
+      {/* 2. SEO META DATA */}
+      <Helmet>
+        <title>About Us | Preserving the Soul of Ethiopia - TravelEthiopia</title>
+        <meta 
+          name="description" 
+          content="Learn about TravelEthiopia's mission to provide authentic, sustainable travel. Meet our expert guides and explore our 10+ years of experience." 
+        />
+        <link rel="canonical" href="https://travelethiopia.com/about" />
+        
+        {/* Social Media Tags */}
+        <meta property="og:title" content="Our Story | TravelEthiopia" />
+        <meta property="og:description" content="We are more than a travel agency. We are storytellers and keepers of ancient history." />
+        <meta property="og:image" content="https://images.unsplash.com/photo-1523438097201-512ae7d59c44?auto=format&fit=crop&w=800" />
+      </Helmet>
       
       {/* --- HERO SECTION --- */}
       <section className="about-hero">
@@ -90,11 +90,10 @@ const About = () => {
         </motion.div>
       </section>
 
-      {/* --- MISSION SECTION --- */}
+      {/* --- REST OF THE COMPONENT (Mission, Values, etc.) --- */}
       <section className="mission-section">
         <div className="container">
           <div className="mission-grid">
-            
             <motion.div 
               variants={sideReveal("left")}
               initial="hidden"
@@ -139,7 +138,7 @@ const About = () => {
               <div className="image-border-accent"></div>
               <img 
                 src="https://images.unsplash.com/photo-1523438097201-512ae7d59c44?auto=format&fit=crop&w=800" 
-                alt="Ethiopian Landscape" 
+                alt="Ethiopian Landscape - Authentic travel experience" 
                 className="rounded-img"
               />
             </motion.div>
@@ -147,7 +146,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* --- VALUES SECTION --- */}
       <section className="values-section">
         <div className="container">
           <motion.h2 

@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { client, urlFor } from "../sanityClient";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { 
   Clock, MapPin, Users, ArrowLeft, 
   Sparkles, Compass, Globe, ShieldCheck
 } from "lucide-react";
 import "./tourdetail.css";
-import {Link} from "react-router-dom";
 
 const TourDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
- useEffect(() => {
-    // Only scroll to top once loading is finished
+
+  // --- SCROLL TO TOP LOGIC ---
+  useEffect(() => {
     if (!loading) {
-      // Use a double-frame delay to ensure React has painted the new height
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           window.scrollTo({
@@ -28,9 +28,9 @@ const TourDetail = () => {
         });
       });
     }
-  }, [loading, slug]); // Trigger whenever loading finishes or slug changes
+  }, [loading, slug]);
 
- 
+  // --- DATA FETCHING ---
   useEffect(() => {
     const query = `*[ _type == "tour" && slug.current == $slug ][0]`;
     client.fetch(query, { slug })
@@ -39,7 +39,7 @@ const TourDetail = () => {
         setLoading(false); 
       })
       .catch((err) => { 
-        console.error(err); 
+        console.error("Sanity Fetch Error:", err); 
         setLoading(false); 
       });
   }, [slug]);
@@ -61,7 +61,7 @@ const TourDetail = () => {
   };
 
   if (loading) return (
-    <div className="loading-screen">
+    <div className="loading-screen flex items-center justify-center min-h-screen bg-[#020617]">
       <motion.div 
         animate={{ opacity: [0.4, 1, 0.4], letterSpacing: ["0.4em", "0.6em", "0.4em"] }}
         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
@@ -72,12 +72,44 @@ const TourDetail = () => {
     </div>
   );
 
-  if (!tour) return <div className="error-screen">Tour Not Found</div>;
+  if (!tour) return <div className="error-screen text-white p-20 text-center">Tour Not Found</div>;
+
+  // --- SEO SCHEMA (JSON-LD) ---
+  const tourSchema = {
+    "@context": "https://schema.org/",
+    "@type": "TravelAgency",
+    "name": tour.title,
+    "description": tour.description,
+    "image": tour.mainImage ? urlFor(tour.mainImage).url() : "",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": tour.price,
+      "availability": "https://schema.org/InStock"
+    }
+  };
 
   return (
-    <div className="tour-wrapper">
+    <div className="tour-wrapper bg-[#020617] text-white min-h-screen">
       
-      {/* 1. FLOATING BACK BUTTON */}
+      {/* 1. DYNAMIC SEO SECTION */}
+      <Helmet>
+        <title>{`${tour.title} | TravelEthiopia Expedition`}</title>
+        <meta name="description" content={`Book a ${tour.duration} ${tour.title} in ${tour.location}. Join our professional expedition for $${tour.price}.`} />
+        <link rel="canonical" href={`https://travelethiopia.com/tours/${slug}`} />
+        
+        {/* Social Media Meta */}
+        <meta property="og:title" content={`${tour.title} - Official Expedition`} />
+        <meta property="og:description" content={`Explore ${tour.location} on this curated journey. Price: $${tour.price}.`} />
+        {tour.mainImage && <meta property="og:image" content={urlFor(tour.mainImage).width(1200).url()} />}
+        
+        {/* Schema Markup for Google */}
+        <script type="application/ld+json">
+          {JSON.stringify(tourSchema)}
+        </script>
+      </Helmet>
+
+      {/* 2. FLOATING BACK BUTTON */}
       <button 
         onClick={() => navigate(-1)} 
         className="fixed top-4 left-4 md:top-8 md:left-8 z-50 p-4 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 hover:border-[#fbbf24]/50 transition-all group"
@@ -85,20 +117,20 @@ const TourDetail = () => {
         <ArrowLeft size={22} className="text-white group-hover:text-[#fbbf24] transition-colors" />
       </button>
 
-      {/* 2. HERO SECTION */}
-      <section className="hero-container">
-        <div className="hero-image-wrapper">
+      {/* 3. HERO SECTION */}
+      <section className="hero-container relative h-[70vh] overflow-hidden">
+        <div className="hero-image-wrapper absolute inset-0">
           {tour.mainImage && (
             <img
               src={urlFor(tour.mainImage).width(2000).url()}
-              className="hero-img"
+              className="hero-img w-full h-full object-cover"
               alt={tour.title}
             />
           )}
-          <div className="hero-gradient-overlay" />
+          <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
         </div>
 
-        <div className="hero-content-inner">
+        <div className="hero-content-inner absolute bottom-20 left-4 md:left-20">
           <motion.div 
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
@@ -107,15 +139,15 @@ const TourDetail = () => {
             <motion.span 
               animate={{ opacity: [0.7, 1, 0.7], y: [0, -4, 0] }}
               transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="hero-badge"
+              className="hero-badge flex items-center gap-2 text-[#fbbf24] font-bold text-sm tracking-widest uppercase mb-4"
             >
               <Sparkles size={14} /> Official Expedition Portfolio
             </motion.span>
             
-            <h1 className="hero-title">
+            <h1 className="hero-title text-4xl md:text-7xl font-black uppercase leading-none">
               {tour.title?.split(' ').map((word, i) => (
                 <span key={i} className={i % 2 !== 0 ? "text-outline-gold" : "text-white"}>
-                  {word}<br className="hidden md:block" />
+                  {word} {i === 1 && <br className="hidden md:block" />}
                 </span>
               ))}
             </h1>
@@ -123,18 +155,18 @@ const TourDetail = () => {
         </div>
       </section>
 
-      {/* 3. CONTENT AREA */}
-      <main className="tour-main-content">
+      {/* 4. CONTENT AREA */}
+      <main className="tour-main-content container mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
         
-        <div className="content-left">
+        <div className="content-left lg:col-span-2">
           
-          {/* STATS STRIP - once: false makes it repeat on scroll */}
+          {/* STATS STRIP */}
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
-            className="stats-grid"
+            className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
           >
             {[
               { icon: Clock, val: tour.duration, label: "Duration" },
@@ -142,10 +174,10 @@ const TourDetail = () => {
               { icon: MapPin, val: tour.location, label: "Territory" },
               { icon: Compass, val: "Professional", label: "Guide Grade" },
             ].map((stat, i) => (
-              <motion.div key={i} variants={slideInLeft} className="stat-card">
+              <motion.div key={i} variants={slideInLeft} className="stat-card p-6 bg-white/5 border border-white/10 rounded-2xl">
                 <stat.icon size={20} className="text-[#fbbf24] mb-4" />
-                <p className="stat-val">{stat.val}</p>
-                <p className="stat-label">{stat.label}</p>
+                <p className="stat-val font-bold text-xl">{stat.val}</p>
+                <p className="stat-label text-gray-400 text-sm uppercase tracking-tighter">{stat.label}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -156,13 +188,13 @@ const TourDetail = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.2 }}
             variants={slideInLeft}
-            className="narrative-section"
+            className="narrative-section mb-16"
           >
-            <h2 className="section-heading">
-              <div className="heading-line" /> 
-              The <span className="narrative-highlight">Narrative</span>
+            <h2 className="section-heading flex items-center gap-4 text-3xl font-bold mb-8">
+              <div className="heading-line w-12 h-1 bg-[#fbbf24]" /> 
+              The <span className="text-[#fbbf24]">Narrative</span>
             </h2>
-            <div className="narrative-text">
+            <div className="narrative-text text-gray-300 leading-relaxed text-lg space-y-4">
               {tour.description}
             </div>
           </motion.section>
@@ -173,13 +205,13 @@ const TourDetail = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.2 }}
             variants={slideInLeft}
-            className="manifest-section"
+            className="manifest-section bg-white/5 p-8 rounded-3xl border border-white/5"
           >
-            <h2 className="manifest-title">Mission Inclusions</h2>
-            <div className="manifest-grid">
+            <h2 className="manifest-title text-2xl font-bold mb-8 uppercase tracking-widest">Mission Inclusions</h2>
+            <div className="manifest-grid grid grid-cols-1 md:grid-cols-2 gap-6">
                 {tour.includes?.map((item, i) => (
-                <div key={i} className="manifest-item">
-                    <span className="manifest-text">{item}</span>
+                <div key={i} className="manifest-item flex items-center justify-between p-4 bg-black/40 rounded-xl border border-white/5">
+                    <span className="manifest-text font-medium">{item}</span>
                     <ShieldCheck size={20} className="text-[#fbbf24]" />
                 </div>
                 ))}
@@ -194,40 +226,45 @@ const TourDetail = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.1 }}
             variants={slideInRight}
-            className="booking-card-wrapper"
+            className="booking-card-wrapper sticky top-28"
           >
-            <div className="booking-card">
+            <div className="booking-card relative overflow-hidden p-8 bg-[#fbbf24] text-[#020617] rounded-3xl shadow-2xl shadow-[#fbbf24]/10">
+              {/* Decorative Globe */}
               <motion.div 
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-                className="globe-bg"
+                className="globe-bg absolute -right-20 -top-20 opacity-10 pointer-events-none"
               >
-                <Globe size={240} color="white" />
+                <Globe size={240} />
               </motion.div>
 
-              <div className="price-label-group">
-                <div className="price-line" />
-                <span className="price-tag">Project Value</span>
+              <div className="price-label-group mb-4">
+                <div className="price-line w-8 h-1 bg-black mb-2" />
+                <span className="price-tag font-bold uppercase text-xs tracking-widest">Project Value</span>
               </div>
 
-              <div className="price-display">
-                <span className="price-amount">${tour.price}</span>
-                <span className="price-currency">/ USD</span>
+              <div className="price-display flex items-baseline gap-2 mb-6">
+                <span className="price-amount text-6xl font-black">${tour.price}</span>
+                <span className="price-currency font-bold">/ USD</span>
               </div>
 
-              <p className="booking-disclaimer">
-                Pricing includes all permits, professional logistics, and private expedition management.
+              <p className="booking-disclaimer text-sm font-medium mb-8 leading-tight">
+                Pricing includes all permits, professional logistics, and private expedition management across the Land of Origins.
               </p>
 
-            <motion.div 
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
-  className="w-full" // Added to ensure the link spans the card width
->
-  <Link to="/contact" className="booking-btn block text-center no-underline">
-    Reserve Departure
-  </Link>
-</motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full"
+              >
+                <Link 
+                  to="/contact" 
+                  state={{ tour: tour.title }}
+                  className="booking-btn block w-full py-5 bg-[#020617] text-white font-black uppercase tracking-widest rounded-xl hover:shadow-xl transition-all"
+                >
+                  Reserve Departure
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </aside>

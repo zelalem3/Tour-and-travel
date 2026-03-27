@@ -12,6 +12,7 @@ import TourDetail from './pages/TourDetail';
 import ScrollToTop from './ScrollToTop';
 import ScrollProgress from './ScrollProgress';
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +28,8 @@ function App() {
         <Route path="/destinations/:slug" element={<DestinationDetail />} />
         {/* The 404 Route - Must be last */}
         <Route path="*" element={<NotFound />} />
+     
+  
       </Routes>
       <Footer />
     </BrowserRouter>
