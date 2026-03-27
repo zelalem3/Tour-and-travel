@@ -6,13 +6,14 @@ export default defineConfig({
   plugins: [
     react(),
     obfuscator({
-      // 1. Target ONLY your source code to prevent the Rolldown crash
+      // 1. ONLY obfuscate your code (where your keys/logic are)
+      // This prevents the 'renderChunk' error by ignoring node_modules
       include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
-      exclude: [/node_modules/], // Strictly ignore libraries
+      exclude: [/node_modules/], 
       
-      // 2. High security for your logic and keys
+      // 2. High-security settings that won't crash the Vercel build
       compact: true,
-      controlFlowFlattening: false, // Keep false to avoid Vercel memory crashes
+      controlFlowFlattening: false, // Critical to keep false on Vercel
       deadCodeInjection: false,
       stringArray: true,
       stringArrayEncoding: ['base64'],
@@ -30,10 +31,9 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      // 3. Remove manualChunks to let Vite handle the layout automatically. 
-      // This is the safest way to avoid 'renderChunk' errors.
       output: {
-        manualChunks: undefined, 
+        // 3. Let Vite handle chunking automatically for maximum stability
+        manualChunks: undefined,
       },
     },
   },
