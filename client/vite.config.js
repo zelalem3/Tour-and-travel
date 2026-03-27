@@ -1,12 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import obfuscator from 'vite-plugin-javascript-obfuscator';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    
-  ],
+  plugins: [react()],
   build: {
     sourcemap: false,
     minify: 'terser',
@@ -14,12 +10,6 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
-      },
-    },
-    rollupOptions: {
-      output: {
-        // 3. Let Vite handle chunking automatically for maximum stability
-        manualChunks: undefined,
       },
     },
   },
