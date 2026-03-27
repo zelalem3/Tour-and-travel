@@ -6,13 +6,14 @@ export default defineConfig({
   plugins: [
     react(),
     obfuscator({
-      // We keep high security but disable "Control Flow Flattening"
-      // This is usually what causes the Rolldown/Vercel crash
+      // 1. Target ONLY your source code to prevent the Rolldown crash
+      include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
+      exclude: [/node_modules/], // Strictly ignore libraries
+      
+      // 2. High security for your logic and keys
       compact: true,
-      controlFlowFlattening: false, 
-      deadCodeInjection: true,
-      numbersToExpressions: true,
-      simplify: true,
+      controlFlowFlattening: false, // Keep false to avoid Vercel memory crashes
+      deadCodeInjection: false,
       stringArray: true,
       stringArrayEncoding: ['base64'],
       splitStrings: true,
@@ -29,15 +30,10 @@ export default defineConfig({
       },
     },
     rollupOptions: {
+      // 3. Remove manualChunks to let Vite handle the layout automatically. 
+      // This is the safest way to avoid 'renderChunk' errors.
       output: {
-        // Keep the function syntax for modern Vite
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'vendor';
-            if (id.includes('framer-motion')) return 'animations';
-            return 'libs';
-          }
-        },
+        manualChunks: undefined, 
       },
     },
   },
