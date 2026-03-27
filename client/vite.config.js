@@ -7,7 +7,6 @@ export default defineConfig({
     react(),
     {
       ...obfuscator({
-        // High Obfuscation Settings
         compact: true,
         controlFlowFlattening: true,
         controlFlowFlatteningThreshold: 0.75,
@@ -19,8 +18,6 @@ export default defineConfig({
         splitStrings: true,
         unicodeEscapeSequence: true,
       }),
-      // CRITICAL: Only apply this plugin during the build phase, 
-      // not during 'npm run dev' or Vite's initial analysis.
       apply: 'build', 
     }
   ],
@@ -35,9 +32,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          animations: ['framer-motion', 'gsap'],
+        // FIXED: Using function syntax for manualChunks
+        manualChunks(id) {
+          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+            return 'vendor';
+          }
+          if (id.includes('framer-motion') || id.includes('gsap')) {
+            return 'animations';
+          }
         },
       },
     },
