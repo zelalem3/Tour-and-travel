@@ -18,24 +18,21 @@ const TourDetail = () => {
   // --- SCROLL TO TOP LOGIC ---
   useEffect(() => {
     if (!loading) {
-      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant'
+          });
+        });
+      });
     }
   }, [loading, slug]);
 
-  // --- DATA FETCHING WITH METADATA ---
+  // --- DATA FETCHING ---
   useEffect(() => {
-    // Optimized Query: Fetching asset metadata for LQIP placeholders
-    const query = `*[ _type == "tour" && slug.current == $slug ][0] {
-      ...,
-      "mainImage": mainImage.asset-> {
-        ...,
-        metadata {
-          lqip,
-          dimensions
-        }
-      }
-    }`;
-
+    const query = `*[ _type == "tour" && slug.current == $slug ][0]`;
     client.fetch(query, { slug })
       .then((data) => { 
         setTour(data); 
@@ -58,6 +55,11 @@ const TourDetail = () => {
     visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
   };
 
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
   if (loading) return (
     <div className="loading-screen flex items-center justify-center min-h-screen bg-[#020617]">
       <motion.div 
@@ -72,22 +74,42 @@ const TourDetail = () => {
 
   if (!tour) return <div className="error-screen text-white p-20 text-center">Tour Not Found</div>;
 
+  // --- SEO SCHEMA (JSON-LD) ---
+  const tourSchema = {
+    "@context": "https://schema.org/",
+    "@type": "TravelAgency",
+    "name": tour.title,
+    "description": tour.description,
+    "image": tour.mainImage ? urlFor(tour.mainImage).url() : "",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": tour.price,
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <div className="tour-wrapper bg-[#020617] text-white min-h-screen">
       
+      {/* 1. DYNAMIC SEO SECTION */}
       <Helmet>
-        <title>{`${tour.title} | TravelEthiopia`}</title>
-        <meta name="description" content={tour.description?.substring(0, 160)} />
-        {/* Optimized Social Media Image */}
-        {tour.mainImage && (
-          <meta 
-            property="og:image" 
-            content={urlFor(tour.mainImage).width(1200).height(630).auto('format').url()} 
-          />
-        )}
+        <title>{`${tour.title} | TravelEthiopia Expedition`}</title>
+        <meta name="description" content={`Book a ${tour.duration} ${tour.title} in ${tour.location}. Join our professional expedition for $${tour.price}.`} />
+        <link rel="canonical" href={`https://travelethiopia.com/tours/${slug}`} />
+        
+        {/* Social Media Meta */}
+        <meta property="og:title" content={`${tour.title} - Official Expedition`} />
+        <meta property="og:description" content={`Explore ${tour.location} on this curated journey. Price: $${tour.price}.`} />
+        {tour.mainImage && <meta property="og:image" content={urlFor(tour.mainImage).width(1200).url()} />}
+        
+        {/* Schema Markup for Google */}
+        <script type="application/ld+json">
+          {JSON.stringify(tourSchema)}
+        </script>
       </Helmet>
 
-      {/* FLOATING BACK BUTTON */}
+      {/* 2. FLOATING BACK BUTTON */}
       <button 
         onClick={() => navigate(-1)} 
         className="fixed top-4 left-4 md:top-8 md:left-8 z-50 p-4 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 hover:border-[#fbbf24]/50 transition-all group"
@@ -95,60 +117,79 @@ const TourDetail = () => {
         <ArrowLeft size={22} className="text-white group-hover:text-[#fbbf24] transition-colors" />
       </button>
 
-      {/* HERO SECTION WITH OPTIMIZED IMAGE */}
-      <section className="hero-container relative h-[70vh] overflow-hidden">
-        <div 
-          className="hero-image-wrapper absolute inset-0 bg-no-repeat bg-cover"
-          style={{
-            // Shows the blurred version immediately
-            backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`,
-          }}
-        >
+      {/* 3. HERO SECTION */}
+      <section className="hero-container relative h-[110vh] overflow-hidden">
+        <div className="hero-image-wrapper absolute inset-0">
           {tour.mainImage && (
             <img
-              // CDN optimization: width 1600 + auto format + high priority
-              src={urlFor(tour.mainImage).width(1600).auto('format').quality(80).url()}
+              src={urlFor(tour.mainImage).width(2000).url()}
               className="hero-img w-full h-full object-cover"
               alt={tour.title}
-              fetchpriority="high" 
             />
           )}
           <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
         </div>
 
         <div className="hero-content-inner absolute bottom-20 left-4 md:left-20">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}>
-            <span className="hero-badge flex items-center gap-2 text-[#fbbf24] font-bold text-sm tracking-widest uppercase mb-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.5, duration: 1 }}
+          >
+            <motion.span 
+              animate={{ opacity: [0.7, 1, 0.7], y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+              className="hero-badge flex items-center gap-2 text-[#fbbf24] font-bold text-sm tracking-widest uppercase mb-4"
+            >
               <Sparkles size={14} /> Official Expedition Portfolio
-            </span>
+            </motion.span>
+            
             <h1 className="hero-title text-4xl md:text-7xl font-black uppercase leading-none">
-              {tour.title}
+              {tour.title?.split(' ').map((word, i) => (
+                <span key={i} className={i % 2 !== 0 ? "text-outline-gold" : "text-white"}>
+                  {word} {i === 1 && <br className="hidden md:block" />}
+                </span>
+              ))}
             </h1>
           </motion.div>
         </div>
       </section>
 
+      {/* 4. CONTENT AREA */}
       <main className="tour-main-content container mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        
         <div className="content-left lg:col-span-2">
           
           {/* STATS STRIP */}
-          <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+          >
             {[
               { icon: Clock, val: tour.duration, label: "Duration" },
               { icon: Users, val: tour.groupSize || 'Private', label: "Expedition Party" },
               { icon: MapPin, val: tour.location, label: "Territory" },
               { icon: Compass, val: "Professional", label: "Guide Grade" },
             ].map((stat, i) => (
-              <motion.div key={i} variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }} className="stat-card p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <motion.div key={i} variants={slideInLeft} className="stat-card p-6 bg-white/5 border border-white/10 rounded-2xl">
                 <stat.icon size={20} className="text-[#fbbf24] mb-4" />
                 <p className="stat-val font-bold text-xl">{stat.val}</p>
                 <p className="stat-label text-gray-400 text-sm uppercase tracking-tighter">{stat.label}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* THE NARRATIVE */}
-          <motion.section variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }} className="narrative-section mb-16">
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={slideInLeft}
+            className="narrative-section mb-16"
+          >
             <h2 className="section-heading flex items-center gap-4 text-3xl font-bold mb-8">
               <div className="heading-line w-12 h-1 bg-[#fbbf24]" /> 
               The <span className="text-[#fbbf24]">Narrative</span>
@@ -157,26 +198,71 @@ const TourDetail = () => {
               {tour.description}
             </div>
           </motion.section>
+
+          {/* MISSION MANIFEST */}
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={slideInLeft}
+            className="manifest-section bg-white/5 p-8 rounded-3xl border border-white/5"
+          >
+            
+            <div className="manifest-grid grid grid-cols-1 md:grid-cols-2 gap-6">
+                {tour.includes?.map((item, i) => (
+                <div key={i} className="manifest-item flex items-center justify-between p-4 bg-black/40 rounded-xl border border-white/5">
+                    <span className="manifest-text font-medium">{item}</span>
+                    <ShieldCheck size={20} className="text-[#fbbf24]" />
+                </div>
+                ))}
+            </div>
+          </motion.section>
         </div>
 
         {/* BOOKING ASIDE */}
         <aside className="content-right">
-          <motion.div variants={slideInRight} initial="hidden" whileInView="visible" viewport={{ once: true }} className="booking-card-wrapper sticky top-28">
-            <div className="booking-card relative overflow-hidden p-8 bg-[#fbbf24] text-[#020617] rounded-3xl shadow-2xl shadow-[#fbbf24]/10">
-              <div className="price-display flex items-baseline gap-2 mb-6">
-                <span className="price-amount text-6xl font-black">${tour.price}</span>
-                <span className="price-currency font-bold">/ USD</span>
-              </div>
-              <Link 
-                to="/contact" 
-                state={{ tour: tour.title }}
-                className="booking-btn block w-full py-5 text-center bg-[#020617] text-white font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all"
-              >
-                Reserve Departure
-              </Link>
-            </div>
-          </motion.div>
-        </aside>
+  <motion.div 
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.1 }}
+    variants={slideInRight}
+    className="booking-card-wrapper sticky top-28"
+  >
+    <div className="booking-card">
+      {/* Decorative Globe */}
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+        className="globe-bg"
+      >
+        <Globe size={200} />
+      </motion.div>
+
+     
+
+      <div className="price-display">
+        
+        <span className="price-amount">${tour.price}</span>
+        <span className="price-currency">/ USD</span>
+      </div>
+
+      <p className="booking-disclaimer text-gray-400">
+        Includes all permits, professional logistics, and private expedition management.
+      </p>
+
+      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        {/* REMOVED: bg-[#020617] and text-white from here */}
+        <Link 
+          to="/contact" 
+          state={{ tour: tour.title }}
+          className="booking-btn"
+        >
+          Reserve Departure
+        </Link>
+      </motion.div>
+    </div>
+  </motion.div>
+</aside>
       </main>
     </div>
   );

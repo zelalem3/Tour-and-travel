@@ -137,7 +137,14 @@ html, body {
 .booking-card { background: #020617; border-radius: 3.4rem; padding: 2.5rem; position: relative; overflow: hidden; }
 .globe-bg { position: absolute; top: -3rem; right: -3rem; opacity: 0.05; pointer-events: none; }
 
-.price-display { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 3rem; }
+.price-display { 
+  display: flex; 
+  align-items: baseline; 
+  justify-content: center; /* This centers it horizontally */
+  gap: 0.75rem; 
+  margin-bottom: 3rem; 
+  width: 100%;             /* Ensures it takes full width to find the center */
+}
 
 /* Golden Shimmer Effect */
 .price-amount {
@@ -156,18 +163,33 @@ html, body {
 @keyframes shine { to { background-position: 200% center; } }
 
 .booking-btn {
+  /* 1. POSITIONING & LAYOUT */
+  display: flex;            /* Use flex for perfect centering */
+  align-items: center;      /* Vertical center */
+  justify-content: center;   /* Horizontal center */
+  text-align: center;
   width: 100%;
-  background: #fbbf24;
-  color: #020617;
-  padding: 1.75rem;
-  border-radius: 1.5rem;
+  margin-top: 24px;         /* Reduced from 40px to keep card small */
+  
+  /* 2. STYLE & SIZE */
+  background: #020617 !important; /* Start Dark */
+  color: #ffffff !important;      /* Start White */
+  padding: 1.2rem 1.5rem;         /* Slimmer padding for a smaller card */
+  border-radius: 12px;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
   font-size: 12px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-decoration: none;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+}
+.booking-btn:hover {
+  background: #fbbf24 !important; 
+  color: #020617 !important;      /* Swaps to dark so text is seen on white */
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .booking-btn:hover { background: #ffffff; }
@@ -179,4 +201,16 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.booking-btn:disabled {
+  background: rgba(251, 191, 36, 0.5);
+  cursor: not-allowed;
+
+}
+.booking-disclaimer {
+  font-size: 20px;
+  color: white;
+  margin-top: 1rem;
+  text-align: center;
 }
