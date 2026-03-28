@@ -4,7 +4,7 @@ export const destinationType = defineType({
   name: 'destination',
   title: 'Famous Destinations',
   type: 'document',
-  icon: () => '📍', // Map pin icon for the sidebar
+  icon: () => '📍', 
   fields: [
     defineField({
       name: 'name',
@@ -22,9 +22,16 @@ export const destinationType = defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
+    // 1. ADDED: Precise GPS Coordinates
+    defineField({
+      name: 'coordinate',
+      title: 'GPS Coordinates',
+      type: 'geopoint',
+      description: 'Used to pin this destination on the interactive map.',
+    }),
     defineField({
       name: 'location',
-      title: 'Region/Location',
+      title: 'Region/Location (Text)',
       type: 'string',
       placeholder: 'e.g. Amhara Region, Northern Ethiopia',
     }),
@@ -46,7 +53,6 @@ export const destinationType = defineType({
       type: 'string',
       placeholder: 'e.g. October to March',
     }),
-    // ADVANCED: Link this destination to existing tours
     defineField({
       name: 'relatedTours',
       title: 'Tours that visit this place',
