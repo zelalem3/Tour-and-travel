@@ -179,10 +179,16 @@ export default function Tours() {
                 >
                   {tour.mainImage && (
                     <img
-                      src={urlFor(tour.mainImage).width(800).url()}
-                      alt={tour.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+  src={urlFor(tour.mainImage)
+    .width(600)           // 600px is usually enough for grid cards
+    .auto('format')       // Automatically serves WebP/AVIF (huge savings!)
+    .fit('max')           // Prevents upscaling
+    .quality(80)          // Slight compression you won't notice visually
+    .url()}
+  alt={tour.title}
+  loading="lazy"          // Browser-level lazy loading
+  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+/>
                   )}
                 </motion.div>
                 <div style={{ 
