@@ -214,3 +214,44 @@ html, body {
   margin-top: 1rem;
   text-align: center;
 }
+
+
+
+/* --- HERO CONTAINER RESPONSIVE HEIGHT --- */
+.hero-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #020617;
+  
+  /* DEFAULT: Mobile/Phone (under 768px) */
+  height: 70vh; 
+}
+
+/* TABLETS & PC (768px and up) */
+@media (min-width: 768px) {
+  .hero-container {
+    height: 95vh; /* 95-100vh looks best to keep a hint of the content below */
+  }
+}
+
+.hero-image-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  /* Use 'cover' here so the image fills the 70vh/100vh area perfectly */
+  object-fit: cover; 
+  object-position: center;
+  animation: kenBurns 20s infinite alternate ease-in-out;
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}

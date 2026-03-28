@@ -32,7 +32,16 @@ const TourDetail = () => {
 
   // --- DATA FETCHING ---
   useEffect(() => {
-    const query = `*[ _type == "tour" && slug.current == $slug ][0]`;
+    const query = `*[ _type == "tour" && slug.current == $slug ][0] {
+  ...,
+  "mainImage": mainImage.asset-> {
+    ...,
+    metadata {
+      lqip,
+      dimensions
+    }
+  }
+}`;
     client.fetch(query, { slug })
       .then((data) => { 
         setTour(data); 
@@ -118,17 +127,32 @@ const TourDetail = () => {
       </button>
 
       {/* 3. HERO SECTION */}
-      <section className="hero-container relative h-[110vh] overflow-hidden">
-        <div className="hero-image-wrapper absolute inset-0">
-          {tour.mainImage && (
-            <img
-              src={urlFor(tour.mainImage).width(2000).url()}
-              className="hero-img w-full h-full object-cover"
-              alt={tour.title}
-            />
-          )}
-          <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
-        </div>
+      <section className="hero-container relative overflow-hidden">
+        <div 
+    className="hero-image-wrapper absolute inset-0 bg-cover bg-no-repeat"
+    style={{
+      // 1. Show the tiny blurred image immediately
+      backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`,
+      backgroundSize: 'cover'
+    }}
+  >
+    {tour.mainImage && (
+      <img
+        // 2. Use .auto('format') so Chrome gets WebP and Safari gets JP2
+        // 3. Lower the width to 1600 (better balance of quality vs speed)
+        src={urlFor(tour.mainImage).width(1600).auto('format').quality(80).url()}
+        className="hero-img w-full h-full object-cover"
+        alt={tour.title}
+        // 4. Critical: Tell the browser to prioritize this image
+        fetchpriority="high" 
+        loading="eager"
+      />
+    )}
+    <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
+  </div>
+        
+                 <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
+        
 
         <div className="hero-content-inner absolute bottom-20 left-4 md:left-20">
           <motion.div 
@@ -241,7 +265,7 @@ const TourDetail = () => {
      
 
       <div className="price-display">
-        
+
         <span className="price-amount">${tour.price}</span>
         <span className="price-currency">/ USD</span>
       </div>

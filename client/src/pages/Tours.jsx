@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 import { client, urlFor } from '../sanityClient'; 
 
 export default function Tours() {
@@ -9,7 +9,24 @@ export default function Tours() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const query = '*[_type == "tour"] | order(_createdAt asc)';
+    // LOGIC: Optimized query to fetch ONLY necessary fields + LQIP metadata for instant blur-up
+    const query = `*[_type == "tour"] | order(_createdAt asc) {
+      _id,
+      title,
+      price,
+      description,
+      "slug": slug.current,
+      mainImage {
+        asset-> {
+          _id,
+          url,
+          metadata {
+            lqip
+          }
+        }
+      }
+    }`;
+
     client.fetch(query)
       .then((data) => {
         setTours(data);
@@ -69,7 +86,7 @@ export default function Tours() {
       {loading ? (
         <motion.div 
           key="loader"
-          exit={{ opacity: 0, filter: "blur(10px)" }} // Smooth transition from loader
+          exit={{ opacity: 0, filter: "blur(10px)" }}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#020617' }}
         >
           <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24', letterSpacing: '2px' }} className="animate-pulse">
@@ -79,7 +96,7 @@ export default function Tours() {
       ) : (
         <motion.div 
           key="content"
-          {...pageRenderProps} // Applying the Lens Blur Render Effect
+          {...pageRenderProps}
           style={{ 
             padding: '120px 20px', 
             backgroundColor: '#020617', 
@@ -107,7 +124,7 @@ export default function Tours() {
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }} // LOGIC: Changed to once: true for better scroll performance
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
@@ -133,14 +150,27 @@ export default function Tours() {
                 }}
               >
                 {/* Image Wrap */}
-                <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none', display: 'block', overflow: 'hidden' }}>
-                  <div style={{ height: '320px', width: '100%', position: 'relative', overflow: 'hidden' }}>
-                    <motion.img
-                      variants={imageHover}
-                      src={urlFor(tour.mainImage).width(800).url()}
-                      alt={tour.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                <Link to={`/tours/${tour.slug}`} style={{ textDecoration: 'none', display: 'block', overflow: 'hidden' }}>
+                  <div style={{ 
+                    height: '320px', 
+                    width: '100%', 
+                    position: 'relative', 
+                    overflow: 'hidden',
+                    // LOGIC: Added background placeholder to prevent white flash
+                    backgroundColor: '#020617',
+                    backgroundImage: `url(${tour.mainImage?.asset?.metadata?.lqip})`,
+                    backgroundSize: 'cover'
+                  }}>
+                    {tour.mainImage && (
+                      <motion.img
+                        variants={imageHover}
+                        // LOGIC: Optimized URL construction with auto format and specific width
+                        src={urlFor(tour.mainImage).width(800).auto('format').quality(80).url()}
+                        alt={tour.title}
+                        loading="lazy" // LOGIC: Browser native lazy loading
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    )}
                     <div style={{ 
                       position: 'absolute', 
                       inset: 0, 
@@ -159,7 +189,7 @@ export default function Tours() {
 
                 {/* Content Section */}
                 <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                  <Link to={`/tours/${tour.slug?.current}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`/tours/${tour.slug}`} style={{ textDecoration: 'none' }}>
                     <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#ffffff', marginBottom: '15px', letterSpacing: '-1px' }}>
                       {tour.title}
                     </h2>
@@ -177,7 +207,7 @@ export default function Tours() {
                     justifyContent: 'space-between', 
                     alignItems: 'center'
                   }}>
-                    <Link to={`/tours/${tour.slug?.current}`} style={{ color: '#fbbf24', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', textDecoration: 'none' }}>
+                    <Link to={`/tours/${tour.slug}`} style={{ color: '#fbbf24', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', textDecoration: 'none' }}>
                       View Details →
                     </Link>
 
