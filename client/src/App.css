@@ -184,36 +184,50 @@
 }
 
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap');
 /* Global Body - Clean & Readable */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
   -webkit-font-smoothing: antialiased;
 }
 
 /* All Main Headings - Bold & Powerful */
 h1, h2, h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 100 !important;
   text-transform: uppercase;
   letter-spacing: -0.04em;
 }
 
-/* The "Gold Accent" Style - Elegant & Historical */
-/* Apply this class to any word you want to highlight (like "Tours" or "History") */
-.highlight, .serif-gold {
-  font-family: 'Playfair Display', serif !important;
+/* This will force the text to be dull white and remove the golden halo */
+.highlight {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-style: italic !important;
-  font-weight: 400;
-  color: #fbbf24;
-  text-transform: capitalize; /* Looks better in serif than all-caps */
-  text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
-}
+  font-weight: 900 !important; /* Matches your 'font-black' class */
+  
+  /* FORCE WHITE */
+  color: #ffffff !important; 
+  
+  /* REMOVE GOLD SHADOW (This was the main cause) */
+  text-shadow: none !important; 
+  
+  /* Optional: Add a very subtle dark shadow just to help it pop against images */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) !important;
 
+  background: transparent !important;
+  text-transform: uppercase !important;
+}
+/* Updated Serif Gold - for when you ONLY want the specific gold color elsewhere */
+.serif-gold {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fbbf24; /* Keep this only for specific gold accents */
+}
 /* Buttons & Labels - High Tracking (Spaced out) */
 .hero-btn-premium, .cta-label, .hero-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 800;
   letter-spacing: 0.2em;
 }

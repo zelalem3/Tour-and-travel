@@ -1,16 +1,16 @@
 import React, { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
+// Import Hero synchronously to prevent "white screen" on landing
+import Hero from "../components/hero"; 
+import BlogList from "../components/blog";
 
-// Lazy load all main components
-const Hero = lazy(() => import("../components/hero"));
 const WhyChooseUs = lazy(() => import("../components/Whychooeuse"));
 const Tours = lazy(() => import("../components/Tours"));
 const Destinations = lazy(() => import("../components/Destinations"));
 const Cta = lazy(() => import("../components/Cta"));
 
-// A clean loading state for each section
 const SectionLoader = () => (
-  <div className="flex items-center justify-center py-24 bg-white">
+  <div className="flex items-center justify-center py-20 bg-white">
     <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
@@ -18,33 +18,31 @@ const SectionLoader = () => (
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Dynamic SEO Section */}
       <Helmet>
-        <title>TravelEthiopia | Home - Discover the Cradle of Humanity</title>
-        <meta 
-          name="description" 
-          content="Join TravelEthiopia for an unforgettable odyssey. View our most popular tours and top destinations across the country." 
-        />
-        <link rel="canonical" href="https://travelethiopia.com/" />
+        <title>TravelEthiopia | Discover the Cradle of Humanity</title>
+        <meta name="description" content="Join TravelEthiopia for an unforgettable odyssey..." />
       </Helmet>
 
       <main className="flex-grow">
-        <Suspense fallback={<SectionLoader />}>
-          {/* Main Content Sections */}
-          <section id="hero">
-            <Hero />
-          </section>
+        {/* Rendered immediately for better LCP (Largest Contentful Paint) */}
+        <Hero />
 
-          <section id="why-us">
-            <WhyChooseUs />
+        {/* Lazy load the rest of the page */}
+        <Suspense fallback={<SectionLoader />}>
+          <section id="destinations">
+            <Destinations />
           </section>
 
           <section id="tours">
             <Tours />
           </section>
 
-          <section id="destinations">
-            <Destinations />
+          <section id="why-us">
+            <WhyChooseUs />
+          </section>
+
+          <section id="blog" className="py-12 bg-white">
+            <BlogList />
           </section>
 
           <section id="contact">

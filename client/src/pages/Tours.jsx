@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { client, urlFor } from '../sanityClient'; 
 
+
 export default function Tours() {
   const navigate = useNavigate();
   const [tours, setTours] = useState([]);
@@ -111,10 +112,10 @@ export default function Tours() {
             transition={{ duration: 1, ease: "circOut" }}
             style={{ textAlign: 'center', marginBottom: '80px' }}
           >
-            <span style={{ color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '6px', fontSize: '0.7rem' }}>
+            <span style={{ color: '#fbbf24', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '6px', fontSize: '0.7rem' }} className="highlight">
               Unrivaled Expeditions
             </span>
-            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '900', color: '#ffffff', marginTop: '10px', letterSpacing: '-4px', lineHeight: 0.9 }}>
+            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '900', color: '#ffffff', marginTop: '10px', letterSpacing: '-4px', lineHeight: 0.9 }} className="highlight">
               CHOOSE YOUR <span style={{ color: '#fbbf24' }}>LEGACY</span>
             </h1>
           </motion.div>
@@ -190,12 +191,12 @@ export default function Tours() {
                 {/* Content Section */}
                 <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <Link to={`/tours/${tour.slug}`} style={{ textDecoration: 'none' }}>
-                    <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#ffffff', marginBottom: '15px', letterSpacing: '-1px' }}>
+                    <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#ffffff', marginBottom: '15px', letterSpacing: '-1px' }} className="highlight">
                       {tour.title}
                     </h2>
                   </Link>
                   
-                  <p style={{ fontSize: '1.05rem', color: '#64748b', lineHeight: '1.8', marginBottom: '30px', flexGrow: 1 }}>
+                  <p style={{ fontSize: '1.05rem', color: '#64748b', lineHeight: '1.8', marginBottom: '30px', flexGrow: 1 }} className="highlight">
                     {tour.description ? tour.description.substring(0, 120) + "..." : "Unlock the secrets of Ethiopia's ancient landscapes."}
                   </p>
 

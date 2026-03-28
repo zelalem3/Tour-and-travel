@@ -45,7 +45,7 @@ const WhyChooseUs = () => {
       <div className="bg-blob blob-2"></div>
 
       <div className="container">
-        <header className="section-header">
+        <header className="section-header highlight">
           <motion.h2 
             className="title"
             initial="hidden"
@@ -75,7 +75,7 @@ const WhyChooseUs = () => {
         </header>
 
         <motion.div 
-          className="card-grid"
+          className="card-grid highlight"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, margin: "-50px" }}

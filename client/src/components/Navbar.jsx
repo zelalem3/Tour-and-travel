@@ -18,14 +18,17 @@ const MyNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           {/* ms-auto pushes links to the right in Bootstrap 5 */}
           <Nav className="ms-auto align-items-center">
-            <Nav.Link as={Link} to="/" className="nav-item-link">
-              Home
+            <Nav.Link as={Link} to="/Destinations" className="nav-item-link">
+              Expreditions
             </Nav.Link>
             <Nav.Link as={Link} to="/about" className="nav-item-link">
               About
             </Nav.Link>
             <Nav.Link as={Link} to="/tours" className="nav-item-link">
               Tours
+            </Nav.Link>
+            <Nav.Link as={Link} to="/blog" className="nav-item-link">
+              Blog
             </Nav.Link>
            
             <Nav.Link as={Link} to="/contact" className="p-0 ms-lg-3">

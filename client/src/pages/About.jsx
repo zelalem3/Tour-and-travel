@@ -80,10 +80,10 @@ const About = () => {
           className="about-hero-content"
         >
           <span className="subtitle">Our Story</span>
-          <h1 className="title">
+          <h1 className="title highlight" style={{ fontSize: '3.8rem', lineHeight: '1.2' }}>
             Preserving the <span className="highlight">Soul</span> of Ethiopia
           </h1>
-          <p className="hero-desc">
+          <p className="hero-desc highlight" style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '20px auto' }}>
             We are more than a travel agency. We are storytellers, mountain guides, 
             and keepers of ancient history.
           </p>

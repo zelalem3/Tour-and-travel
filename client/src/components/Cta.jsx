@@ -36,7 +36,7 @@ const Cta = () => {
         className="cta-glow glow-2"
       ></motion.div>
       
-      <div className="cta-container">
+      <div className="cta-container highlight">
         <motion.span 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -63,7 +63,7 @@ const Cta = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: false }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="cta-description"
+          className="cta-description highlight"
         >
           From the ancient obelisks of Aksum to the colorful markets of Addis Ababa, 
           start your journey with the local experts.

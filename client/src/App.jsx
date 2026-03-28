@@ -11,6 +11,10 @@ import DestinationDetail from './pages/DestinationDetail';
 import TourDetail from './pages/TourDetail';
 import ScrollToTop from './ScrollToTop';
 import ScrollProgress from './ScrollProgress';
+import BlogPost from './pages/BlogPost';
+import BlogList from './pages/BlogList';
+import Destinations from './pages/Destinations';
+
 
 
 function App() {
@@ -26,6 +30,10 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/tours/:slug" element={<TourDetail />} />
         <Route path="/destinations/:slug" element={<DestinationDetail />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/destinations" element={<Destinations />} />
+
         {/* The 404 Route - Must be last */}
         <Route path="*" element={<NotFound />} />
      

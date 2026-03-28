@@ -92,6 +92,7 @@ export default function Tours() {
         <motion.h2 
           initial="hidden"
           whileInView="visible"
+          className="highlight"
           viewport={{ once: false, margin: "-100px" }}
           style={{
             fontSize: "clamp(40px, 9vw, 75px)",
@@ -144,13 +145,16 @@ export default function Tours() {
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
         gap: '50px',
         maxWidth: '1400px',
-        margin: '0 auto'
+        margin: '0 auto',
+
+        
       }}>
         {tours.map((tour, i) => (
           <Link 
             key={tour._id} 
             to={`/tours/${tour.slug?.current}`} 
             style={{ textDecoration: 'none' }}
+            
           >
             <motion.div
               custom={i}
@@ -199,19 +203,21 @@ export default function Tours() {
               </div>
 
               <div style={{ padding: '45px 40px' }}>
-                <h3 style={{ 
+                <h3 className="highlight" style={{ 
                   fontSize: '2.2rem', 
                   fontWeight: '900', 
                   color: '#ffffff', 
                   marginBottom: '12px', 
                   letterSpacing: '-1.5px',
-                  lineHeight: '1.1'
-                }}>
+                  lineHeight: '1.1',
+                  
+              
+                }} >
                   {tour.title}
                 </h3>
                 
-                <p style={{ 
-                  color: '#94a3b8', 
+                <p  style={{ 
+                  color: '#f0f1f3', 
                   fontSize: '1rem', 
                   lineHeight: '1.7', 
                   marginBottom: '35px'

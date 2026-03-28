@@ -12,7 +12,15 @@ import {
     SocialIcon
 } from "./FooterStyle";
 
-import { Facebook, Instagram, Twitter, Music2 as Tiktok } from "lucide-react";
+// 1. Updated Imports to use FontAwesome for brand consistency
+import { 
+  FaFacebookF, 
+  FaTwitter, 
+  FaInstagram, 
+  FaLinkedinIn, 
+  FaTiktok, 
+  FaTelegramPlane 
+} from "react-icons/fa";
 
 const Footer = () => {
     return (
@@ -21,7 +29,7 @@ const Footer = () => {
                 width: '100px',
                 height: '2px',
                 background: '#fbbf24',
-                margin: '-20px auto 60px auto', // Pulls it into the top padding area
+                margin: '-20px auto 60px auto', 
                 borderRadius: '10px',
                 opacity: '0.6'
             }}></div>
@@ -58,19 +66,31 @@ const Footer = () => {
                     </Column>
 
                     <Column>
+                        {/* 2. Updated Social Icons Section */}
                         <Heading>Follow Our Journey</Heading>
                         <SocialGrid>
-                            <SocialIcon href="#" aria-label="Facebook"><Facebook size={20} /></SocialIcon>
-                            <SocialIcon href="#" aria-label="Instagram"><Instagram size={20} /></SocialIcon>
-                            <SocialIcon href="#" aria-label="Twitter"><Twitter size={20} /></SocialIcon>
-                            <SocialIcon href="#" aria-label="TikTok"><Tiktok size={20} /></SocialIcon>
+                            <SocialIcon href="https://facebook.com/travelethiopia" target="_blank" aria-label="Facebook">
+                                <FaFacebookF size={18} />
+                            </SocialIcon>
+                            <SocialIcon href="https://instagram.com/travelethiopia" target="_blank" aria-label="Instagram">
+                                <FaInstagram size={18} />
+                            </SocialIcon>
+                            <SocialIcon href="https://twitter.com/travelethiopia" target="_blank" aria-label="Twitter">
+                                <FaTwitter size={18} />
+                            </SocialIcon>
+                           
+                            <SocialIcon href="https://tiktok.com/@travelethiopia" target="_blank" aria-label="TikTok">
+                                <FaTiktok size={18} />
+                            </SocialIcon>
+                            <SocialIcon href="https://t.me/travelethiopia" target="_blank" aria-label="Telegram">
+                                <FaTelegramPlane size={18} />
+                            </SocialIcon>
                         </SocialGrid>
                     </Column>
                 </Row>
 
                 <BottomRow>
                     &copy; {new Date().getFullYear()} Travel Ethiopia. All Rights Reserved.
-                    
                 </BottomRow>
             </FooterContainer>
         </Box>

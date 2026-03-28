@@ -1,32 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Destinations.css';
 import { client } from '../sanityClient';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 const Destinations = () => {
   const [destinations, setDestinations] = useState([]);
+  const [loadedImages, setLoadedImages] = useState({});
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const query = `*[_type == "destination"]{
+    // UPDATED QUERY: Fetching asset metadata for lqip (blur-up)
+    const query = `*[_type == "destination"] | order(title asc) {
       name,
       "desc": description,
-      "img": mainImage.asset->url,
-      "slug": slug.current
+      "slug": slug.current,
+      "mainImage": mainImage.asset->{
+        _id,
+        url,
+        metadata { lqip }
+      }
     }`;
 
     client.fetch(query)
-      .then((data) => {
-        setDestinations(data);
-      })
+      .then((data) => setDestinations(data))
       .catch((err) => console.error("Sanity error:", err));
   }, []);
 
-  // --- HEADER ANIMATIONS ---
+  const handleImageLoad = (slug) => {
+    setLoadedImages((prev) => ({ ...prev, [slug]: true }));
+  };
+
+  // PARALLAX LOGIC
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
+  // ANIMATION VARIANTS
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.04, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.05, delayChildren: 0.2 }
     }
   };
 
@@ -38,29 +54,16 @@ const Destinations = () => {
     }
   };
 
-  // --- NEW SLUG RENDER EFFECT ---
-  const slugRenderVariant = {
-    hidden: { 
-      opacity: 0, 
-      x: 40, 
-      letterSpacing: "1.5em", 
-      filter: "blur(12px)" 
-    },
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
     show: { 
-      opacity: 1, 
-      x: 0, 
-      letterSpacing: "0.3em", 
-      filter: "blur(0px)",
-      transition: { 
-        duration: 1.2, 
-        ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for "sliding into place"
-        delay: 0.4 
-      }
+      opacity: 1, y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
     }
   };
 
   return (
-    <section id="destinations" className="dest-section font-inter">
+    <section id="destinations" ref={containerRef} className="dest-section">
       <div className="dest-container">
         
         <header className="dest-header">
@@ -69,7 +72,7 @@ const Destinations = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: false, amount: 0.4 }}
           >
             <span className="word-wrapper">
               {"Explore".split("").map((char, i) => (
@@ -80,9 +83,9 @@ const Destinations = () => {
               &nbsp;
             </span>
 
-            <span className="word-wrapper font-playfair gold-text normal-case">
+            <span className="word-wrapper font-playfair highlight normal-case">
               {"Ethiopia".split("").map((char, i) => (
-                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-block', color: '#fbbf24' }}>
+                <motion.span key={i} variants={letterVariants} style={{ display: 'inline-flex' }}>
                   {char}
                 </motion.span>
               ))}
@@ -90,57 +93,56 @@ const Destinations = () => {
           </motion.h2>
           
           <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.7 }}
             transition={{ delay: 0.8 }}
-            className="dest-subtitle font-light tracking-wide"
+            className="dest-subtitle"
           >
             Curated territories for the modern explorer.
           </motion.p>
         </header>
 
-        {/* DUAL GRID */}
         <div className="dest-dual-grid">
           {destinations.map((dest, i) => (
             <motion.a
               href={`/destinations/${dest.slug}`}
-              key={i}
+              key={dest.slug}
               className="dest-item-card"
+              variants={cardVariants}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: false, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-              }}
+              viewport={{ once: false, amount: 0.1 }}
             >
               <div className="dest-img-container">
-                {dest.img && (
-                  <img src={dest.img} alt={dest.name} className="dest-parallax-img" />
+                {/* 1. BLUR-UP PLACEHOLDER */}
+                <div 
+                  className="blur-up-layer"
+                  style={{ 
+                    backgroundImage: `url(${dest.mainImage?.metadata?.lqip})`,
+                    opacity: loadedImages[dest.slug] ? 0 : 1
+                  }}
+                />
+
+                {/* 2. HIGH-RES PARALLAX IMAGE */}
+                {dest.mainImage && (
+                  <motion.img 
+                    style={{ y: yParallax, scale: 1.3 }} 
+                    src={`${dest.mainImage.url}?w=1000&q=75&auto=format`} 
+                    alt={dest.name} 
+                    onLoad={() => handleImageLoad(dest.slug)}
+                    className={`dest-parallax-img ${loadedImages[dest.slug] ? 'is-loaded' : 'is-loading'}`} 
+                  />
                 )}
+                
                 <div className="dest-content-overlay">
                   <div className="dest-text-box">
-                    
-                    {/* THE SLUG EFFECT: Renders from side on scroll */}
-                    <motion.span 
-                      variants={slugRenderVariant}
-                      className="dest-slug-tag font-bold font-inter"
-                    >
-                      {dest.slug}
-                    </motion.span>
-
-                    <h3 className="dest-display-name font-black font-inter italic uppercase">
+                    <span className="dest-slug-tag">/ {dest.slug}</span>
+                    <h3 className="dest-display-name highlight">
                       {dest.name}
                     </h3>
-
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 0.6 }}
-                      transition={{ delay: 1 }}
-                      className="dest-link-action font-bold uppercase text-[10px] tracking-widest"
-                    >
+                    <div className="dest-link-action">
                       Explore Territory →
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </div>

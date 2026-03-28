@@ -15,6 +15,10 @@ const DestinationDetail = () => {
   const [showToast, setShowToast] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  // --- BLUR-UP STATES ---
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  const [toursLoaded, setToursLoaded] = useState({});
+
   // --- ANIMATION VARIANTS ---
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -34,9 +38,25 @@ const DestinationDetail = () => {
   };
 
   useEffect(() => {
+    // Logic update: Fetching the asset object directly to access metadata.lqip
     const query = `*[_type == "destination" && slug.current == $slug][0]{
-      name, location, description, bestTimeToVisit, mainImage,
-      "relatedTours": relatedTours[]->{ title, "slug": slug.current, price, duration, mainImage }
+      name, location, description, bestTimeToVisit, 
+      "mainImage": mainImage.asset->{
+        _id,
+        url,
+        metadata { lqip }
+      },
+      "relatedTours": relatedTours[]->{ 
+        title, 
+        "slug": slug.current, 
+        price, 
+        duration, 
+        "mainImage": mainImage.asset->{
+          _id,
+          url,
+          metadata { lqip }
+        } 
+      }
     }`;
 
     client.fetch(query, { slug })
@@ -136,14 +156,30 @@ const DestinationDetail = () => {
         </div>
         
         {destination.mainImage && (
-          <motion.img 
-            initial={{ scale: 1.2, filter: "blur(10px)" }}
-            animate={{ scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            src={urlFor(destination.mainImage).url()} 
-            alt={destination.name} 
-            className="dest-hero-image" 
-          />
+          <div className="blur-up-container" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+             {/* Blur Placeholder */}
+             <div 
+              style={{ 
+                backgroundImage: `url(${destination.mainImage.metadata.lqip})`,
+                backgroundSize: 'cover',
+                filter: 'blur(20px)',
+                position: 'absolute',
+                inset: 0,
+                opacity: heroLoaded ? 0 : 1,
+                transition: 'opacity 0.8s ease-in-out'
+              }}
+            />
+            {/* Main Image */}
+            <motion.img 
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={{ scale: heroLoaded ? 1 : 1.2, opacity: heroLoaded ? 1 : 0 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              onLoad={() => setHeroLoaded(true)}
+              src={urlFor(destination.mainImage).url()} 
+              alt={destination.name} 
+              className="dest-hero-image" 
+            />
+          </div>
         )}
         
         <div className="dest-hero-overlay">
@@ -221,9 +257,25 @@ const DestinationDetail = () => {
                 destination.relatedTours.map((tour, i) => (
                   <motion.div key={i} variants={fadeInUp}>
                     <Link to={`/tours/${tour.slug}`} className="related-tour-item">
-                      <div className="tour-thumb">
+                      <div 
+                        className="tour-thumb" 
+                        style={{ 
+                          backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`,
+                          backgroundSize: 'cover',
+                          position: 'relative',
+                          overflow: 'hidden'
+                        }}
+                      >
                         {tour.mainImage && (
-                          <img src={urlFor(tour.mainImage).width(200).url()} alt={tour.title} />
+                          <img 
+                            src={urlFor(tour.mainImage).width(200).url()} 
+                            alt={tour.title} 
+                            onLoad={() => setToursLoaded(prev => ({...prev, [i]: true}))}
+                            style={{
+                              opacity: toursLoaded[i] ? 1 : 0,
+                              transition: 'opacity 0.4s ease-in-out'
+                            }}
+                          />
                         )}
                       </div>
                       <div className="tour-meta">
