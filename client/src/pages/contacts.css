@@ -193,7 +193,7 @@ input:focus {
   background: #25D366;
   color: #fff;
   padding: 15px 25px;
-  border-radius: 50px;
+  border-radius: 50px !important;
   display: flex;
   align-items: center;
   gap: 10px;

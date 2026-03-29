@@ -216,15 +216,17 @@ export default function Contact() {
       </motion.div>
 
       {/* Floating WhatsApp Button */}
-      <motion.a 
-        href="https://wa.me/251911223344" target="_blank" rel="noreferrer"
-        initial={{ scale: 0, rotate: -45 }} 
-        animate={{ scale: 1, rotate: 0 }} 
-        whileHover={{ scale: 1.1 }}
-        className="whatsapp-float fixed bottom-8 right-8 bg-[#25D366] p-5 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] z-50 text-white"
-      >
-        <MessageSquare size={28} />
-      </motion.a>
+     <motion.a 
+  href="https://wa.me/251911223344"
+  target="_blank"
+  rel="noreferrer"
+  initial={{ scale: 0, rotate: -45 }} 
+  animate={{ scale: 1, rotate: 0 }} 
+  whileHover={{ scale: 1.1 }}
+  className="whatsapp-float fixed bottom-7 right-7 bg-[#25D366] p-4 rounded-full shadow-[0_6px_20px_rgba(37,211,102,0.25)] z-50 text-white"
+>
+  <MessageSquare size={20} />
+</motion.a>
     </div>
   );
 }
