@@ -8,7 +8,6 @@ import {
   FaFacebookF, 
   FaTwitter, 
   FaInstagram, 
-  FaLinkedinIn, 
   FaTiktok, 
   FaTelegramPlane,
   FaArrowLeft 
@@ -19,7 +18,7 @@ import { Helmet } from 'react-helmet-async';
 const builder = imageUrlBuilder(client);
 const urlFor = (source) => builder.image(source).auto('format');
 
-
+// Component for rendering images inside the blog body
 const BodyImage = ({ value }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const lqip = value.asset?.metadata?.lqip;
@@ -67,10 +66,13 @@ const BlogPost = () => {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
+    // Added 'excerpt' to the query to ensure SEO descriptions work
     const query = `*[_type == "post" && slug.current == $slug][0]{
       title,
+      excerpt,
       "mainImage": mainImage.asset->{
         _id,
+        url,
         metadata { lqip }
       },
       publishedAt,
@@ -99,6 +101,14 @@ const BlogPost = () => {
     );
   }
 
+  // --- CRITICAL SEO VARIABLE DEFINITIONS ---
+  const shareUrl = window.location.href;
+  const shareTitle = `${post.title} | Travel Ethiopia`;
+  const shareDesc = post.excerpt || "Discover the hidden wonders of Ethiopia through our expert travel journals.";
+  const shareImg = post.mainImage 
+    ? urlFor(post.mainImage._id).width(1200).height(630).url() 
+    : "";
+
   return (
     <article className="post-view">
       <Helmet>
@@ -106,7 +116,7 @@ const BlogPost = () => {
         <meta name="description" content={shareDesc} />
         <link rel="canonical" href={shareUrl} />
 
-        {/* Open Graph / Facebook / Telegram / WhatsApp */}
+        {/* Open Graph / Telegram / WhatsApp / Facebook */}
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={shareTitle} />
@@ -120,17 +130,17 @@ const BlogPost = () => {
         <meta name="twitter:description" content={shareDesc} />
         <meta name="twitter:image" content={shareImg} />
 
-        {/* Article Specifics */}
+        {/* Metadata for Articles */}
         <meta property="article:published_time" content={post.publishedAt} />
         <meta property="article:author" content="Travel Ethiopia" />
       </Helmet>
+
       <div className="bg-glow-top"></div>
 
       <div className="article-wrapper">
         <nav className="article-nav">
           <Link to="/blog" className="back-link">
-           
-            
+             <FaArrowLeft /> Back to Chronicles
           </Link>
 
           <div className="read-time-badge">
@@ -173,26 +183,27 @@ const BlogPost = () => {
           </div>
         )}
 
-      
         <div className="content-layout">
           <aside className="social-share">
             <div className="sticky-sidebar">
               <div className="share-icons">
-                <a href={`https://facebook.com/sharer/sharer.php?u=${window.location.href}`} className="social-icon facebook" target="_blank" rel="noreferrer">
+                {/* Facebook Share */}
+                <a href={`https://facebook.com/sharer/sharer.php?u=${shareUrl}`} className="social-icon facebook" target="_blank" rel="noreferrer">
                   <FaFacebookF />
                 </a>
-                <a href={`https://twitter.com/intent/tweet?url=${window.location.href}`} className="social-icon twitter" target="_blank" rel="noreferrer">
+                {/* Twitter Share */}
+                <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`} className="social-icon twitter" target="_blank" rel="noreferrer">
                   <FaTwitter />
+                </a>
+                {/* Telegram Share - NOW WORKING */}
+                <a href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`} className="social-icon telegram" target="_blank" rel="noreferrer">
+                  <FaTelegramPlane />
                 </a>
                 <a href="https://www.instagram.com/travelethiopia/" className="social-icon instagram" target="_blank" rel="noreferrer">
                   <FaInstagram />
                 </a>
-               
                 <a href="https://www.tiktok.com/@travelethiopia" className="social-icon tiktok" target="_blank" rel="noreferrer">
                   <FaTiktok />
-                </a>
-                <a href="https://t.me/travelethiopia" className="social-icon telegram" target="_blank" rel="noreferrer">
-                  <FaTelegramPlane />
                 </a>
               </div>
             </div>
