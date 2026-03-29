@@ -50,7 +50,8 @@ export default function Tours() {
   }, []);
 
   useEffect(() => {
-    const query = '*[_type == "tour",_Priority=1] | order(_createdAt asc)';
+   
+    const query = '*[_type == "tour" && Priority == 1] | order(_createdAt asc)';
     client.fetch(query).then((data) => {
       setTours(data);
       setLoading(false);

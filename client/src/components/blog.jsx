@@ -7,8 +7,7 @@ import './bloglist.css';
 
 const builder = imageUrlBuilder(client);
 const urlFor = (source) => builder.image(source);
-
-const BLOG_POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
+const BLOG_POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) [0...3] {
   title,
   slug,
   mainImage,

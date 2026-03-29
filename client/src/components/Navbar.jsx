@@ -1,28 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
 
 const MyNavbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  // Toggle background color on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    
-    <Navbar expand="lg" className="py-3 custom-nav" variant="dark">
+    <Navbar 
+      expand="lg" 
+      fixed="top"
+      className={`custom-nav ${scrolled ? "nav-scrolled" : ""}`} 
+      variant="dark"
+    >
       <Container>
-        <Navbar.Brand as={Link} to="/">
-          <img src="/static/images/logo.jpg" alt="Logo" className="nav-logo" />
+        {/* LOGO ON THE LEFT */}
+        <Navbar.Brand as={Link} to="/" className="p-0">
+          <img 
+            src="/static/images/logo.jpg" 
+            alt="Logo" 
+            className="nav-logo" 
+          />
         </Navbar.Brand>
         
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0 shadow-none" />
         
         <Navbar.Collapse id="basic-navbar-nav">
-  
+          {/* ms-auto pushes the Nav items to the RIGHT side */}
           <Nav className="ms-auto align-items-center">
             <Nav.Link as={Link} to="/Destinations" className="nav-item-link">
-              Expreditions
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about" className="nav-item-link">
-              About
+              Expeditions
             </Nav.Link>
             <Nav.Link as={Link} to="/tours" className="nav-item-link">
               Tours
@@ -30,9 +52,13 @@ const MyNavbar = () => {
             <Nav.Link as={Link} to="/blog" className="nav-item-link">
               Blog
             </Nav.Link>
+            <Nav.Link as={Link} to="/about" className="nav-item-link">
+              About
+            </Nav.Link>
            
-            <Nav.Link as={Link} to="/contact" className="p-0 ms-lg-3">
-              <Button className="button-27">Contact Us</Button>
+            {/* CTA BUTTON */}
+            <Nav.Link as={Link} to="/contact" className="p-0 ms-lg-4 mt-3 mt-lg-0">
+              <Button className="button-27">CONTACT US</Button>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

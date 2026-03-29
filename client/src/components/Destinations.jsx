@@ -10,7 +10,7 @@ const Destinations = () => {
 
   useEffect(() => {
     
-    const query = `*[_type == "destination",_Priority=1] | order(_createdAt asc) {
+    const query = `*[_type == "destination" && Priority == 1] | order(_createdAt asc) {
       name,
       "desc": description,
       "slug": slug.current,
@@ -114,7 +114,7 @@ const Destinations = () => {
               viewport={{ once: false, amount: 0.1 }}
             >
               <div className="dest-img-container">
-                {/* 1. BLUR-UP PLACEHOLDER */}
+             
                 <div 
                   className="blur-up-layer"
                   style={{ 
@@ -123,7 +123,7 @@ const Destinations = () => {
                   }}
                 />
 
-                {/* 2. HIGH-RES PARALLAX IMAGE */}
+          
                 {dest.mainImage && (
                   <motion.img 
                     style={{ y: yParallax, scale: 1.3 }} 
@@ -136,7 +136,7 @@ const Destinations = () => {
                 
                 <div className="dest-content-overlay">
                   <div className="dest-text-box">
-                    <span className="dest-slug-tag">/ {dest.slug}</span>
+                    <span className="dest-slug-tag"> {dest.slug}</span>
                     <h3 className="dest-display-name highlight">
                       {dest.name}
                     </h3>
