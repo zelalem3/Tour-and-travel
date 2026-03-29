@@ -4,10 +4,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 const Hero = () => {
   const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 500], [0, 160]);
+  // Parallax effect for the background image
+  const yParallax = useTransform(scrollY, [0, 500], [0, 150]);
 
   return (
     <section className="hero-viewport">
+      {/* Background Layer */}
       <motion.div style={{ y: yParallax }} className="hero-background-container">
         <img
           src="https://t4.ftcdn.net/jpg/01/35/16/37/360_F_135163711_hRXMeVFwA20ddhBUFE9yiyirf7MhPWpw.jpg"
@@ -18,18 +20,19 @@ const Hero = () => {
         <div className="overlay-texture-grid"></div>
       </motion.div>
 
+      {/* Content Layer */}
       <div className="hero-content">
         <motion.span 
-          initial={{ opacity: 0, letterSpacing: "1.5em" }}
-          animate={{ opacity: 1, letterSpacing: "0.6em" }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="hero-subtitle"
         >
           Discover the Cradle of Humanity
         </motion.span>
         
         <motion.h1 
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="hero-title"
@@ -41,7 +44,7 @@ const Hero = () => {
         <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 1, delay: 0.7 }}
           className="hero-text"
         >
           Experience authentic journeys through Ethiopia's ancient wonders, 
@@ -51,8 +54,7 @@ const Hero = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-          className="hero-actions"
+          transition={{ duration: 0.8, delay: 1 }}
         >
           <motion.a 
             href="#tours" 
@@ -70,15 +72,14 @@ const Hero = () => {
         </motion.div>
       </div>
 
+      {/* Scroll Indicator */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: 1.5 }}
         className="scroll-indicator"
       >
-        <div className="mouse">
-          <div className="wheel"></div>
-        </div>
+       
       </motion.div>
     </section>
   );

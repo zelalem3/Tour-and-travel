@@ -1,4 +1,4 @@
-
+/* --- 1. CORE LAYOUT & RESET --- */
 .hero-viewport {
   position: relative;
   width: 100%;
@@ -8,9 +8,11 @@
   justify-content: center;
   overflow: hidden;
   background-color: #020617;
+  /* Ensure a clean sans-serif font is inherited */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-
+/* --- 2. BACKGROUND & VISUAL EFFECTS --- */
 .hero-background-container {
   position: absolute;
   inset: -10%; 
@@ -41,18 +43,20 @@
 .overlay-texture-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(251, 191, 36, 0.2) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.3;
   z-index: 3;
 }
 
-
+/* --- 3. TYPOGRAPHY --- */
 .hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
   padding: 0 24px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .hero-subtitle {
@@ -60,16 +64,17 @@
   text-transform: uppercase;
   font-weight: 800;
   font-size: 0.85rem;
-  margin-top:40px;
   margin-bottom: 25px;
   display: block;
+  letter-spacing: 0.5em;
 }
 
 .hero-title {
   color: white;
-  font-size: 6.5rem !important;
+  /* Clamp makes font fluid: Min 3rem, Scalable 8vw, Max 6.5rem */
+  font-size: clamp(3rem, 8vw, 6.5rem) !important;
   font-weight: 900;
-  line-height: 0.85;
+  line-height: 0.9;
   margin-bottom: 30px;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -82,7 +87,8 @@
 }
 
 .outline-text {
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
+  /* Fix: slightly thicker stroke for better visibility */
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6);
   color: transparent;
 }
 
@@ -94,12 +100,12 @@
   line-height: 1.7;
 }
 
-
+/* --- 4. THE PREMIUM BUTTON (FIXED) --- */
 .hero-btn-premium {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 22px 42px;
+  padding: 20px 42px;
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px); 
@@ -112,15 +118,16 @@
   text-transform: uppercase;
   letter-spacing: 0.2em;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  z-index: 5;
+  
+  /* CRITICAL FIXES */
+  overflow: hidden; 
+  isolation: isolate; 
 }
-
 
 .btn-text, .btn-icon-wrapper {
   position: relative;
-  z-index: 2; 
+  z-index: 2; /* Sits above the golden fill */
 }
 
 .btn-icon-wrapper {
@@ -141,25 +148,22 @@
   color: #fbbf24;
 }
 
-/* The Animated Golden Fill Background */
+/* Golden Fill (Fixed Layering) */
 .hero-btn-premium::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0; /* Matches parent perfectly */
   background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
   background-size: 200% auto;
   opacity: 0;
+  z-index: -1; /* Sits behind text, inside the button */
   transition: opacity 0.4s ease;
-  z-index: 1; /* Sits behind text, but above button background */
 }
 
-/* --- HOVER STATES --- */
+/* Hover States */
 .hero-btn-premium:hover {
   border-color: #fbbf24;
-  color: #020617;
+  color: #020617; /* Dark text for readability on gold */
   box-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
 }
 
@@ -182,7 +186,7 @@
   100% { background-position: 200% center; }
 }
 
-
+/* --- 5. SCROLL INDICATOR --- */
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
@@ -212,4 +216,34 @@
 @keyframes scrollAnim {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(14px); }
+}
+
+/* --- 6. MOBILE RESPONSIVENESS FIXES --- */
+@media (max-width: 768px) {
+  .hero-title {
+    /* Dramatic shrink for mobile to keep "Meets" on one line */
+    font-size: 3.2rem !important; 
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .outline-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-subtitle {
+    letter-spacing: 0.2em; /* Prevents overflow */
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+  }
+
+  .hero-text {
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+  }
+
+  .hero-btn-premium {
+    padding: 16px 32px;
+    font-size: 0.75rem;
+  }
 }
