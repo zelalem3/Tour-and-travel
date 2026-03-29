@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { client, urlFor } from '../sanityClient'; 
-import { MapPin, Calendar, ArrowRight, ChevronLeft, Share2, Check } from 'lucide-react';
+import { MapPin, Calendar, ArrowRight, ChevronLeft, Share2, Check, Compass } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './DestinationDetail.css';
 import { Helmet } from 'react-helmet-async';
@@ -84,15 +84,78 @@ const DestinationDetail = () => {
   };
 
   if (loading) return (
-    <div className="loading-screen">
+  <motion.div 
+  key="loader"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
+  style={{ 
+    display: 'flex', 
+    flexDirection: 'column',
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    minHeight: '100vh', 
+    backgroundColor: '#020617',
+    gap: '30px'
+  }}
+>
+  {/* Rotating Compass Icon */}
+  <motion.div
+    animate={{ 
+      rotate: 360,
+    }}
+    transition={{ 
+      repeat: Infinity, 
+      duration: 4, 
+      ease: "linear" 
+    }}
+    style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  >
+    <Compass size={64} strokeWidth={1} />
+  </motion.div>
+
+  {/* Text with localized glow effect */}
+  <div style={{ textAlign: 'center' }}>
+    <motion.div 
+      initial={{ opacity: 0.3 }}
+      animate={{ opacity: [0.3, 1, 0.3] }}
+      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      style={{ 
+        fontSize: '0.75rem', 
+        fontWeight: '900', 
+        color: '#fbbf24', 
+        letterSpacing: '6px',
+        textTransform: 'uppercase',
+        marginBottom: '10px'
+      }}
+    >
+      Expedition Intelligence
+    </motion.div>
+    
+    <div style={{ 
+      fontSize: '1.5rem', 
+      fontWeight: 'bold', 
+      color: '#ffffff', 
+      letterSpacing: '1px',
+      position: 'relative'
+    }}>
+      MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
+      
+      {/* Subtle Progress Underline */}
       <motion.div 
-        animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }} 
-        transition={{ repeat: Infinity, duration: 2 }} 
-        className="loading-text"
-      >
-        MAPPING THE ROUTE...
-      </motion.div>
+        initial={{ width: 0, left: 0 }}
+        animate={{ width: '100%' }}
+        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+        style={{ 
+          height: '2px', 
+          backgroundColor: '#fbbf24', 
+          marginTop: '8px',
+          boxShadow: '0 0 10px #fbbf24'
+        }}
+      />
     </div>
+  </div>
+</motion.div>
   );
 
   if (!destination) return <div className="loading-screen">DESTINATION NOT FOUND</div>;

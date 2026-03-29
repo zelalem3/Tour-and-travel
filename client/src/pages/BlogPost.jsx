@@ -4,6 +4,8 @@ import { client } from '../sanityClient';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
 import { FiClock } from "react-icons/fi";
+import { Compass } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { 
   FaFacebookF, 
   FaTwitter, 
@@ -94,10 +96,78 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="loading-screen">
-        <div className="compass-loader"></div>
-        <p>Mapping your route...</p>
-      </div>
+     <motion.div 
+  key="loader"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
+  style={{ 
+    display: 'flex', 
+    flexDirection: 'column',
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    minHeight: '100vh', 
+    backgroundColor: '#020617',
+    gap: '30px'
+  }}
+>
+  {/* Rotating Compass Icon */}
+  <motion.div
+    animate={{ 
+      rotate: 360,
+    }}
+    transition={{ 
+      repeat: Infinity, 
+      duration: 4, 
+      ease: "linear" 
+    }}
+    style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  >
+    <Compass size={64} strokeWidth={1} />
+  </motion.div>
+
+  {/* Text with localized glow effect */}
+  <div style={{ textAlign: 'center' }}>
+    <motion.div 
+      initial={{ opacity: 0.3 }}
+      animate={{ opacity: [0.3, 1, 0.3] }}
+      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      style={{ 
+        fontSize: '0.75rem', 
+        fontWeight: '900', 
+        color: '#fbbf24', 
+        letterSpacing: '6px',
+        textTransform: 'uppercase',
+        marginBottom: '10px'
+      }}
+    >
+      Expedition Intelligence
+    </motion.div>
+    
+    <div style={{ 
+      fontSize: '1.5rem', 
+      fontWeight: 'bold', 
+      color: '#ffffff', 
+      letterSpacing: '1px',
+      position: 'relative'
+    }}>
+      MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
+      
+      {/* Subtle Progress Underline */}
+      <motion.div 
+        initial={{ width: 0, left: 0 }}
+        animate={{ width: '100%' }}
+        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+        style={{ 
+          height: '2px', 
+          backgroundColor: '#fbbf24', 
+          marginTop: '8px',
+          boxShadow: '0 0 10px #fbbf24'
+        }}
+      />
+    </div>
+  </div>
+</motion.div>
     );
   }
 

@@ -72,15 +72,78 @@ const TourDetail = () => {
   };
 
   if (loading) return (
-    <div className="loading-screen flex items-center justify-center min-h-screen bg-[#020617]">
+    <motion.div 
+  key="loader"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
+  style={{ 
+    display: 'flex', 
+    flexDirection: 'column',
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    minHeight: '100vh', 
+    backgroundColor: '#020617',
+    gap: '30px'
+  }}
+>
+  {/* Rotating Compass Icon */}
+  <motion.div
+    animate={{ 
+      rotate: 360,
+    }}
+    transition={{ 
+      repeat: Infinity, 
+      duration: 4, 
+      ease: "linear" 
+    }}
+    style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  >
+    <Compass size={64} strokeWidth={1} />
+  </motion.div>
+
+  {/* Text with localized glow effect */}
+  <div style={{ textAlign: 'center' }}>
+    <motion.div 
+      initial={{ opacity: 0.3 }}
+      animate={{ opacity: [0.3, 1, 0.3] }}
+      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      style={{ 
+        fontSize: '0.75rem', 
+        fontWeight: '900', 
+        color: '#fbbf24', 
+        letterSpacing: '6px',
+        textTransform: 'uppercase',
+        marginBottom: '10px'
+      }}
+    >
+      Expedition Intelligence
+    </motion.div>
+    
+    <div style={{ 
+      fontSize: '1.5rem', 
+      fontWeight: 'bold', 
+      color: '#ffffff', 
+      letterSpacing: '1px',
+      position: 'relative'
+    }}>
+      MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
+      
+      {/* Subtle Progress Underline */}
       <motion.div 
-        animate={{ opacity: [0.4, 1, 0.4], letterSpacing: ["0.4em", "0.6em", "0.4em"] }}
-        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        className="text-[#fbbf24] font-black uppercase text-xs"
-      >
-        Mapping Expedition...
-      </motion.div>
+        initial={{ width: 0, left: 0 }}
+        animate={{ width: '100%' }}
+        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+        style={{ 
+          height: '2px', 
+          backgroundColor: '#fbbf24', 
+          marginTop: '8px',
+          boxShadow: '0 0 10px #fbbf24'
+        }}
+      />
     </div>
+  </div>
+</motion.div>
   );
 
   if (!tour) return <div className="error-screen text-white p-20 text-center">Tour Not Found</div>;
