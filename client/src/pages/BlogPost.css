@@ -61,6 +61,8 @@
   font-size: 0.75rem;
   color: var(--primary-gold);
   border: 1px solid rgba(251, 191, 36, 0.3);
+  margin-top:50px;
+
   padding: 4px 16px;
   border-radius: 100px;
 }
