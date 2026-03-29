@@ -54,7 +54,12 @@ const BlogList = () => {
     }
   };
 
-  if (loading) return <div className="loading-state">Exploring Ethiopia...</div>;
+   if (loading) return (
+    <div className="loader-container">
+      <div className="pulse"></div>
+      <p>Discovering Ethiopia...</p>
+    </div>
+  );
 
   return (
     <section className="blog-section">

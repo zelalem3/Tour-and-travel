@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { client } from '../sanityClient';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
@@ -9,15 +8,18 @@ import {
   FaFacebookF, 
   FaTwitter, 
   FaInstagram, 
+  FaLinkedinIn, 
   FaTiktok, 
-  FaTelegramPlane 
+  FaTelegramPlane,
+  FaArrowLeft 
 } from "react-icons/fa";
 import './BlogPost.css';
+import { Helmet } from 'react-helmet-async';
 
 const builder = imageUrlBuilder(client);
 const urlFor = (source) => builder.image(source).auto('format');
 
-// Custom components for Sanity PortableText
+
 const BodyImage = ({ value }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const lqip = value.asset?.metadata?.lqip;
@@ -32,6 +34,7 @@ const BodyImage = ({ value }) => {
           src={urlFor(value).width(1000).quality(75).url()}
           alt={value.alt || "Ethiopia Travel"}
           loading="lazy"
+          decoding="async"
           onLoad={() => setIsLoaded(true)}
           className={`body-img ${isLoaded ? 'is-loaded' : 'is-loading'}`}
         />
@@ -42,7 +45,9 @@ const BodyImage = ({ value }) => {
 };
 
 const ptComponents = {
-  types: { image: BodyImage },
+  types: {
+    image: BodyImage,
+  },
   block: {
     h2: ({ children }) => <h2 className="section-title">{children}</h2>,
     h3: ({ children }) => <h3 className="subsection-title">{children}</h3>,
@@ -64,10 +69,8 @@ const BlogPost = () => {
   useEffect(() => {
     const query = `*[_type == "post" && slug.current == $slug][0]{
       title,
-      excerpt,
       "mainImage": mainImage.asset->{
         _id,
-        url,
         metadata { lqip }
       },
       publishedAt,
@@ -78,7 +81,6 @@ const BlogPost = () => {
           metadata { lqip }
         }
       },
-      "authorName": author->name,
       "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180)
     }`;
 
@@ -88,75 +90,49 @@ const BlogPost = () => {
     });
   }, [slug]);
 
-  // fallback while data is fetching
   if (!post) {
     return (
-      <>
-        <Helmet>
-          <title>Loading Adventure... | Travel Ethiopia</title>
-        </Helmet>
-        <div className="loading-screen">
-          <div className="compass-loader"></div>
-          <p>Mapping your route...</p>
-        </div>
-      </>
+      <div className="loading-screen">
+        <div className="compass-loader"></div>
+        <p>Mapping your route...</p>
+      </div>
     );
   }
-
-  // SEO & Social Media Meta Data
-  const siteName = "Travel Ethiopia";
-  const seoTitle = `${post.title} | ${siteName}`;
-  const seoDesc = post.excerpt || "Explore the wonders of Ethiopia with our expert travel guides.";
-  const seoImage = urlFor(post.mainImage).width(1200).height(630).url();
-  const canonicalUrl = window.location.href;
-
-  // JSON-LD Structured Data for Google Rich Snippets
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.title,
-    "image": [seoImage],
-    "datePublished": post.publishedAt,
-    "author": [{
-      "@type": "Organization",
-      "name": post.authorName || siteName,
-      "url": "https://travelethiopia.com"
-    }],
-    "description": seoDesc
-  };
 
   return (
     <article className="post-view">
       <Helmet>
-        {/* Standard SEO */}
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-        <link rel="canonical" href={canonicalUrl} />
+        <title>{shareTitle}</title>
+        <meta name="description" content={shareDesc} />
+        <link rel="canonical" href={shareUrl} />
 
-        {/* Facebook / Open Graph */}
+        {/* Open Graph / Facebook / Telegram / WhatsApp */}
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDesc} />
-        <meta property="og:image" content={seoImage} />
-        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:url" content={shareUrl} />
+        <meta property="og:title" content={shareTitle} />
+        <meta property="og:description" content={shareDesc} />
+        <meta property="og:image" content={shareImg} />
+        <meta property="og:site_name" content="Travel Ethiopia" />
 
-        {/* Twitter Cards */}
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoTitle} />
-        <meta name="twitter:description" content={seoDesc} />
-        <meta name="twitter:image" content={seoImage} />
+        <meta name="twitter:title" content={shareTitle} />
+        <meta name="twitter:description" content={shareDesc} />
+        <meta name="twitter:image" content={shareImg} />
 
-        {/* Google Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
-        </script>
+        {/* Article Specifics */}
+        <meta property="article:published_time" content={post.publishedAt} />
+        <meta property="article:author" content="Travel Ethiopia" />
       </Helmet>
-
       <div className="bg-glow-top"></div>
 
       <div className="article-wrapper">
         <nav className="article-nav">
-          <Link to="/blog" className="back-link">Back to Stories</Link>
+          <Link to="/blog" className="back-link">
+           
+            
+          </Link>
+
           <div className="read-time-badge">
             <FiClock className="clock-icon" />
             {post.estimatedReadingTime || '5'} min read
@@ -167,7 +143,7 @@ const BlogPost = () => {
           <div className="category-pill">Discovery & Culture</div>
           <h1 className="post-hero-title">{post.title}</h1>
           <div className="post-meta-row">
-            <span className="author">By {post.authorName || siteName}</span>
+            <span className="author">By Travel Ethiopia</span>
             <span className="dot"></span>
             <time>
               {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -197,15 +173,27 @@ const BlogPost = () => {
           </div>
         )}
 
+      
         <div className="content-layout">
           <aside className="social-share">
             <div className="sticky-sidebar">
               <div className="share-icons">
-                <a href={`https://facebook.com/sharer/sharer.php?u=${canonicalUrl}`} className="social-icon facebook" target="_blank" rel="noreferrer"><FaFacebookF /></a>
-                <a href={`https://twitter.com/intent/tweet?url=${canonicalUrl}`} className="social-icon twitter" target="_blank" rel="noreferrer"><FaTwitter /></a>
-                <a href="https://www.instagram.com/travelethiopia/" className="social-icon instagram" target="_blank" rel="noreferrer"><FaInstagram /></a>
-                <a href="https://www.tiktok.com/@travelethiopia" className="social-icon tiktok" target="_blank" rel="noreferrer"><FaTiktok /></a>
-                <a href="https://t.me/travelethiopia" className="social-icon telegram" target="_blank" rel="noreferrer"><FaTelegramPlane /></a>
+                <a href={`https://facebook.com/sharer/sharer.php?u=${window.location.href}`} className="social-icon facebook" target="_blank" rel="noreferrer">
+                  <FaFacebookF />
+                </a>
+                <a href={`https://twitter.com/intent/tweet?url=${window.location.href}`} className="social-icon twitter" target="_blank" rel="noreferrer">
+                  <FaTwitter />
+                </a>
+                <a href="https://www.instagram.com/travelethiopia/" className="social-icon instagram" target="_blank" rel="noreferrer">
+                  <FaInstagram />
+                </a>
+               
+                <a href="https://www.tiktok.com/@travelethiopia" className="social-icon tiktok" target="_blank" rel="noreferrer">
+                  <FaTiktok />
+                </a>
+                <a href="https://t.me/travelethiopia" className="social-icon telegram" target="_blank" rel="noreferrer">
+                  <FaTelegramPlane />
+                </a>
               </div>
             </div>
           </aside>
