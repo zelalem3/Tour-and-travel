@@ -32,16 +32,18 @@ const TourDetail = () => {
 
 
   useEffect(() => {
-    const query = `*[ _type == "tour" && slug.current == $slug ][0] {
-  ...,
-  "mainImage": mainImage.asset-> {
+   const query = `*[ _type == "tour" && slug.current == $slug ][0] {
     ...,
-    metadata {
-      lqip,
-      dimensions
+    "location": destination->location, 
+    "destinationName": destination->name,
+    "mainImage": mainImage.asset-> {
+      ...,
+      metadata {
+        lqip,
+        dimensions
+      }
     }
-  }
-}`;
+  }`;
     client.fetch(query, { slug })
       .then((data) => { 
         setTour(data); 

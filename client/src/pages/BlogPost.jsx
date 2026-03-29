@@ -105,8 +105,8 @@ const BlogPost = () => {
       <div className="article-wrapper">
         <nav className="article-nav">
           <Link to="/blog" className="back-link">
-            <FaArrowLeft className="arrow-icon" />
-            Back to Expedition Guides
+           
+            
           </Link>
 
           <div className="read-time-badge">

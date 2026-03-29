@@ -137,7 +137,7 @@ const About = () => {
             >
               <div className="image-border-accent"></div>
               <img 
-                src="https://images.unsplash.com/photo-1523438097201-512ae7d59c44?auto=format&fit=crop&w=800" 
+                src="https://images.pexels.com/photos/30177512/pexels-photo-30177512/free-photo-of-addis-ababa-skyline-at-sunset.jpeg" 
                 alt="Ethiopian Landscape - Authentic travel experience" 
                 className="rounded-img"
               />
