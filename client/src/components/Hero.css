@@ -59,14 +59,15 @@
   color: #fbbf24;
   text-transform: uppercase;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  margin-top:40px;
   margin-bottom: 25px;
   display: block;
 }
 
 .hero-title {
   color: white;
-  font-size: clamp(3rem, 10vw, 7.5rem);
+  font-size: 6.5rem !important;
   font-weight: 900;
   line-height: 0.85;
   margin-bottom: 30px;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { client } from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
+import { motion } from 'framer-motion';
 import './Destinations.css';
 
 const builder = imageUrlBuilder(client);
@@ -13,30 +14,29 @@ const Destinations = () => {
   const [loadedImages, setLoadedImages] = useState({});
 
   useEffect(() => {
-    const query = `*[_type == "destination"] | order(title asc) {
-      title,
-      slug,
-      "mainImage": mainImage.asset->{
-        _id,
-        metadata { lqip }
-      },
-      region,
-      "tourCount": count(*[_type == "tour" && references(^._id)])
-    }`;
-
+    const query = `*[_type == "destination" ] | order(_createdAt asc) {
+         name,
+         "desc": description,
+         "slug": slug.current,
+         "location": location,
+         "mainImage": mainImage.asset->{
+           _id,
+           url,
+           metadata { lqip }
+         }
+       }`;
+   
+     
+   
     client.fetch(query).then((data) => {
       setDestinations(data);
       setLoading(false);
     });
   }, []);
 
-  const handleImageLoad = (slug) => {
-    setLoadedImages((prev) => ({ ...prev, [slug]: true }));
-  };
-
   if (loading) return (
     <div className="dest-loader">
-      <div className="loader-ring"></div>
+      <div className="loader-ring" />
       <p>Mapping Ethiopia...</p>
     </div>
   );
@@ -46,44 +46,49 @@ const Destinations = () => {
       <header className="dest-header">
         <span className="dest-subtitle">Explore the Horn of Africa</span>
         <h1>Our Destinations</h1>
-        <p>From the volcanic craters of Dallol to the medieval rock-hewn churches of Lalibela.</p>
       </header>
 
       <div className="dest-grid">
-        {destinations.map((dest) => (
-          <Link 
-            to={`/destinations/${dest.slug.current}`} 
-            key={dest.slug.current} 
-            className="dest-card"
+        {destinations.map((dest, i) => (
+          <motion.div
+            key={dest.slug}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
           >
-            {/* 1. Background Image Wrapper */}
-            <div 
-              className="dest-image-wrapper"
-              style={{ 
-                backgroundImage: `url(${dest.mainImage?.metadata?.lqip})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
-            >
-              <img
-                src={urlFor(dest.mainImage?._id).width(800).quality(80).url()}
-                alt={dest.title}
-                onLoad={() => handleImageLoad(dest.slug.current)}
-                className={`dest-img ${loadedImages[dest.slug.current] ? 'is-loaded' : 'is-loading'}`}
-              />
-              
-              <div className="dest-overlay"></div>
-              
-             
-              <div className="dest-content">
-                <span className="dest-region">{dest.region}</span>
-                <h3 className="dest-title">{dest.title}</h3>
-                <div className="dest-card-footer">
-                  <span className="dest-count">{dest.tourCount || 0} Expeditions</span>
+            <Link to={`/destinations/${dest.slug}`} className="dest-card">
+              <div className="dest-image-container">
+                {/* Low Quality Image Placeholder (Blur-up) */}
+                <div 
+                  className="dest-placeholder"
+                  style={{ backgroundImage: `url(${dest.mainImage?.metadata?.lqip})` }}
+                />
+                
+                <img
+                  src={urlFor(dest.mainImage?._id).width(800).url()}
+                  alt={dest.name}
+                  onLoad={() => setLoadedImages(prev => ({ ...prev, [dest.slug]: true }))}
+                  className={`dest-main-img ${loadedImages[dest.slug] ? 'is-loaded' : ''}`}
+                />
+                
+                <div className="dest-overlay-gradient" />
+                
+                <div className="dest-card-content">
+                  {/* Matches 'location' in your schema */}
+                  <span className="dest-tag">{dest.location || "Ethiopia"}</span>
+                  
+                  {/* Matches 'name' in your schema */}
+                  <h3 className="dest-card-title">{dest.name}</h3>
+                  
+                  <div className="dest-footer-info">
+                  
+                    <span className="dest-btn">Explore →</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </div>
