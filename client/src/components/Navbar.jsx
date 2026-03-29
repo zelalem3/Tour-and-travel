@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Navbar.css";
+import "./Navbar.css"; //navbar css
 
 const MyNavbar = () => {
   const [scrolled, setScrolled] = useState(false);
