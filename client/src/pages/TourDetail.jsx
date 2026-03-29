@@ -30,7 +30,7 @@ const TourDetail = () => {
     }
   }, [loading, slug]);
 
-  // --- DATA FETCHING ---
+
   useEffect(() => {
     const query = `*[ _type == "tour" && slug.current == $slug ][0] {
   ...,
@@ -53,7 +53,7 @@ const TourDetail = () => {
       });
   }, [slug]);
 
-  // --- ANIMATION VARIANTS ---
+
   const slideInLeft = {
     hidden: { opacity: 0, x: -60, filter: "blur(10px)" },
     visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
@@ -83,7 +83,7 @@ const TourDetail = () => {
 
   if (!tour) return <div className="error-screen text-white p-20 text-center">Tour Not Found</div>;
 
-  // --- SEO SCHEMA (JSON-LD) ---
+
   const tourSchema = {
     "@context": "https://schema.org/",
     "@type": "TravelAgency",
@@ -101,24 +101,24 @@ const TourDetail = () => {
   return (
     <div className="tour-wrapper bg-[#020617] text-white min-h-screen">
       
-      {/* 1. DYNAMIC SEO SECTION */}
+     
       <Helmet>
         <title>{`${tour.title} | TravelEthiopia Expedition`}</title>
         <meta name="description" content={`Book a ${tour.duration} ${tour.title} in ${tour.location}. Join our professional expedition for $${tour.price}.`} />
         <link rel="canonical" href={`https://travelethiopia.com/tours/${slug}`} />
         
-        {/* Social Media Meta */}
+      
         <meta property="og:title" content={`${tour.title} - Official Expedition`} />
         <meta property="og:description" content={`Explore ${tour.location} on this curated journey. Price: $${tour.price}.`} />
         {tour.mainImage && <meta property="og:image" content={urlFor(tour.mainImage).width(1200).url()} />}
         
-        {/* Schema Markup for Google */}
+    
         <script type="application/ld+json">
           {JSON.stringify(tourSchema)}
         </script>
       </Helmet>
 
-      {/* 2. FLOATING BACK BUTTON */}
+   
       <button 
         onClick={() => navigate(-1)} 
         className="fixed top-4 left-4 md:top-8 md:left-8 z-50 p-4 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 hover:border-[#fbbf24]/50 transition-all group"
@@ -126,24 +126,22 @@ const TourDetail = () => {
         <ArrowLeft size={22} className="text-white group-hover:text-[#fbbf24] transition-colors" />
       </button>
 
-      {/* 3. HERO SECTION */}
+    
       <section className="hero-container relative overflow-hidden">
         <div 
     className="hero-image-wrapper absolute inset-0 bg-cover bg-no-repeat"
     style={{
-      // 1. Show the tiny blurred image immediately
+  
       backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`,
       backgroundSize: 'cover'
     }}
   >
     {tour.mainImage && (
       <img
-        // 2. Use .auto('format') so Chrome gets WebP and Safari gets JP2
-        // 3. Lower the width to 1600 (better balance of quality vs speed)
+      
         src={urlFor(tour.mainImage).width(1600).auto('format').quality(80).url()}
         className="hero-img w-full h-full object-cover"
         alt={tour.title}
-        // 4. Critical: Tell the browser to prioritize this image
         fetchpriority="high" 
         loading="eager"
       />
@@ -179,12 +177,12 @@ const TourDetail = () => {
         </div>
       </section>
 
-      {/* 4. CONTENT AREA */}
+
       <main className="tour-main-content container mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
         
         <div className="content-left lg:col-span-2">
           
-          {/* STATS STRIP */}
+      
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
@@ -206,7 +204,7 @@ const TourDetail = () => {
             ))}
           </motion.div>
 
-          {/* THE NARRATIVE */}
+       
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -223,7 +221,7 @@ const TourDetail = () => {
             </div>
           </motion.section>
 
-          {/* MISSION MANIFEST */}
+       
           <motion.section 
             initial="hidden"
             whileInView="visible"
@@ -243,7 +241,7 @@ const TourDetail = () => {
           </motion.section>
         </div>
 
-        {/* BOOKING ASIDE */}
+
         <aside className="content-right">
   <motion.div 
     initial="hidden"
@@ -253,7 +251,7 @@ const TourDetail = () => {
     className="booking-card-wrapper sticky top-28"
   >
     <div className="booking-card">
-      {/* Decorative Globe */}
+
       <motion.div 
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
@@ -275,7 +273,7 @@ const TourDetail = () => {
       </p>
 
       <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-        {/* REMOVED: bg-[#020617] and text-white from here */}
+    
         <Link 
           to="/contact" 
           state={{ tour: tour.title }}

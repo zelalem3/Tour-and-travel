@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
-// Import Hero synchronously to prevent "white screen" on landing
 import Hero from "../components/hero"; 
 import BlogList from "../components/blog";
 
@@ -24,10 +23,10 @@ const Home = () => {
       </Helmet>
 
       <main className="flex-grow">
-        {/* Rendered immediately for better LCP (Largest Contentful Paint) */}
+    
         <Hero />
 
-        {/* Lazy load the rest of the page */}
+    
         <Suspense fallback={<SectionLoader />}>
           <section id="destinations">
             <Destinations />

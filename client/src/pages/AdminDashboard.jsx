@@ -10,7 +10,7 @@ const AdminDashboard = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // THE SECRET KEY (In production, use an Env variable or a login state)
+ 
   const ADMIN_SECRET = "your_secret_password_here";
 
   const fetchLeads = async () => {

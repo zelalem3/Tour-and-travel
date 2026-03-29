@@ -10,14 +10,14 @@ export const Box = styled.footer`
     position: relative;
     overflow: hidden;
 
-    /* ADD THIS LINE: Subtle top border */
+    
     border-top: 1px solid rgba(255, 255, 255, 0.08); 
 
-    /* Optional: Add a very faint glow to the border */
+    
     box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.5);
 
 
-    /* Prevent iOS/Android from turning numbers or dates into blue/black links */
+    
     a[x-apple-data-detectors] {
         color: inherit !important;
         text-decoration: none !important;

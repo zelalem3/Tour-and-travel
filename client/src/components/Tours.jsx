@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from "react-router-dom"; // Added Link
+import { useNavigate, Link } from "react-router-dom";
 import { client, urlFor } from '../sanityClient'; 
 import { motion } from 'framer-motion'; 
 
-// 1. Individual Letter Variants with Random Delay
 const letterVariants = {
   hidden: { y: -100, opacity: 0, rotate: -15 },
   visible: (i) => ({
@@ -19,7 +18,7 @@ const letterVariants = {
   })
 };
 
-// 2. Tour Card Variants
+
 const cardVariants = {
   hidden: (i) => ({
     opacity: 0,
@@ -45,15 +44,13 @@ export default function Tours() {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- SCROLL FIX ---
-  // This ensures that if you clicked from a lower position, 
-  // you start at the top of the Tours page.
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    const query = '*[_type == "tour"] | order(_createdAt asc)';
+    const query = '*[_type == "tour",_Priority=1] | order(_createdAt asc)';
     client.fetch(query).then((data) => {
       setTours(data);
       setLoading(false);
@@ -80,7 +77,7 @@ export default function Tours() {
       overflowX: 'hidden' 
     }}>
       
-      {/* --- Header Section --- */}
+  
       <header style={{ 
         maxWidth: '1400px', 
         margin: '0 auto 80px auto', 
@@ -139,7 +136,7 @@ export default function Tours() {
         />
       </header>
 
-      {/* --- Tours Grid --- */}
+
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
@@ -184,14 +181,14 @@ export default function Tours() {
                   {tour.mainImage && (
                     <img
   src={urlFor(tour.mainImage)
-    .width(600)           // 600px is usually enough for grid cards
-    .auto('format')       // Automatically serves WebP/AVIF (huge savings!)
-    .fit('max')           // Prevents upscaling
-    .quality(80)          // Slight compression you won't notice visually
+    .width(600)           
+    .auto('format')       
+    .fit('max')           
+    .quality(80)         
     .url()}
   alt={tour.title}
-  loading="lazy"          // Browser-level lazy loading
-  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+  loading="lazy"          
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
 />
                   )}
                 </motion.div>

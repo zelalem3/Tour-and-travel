@@ -9,8 +9,8 @@ const Destinations = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // UPDATED QUERY: Fetching asset metadata for lqip (blur-up)
-    const query = `*[_type == "destination"] | order(title asc) {
+    
+    const query = `*[_type == "destination",_Priority=1] | order(_createdAt asc) {
       name,
       "desc": description,
       "slug": slug.current,
@@ -37,7 +37,7 @@ const Destinations = () => {
   });
   const yParallax = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
-  // ANIMATION VARIANTS
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -83,7 +83,7 @@ const Destinations = () => {
               &nbsp;
             </span>
 
-            <span className="word-wrapper font-playfair highlight normal-case">
+            <span className="word-wrapper font-playfair highlight normal-case" >
               {"Ethiopia".split("").map((char, i) => (
                 <motion.span key={i} variants={letterVariants} style={{ display: 'inline-flex' }}>
                   {char}

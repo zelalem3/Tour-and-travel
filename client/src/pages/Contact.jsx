@@ -46,16 +46,16 @@ export default function Contact() {
     }
     setIsSubmitting(true);
 
-    // 1. Get Keys from Vite Environment (Obfuscated in build)
+   
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID; 
     const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     try {
-      // 2. Send Email Notification
+     
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
 
-      // 3. Save to Sanity as a permanent lead
+      
       await writeClient.create({
         _type: 'contactInquiry',
         userName: formData.user_name,
@@ -76,7 +76,7 @@ export default function Contact() {
     }
   };
 
-  // ... (Animations remain the same)
+
   const containerVars = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.3 } } };
   const itemVars = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } };
 

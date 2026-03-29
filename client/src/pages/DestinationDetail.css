@@ -1,4 +1,4 @@
-/* --- 1. CORE WRAPPERS --- */
+
 .destination-page {
   background-color: #020617;
   color: #ffffff;
@@ -13,14 +13,14 @@
   padding: 80px 24px;
 }
 
-/* Changed to flex-column to stack the sections */
+
 .dest-grid {
   display: flex;
   flex-direction: column;
   gap: 80px;
 }
 
-/* --- 2. HERO SECTION --- */
+
 .dest-hero {
   position: relative;
   height: 85vh;
@@ -74,9 +74,9 @@
   color: #fbbf24;
 }
 
-/* --- 3. NARRATIVE SECTION (TOP) --- */
+
 .dest-left {
-  max-width: 900px; /* Keeps text readable */
+  max-width: 900px; 
 }
 
 .section-label {
@@ -144,7 +144,7 @@
   margin-top: 5px;
 }
 
-/* --- 4. TOURS SECTION (BOTTOM) --- */
+
 .dest-right {
   width: 100%;
 }
@@ -157,7 +157,7 @@
   letter-spacing: -0.02em;
 }
 
-/* Changed to a responsive grid for the bottom view */
+
 .tours-stack {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -227,7 +227,7 @@
   opacity: 1;
 }
 
-/* --- 5. UI ELEMENTS & BUTTONS --- */
+
 .dest-inquiry-btn {
   display: inline-flex;
   align-items: center;
@@ -295,7 +295,7 @@
   background: #fbbf24;
 }
 
-/* Toast Notification */
+
 .toast {
   position: fixed;
   bottom: 40px;
@@ -318,7 +318,7 @@
   transform: translateY(0);
 }
 
-/* Loading Screen */
+
 .loading-screen {
   height: 100vh;
   display: flex;
@@ -330,7 +330,7 @@
   font-weight: 900;
 }
 
-/* Responsive Tweaks */
+
 @media (max-width: 768px) {
   .dest-hero-title { font-size: 3.5rem; }
   .tours-stack { grid-template-columns: 1fr; }

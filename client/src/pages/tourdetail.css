@@ -1,4 +1,4 @@
-/* --- 1. ROOT & RESET --- */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root { color-scheme: dark !important; }
 
@@ -19,7 +19,7 @@ html, body {
   width: 100%;
 }
 
-/* --- 2. HERO SECTION & KEN BURNS --- */
+
 .hero-container {
   position: relative;
   height: 75vh;
@@ -94,7 +94,6 @@ html, body {
   color: transparent !important;
 }
 
-/* --- 3. CONTENT AREA --- */
 .tour-main-content {
   max-width: 1280px;
   margin: 0 auto;
@@ -110,7 +109,7 @@ html, body {
   .content-right { grid-column: span 5; }
 }
 
-/* Stats Cards */
+
 .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -125,14 +124,14 @@ html, body {
 .stat-val { font-size: 1.25rem; font-weight: 900; color: white; }
 .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
 
-/* Narrative */
+
 .narrative-section { margin-top: 6rem; }
 .section-heading { display: flex; align-items: center; gap: 1.5rem; font-size: 2rem; font-weight: 900; color: white; }
 .heading-line { width: 80px; height: 3px; background: #fbbf24; }
 .narrative-highlight { font-family: serif; font-style: italic; font-size: 3.5rem; color: #fbbf24; }
 .narrative-text { font-size: 1.25rem; color: rgba(255, 255, 255, 0.8); line-height: 1.7; margin-top: 2rem; max-width: 650px; }
 
-/* --- 4. BOOKING CARD & SHIMMER --- */
+
 .booking-card-wrapper { position: sticky; top: 8rem; background: #fbbf24; padding: 1.5px; border-radius: 3.5rem; }
 .booking-card { background: #020617; border-radius: 3.4rem; padding: 2.5rem; position: relative; overflow: hidden; }
 .globe-bg { position: absolute; top: -3rem; right: -3rem; opacity: 0.05; pointer-events: none; }
@@ -140,13 +139,13 @@ html, body {
 .price-display { 
   display: flex; 
   align-items: baseline; 
-  justify-content: center; /* This centers it horizontally */
+  justify-content: center; 
   gap: 0.75rem; 
   margin-bottom: 3rem; 
-  width: 100%;             /* Ensures it takes full width to find the center */
+  width: 100%;            
 }
 
-/* Golden Shimmer Effect */
+
 .price-amount {
   font-size: 5rem;
   font-weight: 900;
@@ -163,18 +162,18 @@ html, body {
 @keyframes shine { to { background-position: 200% center; } }
 
 .booking-btn {
-  /* 1. POSITIONING & LAYOUT */
-  display: flex;            /* Use flex for perfect centering */
-  align-items: center;      /* Vertical center */
-  justify-content: center;   /* Horizontal center */
+  
+  display: flex;           
+  align-items: center;      
+  justify-content: center;   
   text-align: center;
   width: 100%;
-  margin-top: 24px;         /* Reduced from 40px to keep card small */
+  margin-top: 24px;         
   
-  /* 2. STYLE & SIZE */
-  background: #020617 !important; /* Start Dark */
-  color: #ffffff !important;      /* Start White */
-  padding: 1.2rem 1.5rem;         /* Slimmer padding for a smaller card */
+
+  background: #020617 !important;
+  color: #ffffff !important;      
+  padding: 1.2rem 1.5rem;         
   border-radius: 12px;
   font-weight: 900;
   text-transform: uppercase;
@@ -187,7 +186,7 @@ html, body {
 }
 .booking-btn:hover {
   background: #fbbf24 !important; 
-  color: #020617 !important;      /* Swaps to dark so text is seen on white */
+  color: #020617 !important;      
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
@@ -217,21 +216,21 @@ html, body {
 
 
 
-/* --- HERO CONTAINER RESPONSIVE HEIGHT --- */
+
 .hero-container {
   position: relative;
   width: 100%;
   overflow: hidden;
   background-color: #020617;
   
-  /* DEFAULT: Mobile/Phone (under 768px) */
+
   height: 70vh; 
 }
 
-/* TABLETS & PC (768px and up) */
+
 @media (min-width: 768px) {
   .hero-container {
-    height: 95vh; /* 95-100vh looks best to keep a hint of the content below */
+    height: 95vh; 
   }
 }
 
@@ -245,7 +244,7 @@ html, body {
 .hero-img {
   width: 100%;
   height: 100%;
-  /* Use 'cover' here so the image fills the 70vh/100vh area perfectly */
+ 
   object-fit: cover; 
   object-position: center;
   animation: kenBurns 20s infinite alternate ease-in-out;

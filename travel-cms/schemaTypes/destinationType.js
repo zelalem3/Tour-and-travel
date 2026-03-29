@@ -36,6 +36,12 @@ export const destinationType = defineType({
       placeholder: 'e.g. Amhara Region, Northern Ethiopia',
     }),
     defineField({
+      name:'Priority',
+      title:'Priority Number',
+      type:'number',
+      placeholder:'e.g. 1 ,2 or 3'
+    }),
+    defineField({
       name: 'mainImage',
       title: 'Feature Photo',
       type: 'image',

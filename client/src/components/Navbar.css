@@ -1,13 +1,13 @@
-/* --- Base Navbar Styling --- */
+
 .custom-nav {
-  background-color: #020617 !important; /* Midnight Navy */
+  background-color: #020617 !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 12px 0;
   transition: all 0.3s ease;
-  color-scheme: dark; /* Helps browser handle dark UI elements */
+  color-scheme: dark; 
 }
 
-/* --- Logo Sizing --- */
+
 .nav-logo {
   width: 160px;
   height: auto;
@@ -20,9 +20,9 @@
   transform: scale(1.02);
 }
 
-/* --- Navigation Links --- */
+
 .nav-item-link {
-  color: #f8fafc !important; /* Near white */
+  color: #f8fafc !important; 
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
@@ -32,12 +32,12 @@
 }
 
 .nav-item-link:hover {
-  color: #fbbf24 !important; /* Gold on hover */
+  color: #fbbf24 !important; 
 }
 
-/* --- MOBILE TOGGLE (The Hamburger Button) --- */
+
 .navbar-toggler {
-  border: 1px solid rgba(251, 191, 36, 0.4) !important; /* Subtle Gold Border */
+  border: 1px solid rgba(251, 191, 36, 0.4) !important; 
   padding: 6px 10px;
   border-radius: 8px;
   background-color: transparent;
@@ -49,14 +49,14 @@
   outline: none;
 }
 
-/* FORCING THE ICON TO BE BRIGHT GOLD */
+
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23fbbf24' stroke-width='2.5' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
   width: 1.4em;
   height: 1.4em;
 }
 
-/* --- CONTACT US BUTTON (Button 27) --- */
+
 .button-27 {
   appearance: none;
   display: inline-flex;
@@ -64,8 +64,8 @@
   justify-content: center;
   cursor: pointer;
   border: none;
-  background-color: #fbbf24; /* Brand Gold */
-  color: #020617 !important; /* Navy Text */
+  background-color: #fbbf24; 
+  color: #020617 !important; 
   border-radius: 12px;
   font-size: 14px;
   font-weight: 800;
@@ -86,11 +86,11 @@
   transform: translateY(0);
 }
 
-/* --- MOBILE RESPONSIVE TWEAKS --- */
+
 @media (max-width: 991px) {
-  /* This ensures the dropdown menu is dark and separate from the nav bar */
+  
   .navbar-collapse {
-    background: #0f172a !important; /* Slightly lighter Navy for contrast */
+    background: #0f172a !important; 
     padding: 25px;
     border-radius: 16px;
     margin-top: 15px;
@@ -112,7 +112,7 @@
 
   .button-27 {
     margin-top: 20px;
-    width: 100%; /* Make button full width on mobile */
+    width: 100%; 
     padding: 14px;
   }
 

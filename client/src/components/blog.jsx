@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { client } from '../sanityClient'; 
 import { Link } from 'react-router-dom';
 import imageUrlBuilder from '@sanity/image-url';
-import { motion } from 'framer-motion'; // Added Framer Motion
+import { motion } from 'framer-motion'; 
 import './bloglist.css';
 
 const builder = imageUrlBuilder(client);
@@ -33,7 +33,7 @@ const BlogList = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Each card follows the other
+        staggerChildren: 0.1, 
       }
     }
   };
@@ -50,7 +50,7 @@ const BlogList = () => {
       scale: 1,
       transition: { 
         duration: 0.6, 
-        ease: [0.215, 0.61, 0.355, 1] // Smooth "out-cubic" easing
+        ease: [0.215, 0.61, 0.355, 1] 
       } 
     }
   };
@@ -81,7 +81,7 @@ const BlogList = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }} // Repeats on scroll
+          viewport={{ once: false, amount: 0.1 }} 
         >
           {posts.map((post) => (
             <motion.article 

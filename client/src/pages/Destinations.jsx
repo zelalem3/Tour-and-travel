@@ -72,10 +72,9 @@ const Destinations = () => {
                 className={`dest-img ${loadedImages[dest.slug.current] ? 'is-loaded' : 'is-loading'}`}
               />
               
-              {/* 2. Dark Overlay (Middle Layer) */}
               <div className="dest-overlay"></div>
               
-              {/* 3. Text Content (Front Layer) */}
+             
               <div className="dest-content">
                 <span className="dest-region">{dest.region}</span>
                 <h3 className="dest-title">{dest.title}</h3>

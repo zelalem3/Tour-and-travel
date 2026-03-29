@@ -1,7 +1,7 @@
-/* FORCE DARK BACKGROUNDS */
+
 .contact-viewport {
   min-height: 100vh;
-  background-color: #020617 !important; /* Midnight Navy Background */
+  background-color: #020617 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,7 @@
 }
 
 .contact-card {
-  background-color: #0f172a !important; /* Slightly lighter navy card */
+  background-color: #0f172a !important;
   border: 1px solid #1e293b !important;
   border-radius: 24px;
   padding: 40px;
@@ -36,11 +36,11 @@
 }
 
 .contact-description {
-  color: #94a3b8 !important; /* Soft grey text */
+  color: #94a3b8 !important; 
   margin-top: 8px;
 }
 
-/* INPUTS - FORCE DARK THEME */
+
 .contact-form label {
   color: #e2e8f0 !important;
   font-weight: 600;
@@ -52,7 +52,7 @@
 .contact-form input, 
 .contact-form textarea, 
 .custom-select {
-  background-color: #1e293b !important; /* Dark input background */
+  background-color: #1e293b !important; 
   border: 1px solid #334155 !important;
   color: #ffffff !important;
   border-radius: 12px !important;
@@ -61,7 +61,7 @@
   box-sizing: border-box;
 }
 
-/* FOCUS STATE */
+
 .contact-form input:focus, 
 .contact-form textarea:focus, 
 .custom-select:focus {
@@ -70,7 +70,7 @@
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2) !important;
 }
 
-/* CUSTOM SELECT ARROW */
+
 .custom-select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -79,7 +79,7 @@
   background-size: 1.1em;
 }
 
-/* BUTTON */
+
 .submit-btn {
   background-color: #fbbf24 !important;
   color: #020617 !important;
@@ -103,7 +103,7 @@
   transform: translateY(-2px);
 }
 
-/* FOOTER ITEMS */
+
 .contact-footer {
   margin-top: 40px;
   padding-top: 30px;
@@ -128,7 +128,7 @@
   color: #fbbf24;
 }
 
-/* FORM GRID */
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -174,7 +174,7 @@ input:focus {
   color: #475569;
 }
 
-/* For the Success Screen Button */
+
 .submit-btn {
   background: #fbbf24;
   color: #020617;
@@ -184,7 +184,7 @@ input:focus {
   font-weight: 800;
   cursor: pointer;
 }
-/* ADD TO YOUR EXISTING CSS */
+
 
 .whatsapp-float {
   position: fixed;
@@ -207,7 +207,7 @@ input:focus {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #fbbf24 !important; /* Gold labels for better contrast */
+  color: #fbbf24 !important;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
@@ -224,7 +224,7 @@ input:focus {
   padding: 60px 40px;
 }
 
-/* Ensure progress bar transition is smooth */
+
 .contact-viewport > div:first-child motion.div {
   transition: width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }

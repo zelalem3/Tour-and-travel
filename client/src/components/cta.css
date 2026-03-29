@@ -2,7 +2,7 @@
 .cta-section {
   position: relative;
   background-color: #020617;
-  padding: 120px 24px; /* Increased padding for a more premium feel */
+  padding: 120px 24px;
   overflow: hidden;
   text-align: center;
 }
@@ -22,26 +22,26 @@
   border-radius: 50%;
   filter: blur(100px);
   z-index: 1;
-  pointer-events: none; /* Crucial so glows don't block button clicks */
+  pointer-events: none;
 }
 
 .glow-1 {
   top: -150px;
   left: -100px;
-  background-color: rgba(251, 191, 36, 0.15); /* Yellow */
+  background-color: rgba(251, 191, 36, 0.15); 
 }
 
 .glow-2 {
   bottom: -150px;
   right: -100px;
-  background-color: rgba(59, 130, 246, 0.1); /* Blue */
+  background-color: rgba(59, 130, 246, 0.1); 
 }
 
 /* Typography */
 .cta-label {
   color: #fbbf24;
   text-transform: uppercase;
-  letter-spacing: 0.5em; /* Match hero subtitle style */
+  letter-spacing: 0.5em;
   font-size: 13px;
   font-weight: 800;
   display: block;
@@ -50,7 +50,7 @@
 
 .cta-heading {
   color: #ffffff;
-  font-size: clamp(2.5rem, 8vw, 4.5rem); /* Responsive sizing */
+  font-size: clamp(2.5rem, 8vw, 4.5rem); 
   font-weight: 900;
   margin-bottom: 28px;
   line-height: 1;
@@ -63,7 +63,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-style: italic;
-  font-family: serif; /* Matches Hero "History" text */
+  font-family: serif;
 }
 
 .cta-description {
@@ -75,8 +75,7 @@
   font-weight: 300;
 }
 
-/* Button Layout override */
 .cta-section .hero-btn-premium {
-  /* This ensures the button is centered in the flex container */
+  
   margin: 0 auto; 
 }

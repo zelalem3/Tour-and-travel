@@ -2,8 +2,6 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// Fix for Leaflet marker icons in React/Vite
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -16,11 +14,10 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function ToursMap({ tours }) {
-  // Center of Ethiopia
+
   const center = [9.145, 40.4896];
 
-  // Logic: Map through tours and extract coordinates if they exist
-  // For now, we use a fallback mapping based on common tour titles
+
   const getCoords = (title) => {
     if (title.includes("Lalibela")) return [12.0319, 39.0412];
     if (title.includes("Simien")) return [13.2967, 38.3703];

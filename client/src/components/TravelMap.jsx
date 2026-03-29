@@ -2,7 +2,7 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 
-// Fix for default marker icons in React
+
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -26,13 +26,13 @@ const TravelMap = ({ selectedTour }) => {
   const destination = locations[selectedTour] || locations["Lalibela Adventure"];
   const addis = locations["Addis"];
 
-  // Create a line showing the journey from the capital to the destination
+  
   const routeLine = [addis.pos, destination.pos];
 
   return (
     <div className="map-wrapper rounded-2xl overflow-hidden border border-white/10 shadow-2xl h-[400px] w-full mt-10">
       <MapContainer center={[9.145, 40.4896]} zoom={5} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
-        {/* Dark Mode Map Tiles to match your "Odyssey" UI */}
+     
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; OpenStreetMap contributors'

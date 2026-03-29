@@ -1,14 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
 
 .destinations-page {
-  background-color: #020617; /* Midnight */
+  background-color: #020617; 
   color: #f8fafc;
   padding: 120px 24px;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Header Styling */
 .dest-header {
   text-align: center;
   max-width: 800px;
@@ -16,7 +15,7 @@
 }
 
 .dest-subtitle {
-  color: #fbbf24; /* Gold */
+  color: #fbbf24; 
   text-transform: uppercase;
   letter-spacing: 4px;
   font-size: 0.8rem;
@@ -47,7 +46,7 @@
   margin: 0 auto;
 }
 
-/* Card Architecture */
+
 .dest-card {
   position: relative;
   height: 550px;
@@ -56,7 +55,7 @@
   text-decoration: none;
   display: block;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  isolation: isolate; /* Critical: Creates a new layer stack */
+  isolation: isolate;
 }
 
 .dest-card:hover {
@@ -69,7 +68,6 @@
   position: relative;
 }
 
-/* Image Blur-Up */
 .dest-img {
   width: 100%;
   height: 100%;
@@ -85,11 +83,11 @@
   transform: scale(1.08);
 }
 
-/* The Overlay (Layer 2) */
+
 .dest-overlay {
   position: absolute;
   inset: 0;
-  /* Very dark at the bottom to ensure text visibility */
+
   background: linear-gradient(
     to top, 
     rgba(2, 6, 23, 0.95) 0%, 
@@ -100,14 +98,14 @@
   pointer-events: none;
 }
 
-/* The Content (Layer 3) */
+
 .dest-content {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   padding: 40px;
-  z-index: 10; /* Forces text to the front */
+  z-index: 10; 
   display: flex;
   flex-direction: column;
   pointer-events: none;
@@ -127,7 +125,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 2.8rem;
   font-weight: 700;
-  color: #ffffff !important; /* Forced White */
+  color: #ffffff !important; 
   margin: 0 0 20px 0;
   line-height: 1.1;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
@@ -147,7 +145,7 @@
   width: fit-content;
 }
 
-/* Loader Styling */
+
 .dest-loader {
   height: 100vh;
   display: flex;
@@ -172,7 +170,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .dest-grid { grid-template-columns: 1fr; }
   .dest-card { height: 450px; }

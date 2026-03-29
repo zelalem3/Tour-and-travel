@@ -1,4 +1,4 @@
-/* --- 1. CORE LAYOUT --- */
+
 .hero-viewport {
   position: relative;
   width: 100%;
@@ -10,7 +10,7 @@
   background-color: #020617;
 }
 
-/* --- 2. BACKGROUND & CINEMATICS --- */
+
 .hero-background-container {
   position: absolute;
   inset: -10%; 
@@ -47,7 +47,7 @@
   z-index: 3;
 }
 
-/* --- 3. TYPOGRAPHY --- */
+
 .hero-content {
   position: relative;
   z-index: 10;
@@ -93,7 +93,7 @@
   line-height: 1.7;
 }
 
-/* --- 4. THE PREMIUM BUTTON (Error Fixes Applied) --- */
+
 .hero-btn-premium {
   position: relative;
   display: inline-flex;
@@ -101,7 +101,7 @@
   padding: 22px 42px;
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  -webkit-backdrop-filter: blur(12px); 
   border: 1px solid rgba(251, 191, 36, 0.4);
   border-radius: 100px;
   color: #ffffff;
@@ -116,7 +116,7 @@
   z-index: 5;
 }
 
-/* This ensures text and icon circle stay on top of the gold fill */
+
 .btn-text, .btn-icon-wrapper {
   position: relative;
   z-index: 2; 
@@ -181,7 +181,7 @@
   100% { background-position: 200% center; }
 }
 
-/* --- 5. SCROLL MOUSE --- */
+
 .scroll-indicator {
   position: absolute;
   bottom: 40px;

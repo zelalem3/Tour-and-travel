@@ -1,4 +1,4 @@
-/* Fade-in animation */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -10,7 +10,7 @@
   }
 }
 
-/* Destination card hover lift */
+
 .destination-card {
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
@@ -35,7 +35,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
 
-/* Text hover effect */
+
 .destination-card:hover h3,
 .destination-card:hover p {
   transform: translateY(-5px);

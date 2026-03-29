@@ -15,11 +15,11 @@ const DestinationDetail = () => {
   const [showToast, setShowToast] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // --- BLUR-UP STATES ---
+
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [toursLoaded, setToursLoaded] = useState({});
 
-  // --- ANIMATION VARIANTS ---
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { 
@@ -38,7 +38,7 @@ const DestinationDetail = () => {
   };
 
   useEffect(() => {
-    // Logic update: Fetching the asset object directly to access metadata.lqip
+
     const query = `*[_type == "destination" && slug.current == $slug][0]{
       name, location, description, bestTimeToVisit, 
       "mainImage": mainImage.asset->{
@@ -114,7 +114,7 @@ const DestinationDetail = () => {
       )}
       <link rel="canonical" href={`https://travelethiopia.com/destinations/${slug}`} />
     </Helmet>
-      {/* Scroll Progress Bar */}
+
       <div className="progress-bar">
         <motion.div 
             className="progress" 
@@ -123,7 +123,7 @@ const DestinationDetail = () => {
         ></motion.div>
       </div>
 
-      {/* Toast Notification with AnimatePresence */}
+      
       <AnimatePresence>
         {showToast && (
           <motion.div 
@@ -157,7 +157,7 @@ const DestinationDetail = () => {
         
         {destination.mainImage && (
           <div className="blur-up-container" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
-             {/* Blur Placeholder */}
+             
              <div 
               style={{ 
                 backgroundImage: `url(${destination.mainImage.metadata.lqip})`,
@@ -204,11 +204,11 @@ const DestinationDetail = () => {
         </div>
       </div>
 
-      {/* 2. MAIN CONTENT WRAPPER */}
+      
       <main className="dest-main">
         <div className="dest-grid">
           
-          {/* NARRATIVE SECTION */}
+         
           <motion.div 
             initial="hidden"
             whileInView="visible"
@@ -235,7 +235,7 @@ const DestinationDetail = () => {
             </motion.section>
           </motion.div>
 
-          {/* RELATED TOURS SECTION */}
+          
           <section className="dest-right">
             <motion.h3 
               initial={{ opacity: 0 }}

@@ -18,7 +18,7 @@ import './BlogPost.css';
 const builder = imageUrlBuilder(client);
 const urlFor = (source) => builder.image(source).auto('format');
 
-// Helper component for Body Images with Blur-Up
+
 const BodyImage = ({ value }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const lqip = value.asset?.metadata?.lqip;
@@ -149,7 +149,7 @@ const BlogPost = () => {
           </div>
         )}
 
-        {/* FIXED: Added the opening div for the grid layout */}
+      
         <div className="content-layout">
           <aside className="social-share">
             <div className="sticky-sidebar">

@@ -1,7 +1,7 @@
 .card {
   max-width: 300px;
   max-height: 600px;
-  /* border: 1px solid black; */
+
   border-radius: 15px;
   margin: 0px 20px;
   cursor: pointer;
@@ -45,7 +45,7 @@
 }
 
 .card__footer {
-  /* border: 1px solid black; */
+
   border-radius: 0px 0px 15px 15px;
   display: flex;
   justify-content: space-around;

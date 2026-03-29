@@ -31,13 +31,13 @@
 /* --- THE TWO-COLUMN GRID --- */
 .dest-dual-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Forces side-by-side */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 30px;
 }
 
 .dest-item-card {
   position: relative;
-  height: 600px; /* Taller editorial look */
+  height: 600px; 
   border-radius: 40px;
   overflow: hidden;
   text-decoration: none;
@@ -107,14 +107,17 @@
   padding-left: 10px;
 }
 
-/* --- MOBILE RESPONSIVENESS --- */
+
 @media (max-width: 1024px) {
     .dest-item-card { height: 450px; }
 }
 
 @media (max-width: 768px) {
   .dest-dual-grid {
-    grid-template-columns: 1fr; /* Stack on small screens for usability */
+    grid-template-columns: 1fr;
   }
   .dest-content-overlay { padding: 30px; }
+  .word-wrapper{
+    display: block;
+  }
 }

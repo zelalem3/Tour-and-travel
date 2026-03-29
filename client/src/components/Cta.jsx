@@ -78,7 +78,7 @@ const Cta = () => {
         >
           <motion.a 
             href="#tours" 
-            className="hero-btn-premium" /* Using the premium class */
+            className="hero-btn-premium" 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >

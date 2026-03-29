@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const MyNavbar = () => {
   return (
-    // Removed bg="light" and added custom-nav
+    
     <Navbar expand="lg" className="py-3 custom-nav" variant="dark">
       <Container>
         <Navbar.Brand as={Link} to="/">
@@ -16,7 +16,7 @@ const MyNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         
         <Navbar.Collapse id="basic-navbar-nav">
-          {/* ms-auto pushes links to the right in Bootstrap 5 */}
+  
           <Nav className="ms-auto align-items-center">
             <Nav.Link as={Link} to="/Destinations" className="nav-item-link">
               Expreditions

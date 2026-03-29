@@ -10,7 +10,7 @@ export default function Tours() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // LOGIC: Optimized query to fetch ONLY necessary fields + LQIP metadata for instant blur-up
+
     const query = `*[_type == "tour"] | order(_createdAt asc) {
       _id,
       title,
@@ -36,7 +36,7 @@ export default function Tours() {
       .catch(console.error);
   }, []);
 
-  // --- NEW RENDER EFFECT VARIANT ---
+
   const pageRenderProps = {
     initial: { opacity: 0, filter: "blur(20px)", scale: 1.05 },
     animate: { opacity: 1, filter: "blur(0px)", scale: 1 },
@@ -105,7 +105,7 @@ export default function Tours() {
             perspective: '1200px'
           }}
         >
-          {/* Header */}
+  
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -120,12 +120,12 @@ export default function Tours() {
             </h1>
           </motion.div>
 
-          {/* THE GRID */}
+
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.1 }} // LOGIC: Changed to once: true for better scroll performance
+            viewport={{ once: true, amount: 0.1 }}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
@@ -150,14 +150,14 @@ export default function Tours() {
                   position: 'relative'
                 }}
               >
-                {/* Image Wrap */}
+            
                 <Link to={`/tours/${tour.slug}`} style={{ textDecoration: 'none', display: 'block', overflow: 'hidden' }}>
                   <div style={{ 
                     height: '320px', 
                     width: '100%', 
                     position: 'relative', 
                     overflow: 'hidden',
-                    // LOGIC: Added background placeholder to prevent white flash
+                   
                     backgroundColor: '#020617',
                     backgroundImage: `url(${tour.mainImage?.asset?.metadata?.lqip})`,
                     backgroundSize: 'cover'
@@ -165,10 +165,10 @@ export default function Tours() {
                     {tour.mainImage && (
                       <motion.img
                         variants={imageHover}
-                        // LOGIC: Optimized URL construction with auto format and specific width
+                      
                         src={urlFor(tour.mainImage).width(800).auto('format').quality(80).url()}
                         alt={tour.title}
-                        loading="lazy" // LOGIC: Browser native lazy loading
+                        loading="lazy" 
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     )}

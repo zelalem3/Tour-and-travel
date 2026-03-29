@@ -5,10 +5,10 @@ import imageUrlBuilder from '@sanity/image-url';
 import './bloglist.css'; 
 
 const builder = imageUrlBuilder(client);
-// Optimization: Added .auto('format') to serve WebP/AVIF automatically
+
 const urlFor = (source) => builder.image(source).auto('format');
 
-// 1. Updated Query to fetch metadata (lqip)
+
 const BLOG_POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
   title,
   slug,
@@ -61,7 +61,7 @@ const BlogList = () => {
               <div 
                 className="image-container"
                 style={{
-                  // 3. Set the tiny blurred image as a background immediately
+                 
                   backgroundImage: `url(${post.mainImage?.metadata?.lqip})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'

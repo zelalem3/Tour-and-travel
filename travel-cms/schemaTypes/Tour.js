@@ -51,6 +51,12 @@ export const tourType = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name:'Priority',
+      title:'Priority Number',
+      type:'number',
+      placeholder:'e.g. 1 ,2 or 3'
+    }),
+    defineField({
       name: 'description',
       title: 'Tour Description',
       type: 'text',

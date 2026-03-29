@@ -1,5 +1,5 @@
 
-/* --- 1. GENERAL & TYPOGRAPHY --- */
+
 .about-page {
   background-color: #020617;
   color: #ffffff;
@@ -34,7 +34,7 @@
   margin-bottom: 40px;
 }
 
-/* --- 2. HERO SECTION --- */
+
 .about-hero {
   height: 80vh;
   position: relative;
@@ -82,7 +82,7 @@
   margin: 0 auto;
 }
 
-/* --- 3. MISSION SECTION & STATS --- */
+
 .mission-section {
   padding: 120px 0;
 }
@@ -145,7 +145,6 @@
   z-index: 1;
 }
 
-/* --- 4. VALUES SECTION (PREMIUM CARDS) --- */
 .values-section {
   padding: 120px 0;
   background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
@@ -294,7 +293,7 @@
   line-height: 1.8;
 }
 
-/* Stats */
+
 .stats-container {
   display: flex;
   gap: 20px;

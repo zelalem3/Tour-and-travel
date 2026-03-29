@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./About.css";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
-import { Helmet } from "react-helmet-async"; // 1. Import Helmet
+import { Helmet } from "react-helmet-async"; 
 
 const About = () => {
   const statsRef = useRef(null);
@@ -12,7 +12,7 @@ const About = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // GSAP Counter Animation logic remains the same...
+
   useEffect(() => {
     if (isInView) {
       const ctx = gsap.context(() => {
@@ -90,7 +90,7 @@ const About = () => {
         </motion.div>
       </section>
 
-      {/* --- REST OF THE COMPONENT (Mission, Values, etc.) --- */}
+     
       <section className="mission-section">
         <div className="container">
           <div className="mission-grid">

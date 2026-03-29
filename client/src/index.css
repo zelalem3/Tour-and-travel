@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force the grid to behave if Tailwind classes are struggling */
+
 .tours-grid-container {
   display: grid !important;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -21,16 +21,16 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-/* GLOBAL RESET - put this first */
+
 html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;           /* helps with full-height issues */
-   overflow-x: hidden;  /* prevents horizontal scroll creating fake gaps */
+  min-height: 100%;          
+   overflow-x: hidden; 
 }
 
-/* Also force no top margin on common wrappers */
+
 * {
   box-sizing: border-box;
 }

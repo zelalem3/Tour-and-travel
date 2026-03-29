@@ -12,7 +12,7 @@ import {
     SocialIcon
 } from "./FooterStyle";
 
-// 1. Updated Imports to use FontAwesome for brand consistency
+
 import { 
   FaFacebookF, 
   FaTwitter, 

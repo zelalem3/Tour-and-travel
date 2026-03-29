@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import Tours from './pages/Tours';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import NotFound from './pages/NotFound'; // Import the new page
+import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import "./tailwind.css";
@@ -34,7 +34,7 @@ function App() {
         <Route path="/blog" element={<BlogList />} />
         <Route path="/destinations" element={<Destinations />} />
 
-        {/* The 404 Route - Must be last */}
+    
         <Route path="*" element={<NotFound />} />
      
   

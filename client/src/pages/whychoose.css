@@ -8,7 +8,7 @@
 
   .why-card:hover {
     @apply -translate-y-3;
-    box-shadow: 0 20px 40px -15px rgba(202, 138, 4, 0.15); /* Yellow-tinted shadow */
+    box-shadow: 0 20px 40px -15px rgba(202, 138, 4, 0.15); 
     border-color: #fde047;
   }
 
@@ -17,7 +17,7 @@
            transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3;
   }
 
-  /* Optional Blob Animation */
+
   @keyframes blob {
     0% { transform: translate(0px, 0px) scale(1); }
     33% { transform: translate(30px, -50px) scale(1.1); }
