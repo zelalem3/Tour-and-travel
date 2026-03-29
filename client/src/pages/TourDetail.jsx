@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { client, urlFor } from "../sanityClient";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { 
   Clock, MapPin, Users, ArrowLeft, 
-  Sparkles, Compass, Globe, ShieldCheck, Share2, Check
+  Sparkles, Compass, Globe, ShieldCheck
 } from "lucide-react";
 import "./tourdetail.css";
 
@@ -14,14 +14,22 @@ const TourDetail = () => {
   const navigate = useNavigate();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showToast, setShowToast] = useState(false);
 
   // --- SCROLL TO TOP LOGIC ---
   useEffect(() => {
     if (!loading) {
-      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant'
+          });
+        });
+      });
     }
   }, [loading, slug]);
+
 
   useEffect(() => {
    const query = `*[ _type == "tour" && slug.current == $slug ][0] {
@@ -47,10 +55,20 @@ const TourDetail = () => {
       });
   }, [slug]);
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+
+  const slideInLeft = {
+    hidden: { opacity: 0, x: -60, filter: "blur(10px)" },
+    visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const slideInRight = {
+    hidden: { opacity: 0, x: 60, filter: "blur(10px)" },
+    visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   if (loading) return (
@@ -67,168 +85,202 @@ const TourDetail = () => {
 
   if (!tour) return <div className="error-screen text-white p-20 text-center">Tour Not Found</div>;
 
-  // Optimized Share Variables
-  const shareUrl = `https://travelethiopia.com/tours/${slug}`;
-  const shareImg = tour.mainImage ? urlFor(tour.mainImage).width(1200).height(630).url() : "";
-  const shareDesc = `Join our ${tour.duration} expedition through ${tour.location}. Professional guides, private logistics, and authentic cultural immersion for $${tour.price}.`;
 
   const tourSchema = {
     "@context": "https://schema.org/",
-    "@type": "Product", // Changed to Product for better Price Snippets
+    "@type": "TravelAgency",
     "name": tour.title,
     "description": tour.description,
-    "image": shareImg,
+    "image": tour.mainImage ? urlFor(tour.mainImage).url() : "",
     "offers": {
       "@type": "Offer",
       "priceCurrency": "USD",
       "price": tour.price,
-      "availability": "https://schema.org/InStock",
-      "url": shareUrl
+      "availability": "https://schema.org/InStock"
     }
   };
 
   return (
     <div className="tour-wrapper bg-[#020617] text-white min-h-screen">
+      
+     
       <Helmet>
-        <title>{`${tour.title} | Travel Ethiopia`}</title>
-        <meta name="description" content={shareDesc} />
-        <link rel="canonical" href={shareUrl} />
+        <title>{`${tour.title} | TravelEthiopia Expedition`}</title>
+        <meta name="description" content={`Book a ${tour.duration} ${tour.title} in ${tour.location}. Join our professional expedition for $${tour.price}.`} />
+        <link rel="canonical" href={`https://travelethiopia.com/tours/${slug}`} />
         
-        {/* Open Graph / Social Media Preview */}
-        <meta property="og:type" content="article" />
+      
         <meta property="og:title" content={`${tour.title} - Official Expedition`} />
-        <meta property="og:description" content={shareDesc} />
-        <meta property="og:image" content={shareImg} />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:site_name" content="Travel Ethiopia" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={shareImg} />
+        <meta property="og:description" content={`Explore ${tour.location} on this curated journey. Price: $${tour.price}.`} />
+        {tour.mainImage && <meta property="og:image" content={urlFor(tour.mainImage).width(1200).url()} />}
         
+    
         <script type="application/ld+json">
           {JSON.stringify(tourSchema)}
         </script>
       </Helmet>
 
-      {/* Copy Link Toast */}
-      <AnimatePresence>
-        {showToast && (
+   
+     
+    
+      <section className="hero-container relative overflow-hidden">
+        <div 
+    className="hero-image-wrapper absolute inset-0 bg-cover bg-no-repeat"
+    style={{
+  
+      backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`,
+      backgroundSize: 'cover'
+    }}
+  >
+    {tour.mainImage && (
+      <img
+      
+        src={urlFor(tour.mainImage).width(1600).auto('format').quality(80).url()}
+        className="hero-img w-full h-full object-cover"
+        alt={tour.title}
+        fetchpriority="high" 
+        loading="eager"
+      />
+    )}
+    <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
+  </div>
+        
+                 <div className="hero-gradient-overlay absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/20" />
+        
+
+        <div className="hero-content-inner absolute bottom-20 left-4 md:left-20">
           <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-[#fbbf24] text-[#020617] px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-2xl"
+            initial={{ opacity: 0, y: 30 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.5, duration: 1 }}
           >
-            <Check size={18} /> Link Copied for Sharing
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* --- HERO SECTION --- */}
-      <section className="hero-container relative h-[80vh] overflow-hidden">
-        <div className="hero-controls absolute top-10 left-4 md:left-20 z-50 flex gap-4">
-          <button onClick={() => navigate(-1)} className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 hover:bg-[#fbbf24] hover:text-[#020617] transition-all">
-            <ArrowLeft size={20} />
-          </button>
-          <button onClick={handleShare} className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 hover:bg-[#fbbf24] hover:text-[#020617] transition-all">
-            <Share2 size={20} />
-          </button>
-        </div>
-
-        <div className="hero-image-wrapper absolute inset-0">
-          <div 
-            className="absolute inset-0 z-0"
-            style={{ backgroundImage: `url(${tour.mainImage?.metadata?.lqip})`, backgroundSize: 'cover', filter: 'blur(20px)' }}
-          />
-          {tour.mainImage && (
-            <motion.img
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 10, ease: "linear" }}
-              src={urlFor(tour.mainImage).width(1600).auto('format').url()}
-              className="relative z-10 w-full h-full object-cover opacity-80"
-              alt={tour.title}
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-black/40 z-20" />
-        </div>
-
-        <div className="hero-content-inner absolute bottom-20 left-4 md:left-20 z-30">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <span className="flex items-center gap-2 text-[#fbbf24] font-bold text-xs tracking-widest uppercase mb-4">
-              <Sparkles size={14} /> Expedition Portfolio
-            </span>
-            <h1 className="text-5xl md:text-8xl font-black uppercase leading-tight">
-              {tour.title}
+            <motion.span 
+              animate={{ opacity: [0.7, 1, 0.7], y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+              className="hero-badge flex items-center gap-2 text-[#fbbf24] font-bold text-sm tracking-widest uppercase mb-4"
+            >
+              <Sparkles size={14} /> Official Expedition Portfolio
+            </motion.span>
+            
+            <h1 className="hero-title text-4xl md:text-7xl font-black uppercase leading-none">
+              {tour.title?.split(' ').map((word, i) => (
+                <span key={i} className={i % 2 !== 0 ? "text-outline-gold" : "text-white"}>
+                  {word} {i === 1 && <br className="hidden md:block" />}
+                </span>
+              ))}
             </h1>
           </motion.div>
         </div>
       </section>
 
-      {/* --- MAIN CONTENT --- */}
-      <main className="container mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-3 gap-16">
-        <div className="lg:col-span-2">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+
+      <main className="tour-main-content container mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        
+        <div className="content-left lg:col-span-2">
+          
+      
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+          >
             {[
               { icon: Clock, val: tour.duration, label: "Duration" },
               { icon: Users, val: tour.groupSize || 'Private', label: "Expedition Party" },
               { icon: MapPin, val: tour.location, label: "Territory" },
-              { icon: Compass, val: "Expert", label: "Guide Grade" },
+              { icon: Compass, val: "Professional", label: "Guide Grade" },
             ].map((stat, i) => (
-              <div key={i} className="p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-[#fbbf24]/50 transition-colors">
+              <motion.div key={i} variants={slideInLeft} className="stat-card p-6 bg-white/5 border border-white/10 rounded-2xl">
                 <stat.icon size={20} className="text-[#fbbf24] mb-4" />
-                <p className="font-bold text-lg">{stat.val}</p>
-                <p className="text-gray-500 text-xs uppercase tracking-widest">{stat.label}</p>
-              </div>
+                <p className="stat-val font-bold text-xl">{stat.val}</p>
+                <p className="stat-label text-gray-400 text-sm uppercase tracking-tighter">{stat.label}</p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <section className="mb-16">
-            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 flex items-center gap-4">
-              <span className="w-10 h-[2px] bg-[#fbbf24]"></span> The Narrative
+       
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={slideInLeft}
+            className="narrative-section mb-16"
+          >
+            <h2 className="section-heading flex items-center gap-4 text-3xl font-bold mb-8">
+              <div className="heading-line w-12 h-1 bg-[#fbbf24]" /> 
+              The <span className="text-[#fbbf24]">Narrative</span>
             </h2>
-            <p className="text-gray-300 text-lg leading-relaxed">{tour.description}</p>
-          </section>
-
-          <section className="bg-white/5 p-10 rounded-3xl border border-white/10">
-            <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-[#fbbf24]">Expedition Inclusions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {tour.includes?.map((item, i) => (
-                <div key={i} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
-                  <span className="text-sm font-medium text-gray-200">{item}</span>
-                  <ShieldCheck size={18} className="text-[#fbbf24]" />
-                </div>
-              ))}
+            <div className="narrative-text text-gray-300 leading-relaxed text-lg space-y-4">
+              {tour.description}
             </div>
-          </section>
+          </motion.section>
+
+       
+          <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={slideInLeft}
+            className="manifest-section bg-white/5 p-8 rounded-3xl border border-white/5"
+          >
+            
+            <div className="manifest-grid grid grid-cols-1 md:grid-cols-2 gap-6">
+                {tour.includes?.map((item, i) => (
+                <div key={i} className="manifest-item flex items-center justify-between p-4 bg-black/40 rounded-xl border border-white/5">
+                    <span className="manifest-text font-medium">{item}</span>
+                    <ShieldCheck size={20} className="text-[#fbbf24]" />
+                </div>
+                ))}
+            </div>
+          </motion.section>
         </div>
 
-        {/* --- BOOKING ASIDE --- */}
-        <aside>
-          <div className="sticky top-28 bg-[#fbbf24] text-[#020617] p-8 rounded-3xl shadow-[0_20px_50px_rgba(251,191,36,0.2)]">
-            <div className="flex items-baseline gap-1 mb-2">
-              <span className="text-5xl font-black">${tour.price}</span>
-              <span className="text-sm font-bold uppercase opacity-60">/ Person</span>
-            </div>
-            <p className="text-sm font-medium mb-8 leading-relaxed">
-              Full logistics, permits, and private expedition management included.
-            </p>
-            
-            <Link 
-              to="/contact" 
-              state={{ tour: tour.title }}
-              className="block w-full py-5 bg-[#020617] text-white text-center font-black uppercase tracking-widest rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              Reserve Departure
-            </Link>
-            
-            <div className="mt-6 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] opacity-40">
-              <Globe size={12} /> Secure Global Booking
-            </div>
-          </div>
-        </aside>
+
+        <aside className="content-right">
+  <motion.div 
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.1 }}
+    variants={slideInRight}
+    className="booking-card-wrapper sticky top-28"
+  >
+    <div className="booking-card">
+
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+        className="globe-bg"
+      >
+        <Globe size={200} />
+      </motion.div>
+
+     
+
+      <div className="price-display">
+
+        <span className="price-amount">${tour.price}</span>
+        <span className="price-currency">/ USD</span>
+      </div>
+
+      <p className="booking-disclaimer text-gray-400">
+        Includes all permits, professional logistics, and private expedition management.
+      </p>
+
+      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+    
+        <Link 
+          to="/contact" 
+          state={{ tour: tour.title }}
+          className="booking-btn"
+        >
+          Reserve Departure
+        </Link>
+      </motion.div>
+    </div>
+  </motion.div>
+</aside>
       </main>
     </div>
   );
