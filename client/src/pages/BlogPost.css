@@ -247,6 +247,7 @@
 @media (max-width: 900px) {
   .content-layout { grid-template-columns: 1fr; }
   .social-share { display: none; }
+  .read-time-badge{margin-bottom:20px;}
 }
 
 

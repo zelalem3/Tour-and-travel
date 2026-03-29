@@ -121,13 +121,7 @@ const TourDetail = () => {
       </Helmet>
 
    
-      <button 
-        onClick={() => navigate(-1)} 
-        className="fixed top-4 left-4 md:top-8 md:left-8 z-50 p-4 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 hover:border-[#fbbf24]/50 transition-all group"
-      >
-        <ArrowLeft size={22} className="text-white group-hover:text-[#fbbf24] transition-colors" />
-      </button>
-
+     
     
       <section className="hero-container relative overflow-hidden">
         <div 

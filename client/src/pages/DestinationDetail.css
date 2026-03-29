@@ -335,5 +335,6 @@
   .dest-hero-title { font-size: 3.5rem; }
   .tours-stack { grid-template-columns: 1fr; }
   .dest-main { padding: 40px 20px; }
-  .hero-controls { top: 20px; left: 20px; right: 20px; }
+  .hero-controls { top: 90px; left: 20px; right: 20px; }
+
 }
