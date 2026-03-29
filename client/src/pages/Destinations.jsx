@@ -4,6 +4,7 @@ import { client } from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
 import { motion } from 'framer-motion';
 import './Destinations.css';
+import {MapPin} from 'lucide-react';
 
 const builder = imageUrlBuilder(client);
 const urlFor = (source) => builder.image(source).auto('format');
@@ -44,7 +45,7 @@ const Destinations = () => {
   return (
     <div className="destinations-page">
       <header className="dest-header">
-        <span className="dest-subtitle">Explore the Horn of Africa</span>
+        <span  className="dest-subtitle" >Explore the Horn of Africa</span>
         <h1>Our Destinations</h1>
       </header>
 
@@ -76,7 +77,7 @@ const Destinations = () => {
                 
                 <div className="dest-card-content">
                   {/* Matches 'location' in your schema */}
-                  <span className="dest-tag">{dest.location || "Ethiopia"}</span>
+                  <span className="dest-tag"> <MapPin size={14} />  {dest.location || "Ethiopia"}</span>
                   
                   {/* Matches 'name' in your schema */}
                   <h3 className="dest-card-title">{dest.name}</h3>
