@@ -66,8 +66,7 @@ export default function Contact() {
         return value.trim().length < 8 ? "Phone number is required" : "";
       case 'guests':
         return !value || Number(value) < 1 ? "At least 1 traveler required" : "";
-      case 'message':
-        return value.trim().length < 5 ? "Message must be at least 5 characters" : "";
+ 
       default:
         return "";
     }
@@ -85,8 +84,7 @@ export default function Contact() {
     formData.user_name.trim().length >= 2 &&
     /^\S+@\S+\.\S+$/.test(formData.user_email) &&
     formData.user_phone.trim().length >= 8 &&
-    Number(formData.guests) >= 1 &&
-    formData.message.trim().length >= 5;
+    Number(formData.guests) >= 1 
 
   const filledFields = Object.values(formData).filter(value => String(value).trim() !== "").length;
   const progress = (filledFields / 7) * 100;
