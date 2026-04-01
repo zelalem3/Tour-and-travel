@@ -222,7 +222,8 @@ export default function Contact() {
                     value={method} 
                     checked={formData.contact_method === method} 
                     onChange={handleInputChange} 
-                    className="accent-[#fbbf24]"
+                    
+                    className="accent-[#fbbf24] addm"
                   />
                   {method}
                 </label>

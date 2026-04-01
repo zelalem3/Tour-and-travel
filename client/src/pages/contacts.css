@@ -233,3 +233,9 @@ input:focus {
 .contact-viewport > div:first-child motion.div {
   transition: width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
+
+
+.addm{
+
+  margin-left: 25px;
+}
