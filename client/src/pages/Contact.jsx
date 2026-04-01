@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 import { 
-  Mail, Phone, MessageSquare, Send, MapPin, Loader2, 
+  Mail, Phone, Send, Loader2, 
   CheckCircle, User, Globe, Users, PenTool 
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { client, writeClient } from "../sanityClient";
 
@@ -26,7 +26,7 @@ export default function Contact() {
     user_email: "",
     user_phone: "",
     tour_interest: "custom",
-    preferred_contact: "Email", // NEW: Default value for EmailJS
+    contact_method: "Email", // Matches EmailJS {{contact_method}}
     guests: "",
     message: ""
   });
@@ -72,7 +72,7 @@ export default function Contact() {
     formData.message.trim().length >= 5;
 
   const filledFields = Object.values(formData).filter(value => String(value).trim() !== "").length;
-  const progress = (filledFields / 7) * 100; // Increased to 7 for the new field
+  const progress = (filledFields / 7) * 100;
 
   useEffect(() => {
     if (location.state?.tour) {
@@ -98,7 +98,7 @@ export default function Contact() {
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     try {
-      // 1. Send Email via EmailJS (Ensure {{preferred_contact}} is in your template)
+      // 1. Send Email via EmailJS (Reads from the 'name' attributes of inputs)
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
       
       // 2. Log Inquiry in Sanity
@@ -108,7 +108,7 @@ export default function Contact() {
         userEmail: formData.user_email,
         userPhone: formData.user_phone,
         tourInterest: formData.tour_interest,
-        preferredContact: formData.preferred_contact, // Saved to Sanity
+        contactMethod: formData.contact_method, 
         guests: parseInt(formData.guests) || 1,
         message: formData.message,
         createdAt: new Date().toISOString(),
@@ -118,89 +118,84 @@ export default function Contact() {
       setSubmitted(true);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Connection interrupted. Please use the WhatsApp button!");
+      alert("Submission failed. Please try again or use WhatsApp!");
       setIsSubmitting(false);
     }
   };
 
-  const containerVars = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  };
-
-  const itemVars = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   if (submitted) {
     return (
-      <div className="contact-viewport" style={{ position: 'relative' }}>
+      <div className="contact-viewport">
         <Helmet><title>Inquiry Received | Travel Ethiopia</title></Helmet>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="contact-card success-card text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="contact-card success-card text-center max-w-2xl mx-auto py-20">
           <CheckCircle size={80} className="mx-auto text-[#fbbf24] mb-6" />
           <h1 className="contact-title text-3xl font-bold">Your <span className="highlight">Journey</span> Begins!</h1>
-          <p className="contact-description text-gray-400 mt-4">We'll contact you via <strong>{formData.preferred_contact}</strong> shortly.</p>
-          <button onClick={() => window.location.reload()} className="submit-btn mt-8 px-8 py-4 bg-[#fbbf24] text-[#020617] font-bold rounded-xl">Plan Another Adventure</button>
+          <p className="contact-description text-gray-400 mt-4">
+            Request received! We'll contact you via <strong>{formData.contact_method}</strong> soon.
+          </p>
+          <button onClick={() => setSubmitted(false)} className="submit-btn mt-8 px-8 py-4 bg-[#fbbf24] text-[#020617] font-bold rounded-xl">
+            Plan Another Adventure
+          </button>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="contact-viewport" style={{ position: 'relative' }}>
+    <div className="contact-viewport">
       <Helmet><title>Contact | Travel Ethiopia</title></Helmet>
 
+      {/* Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-[5px] bg-white/5 z-[10001]">
         <motion.div animate={{ width: `${progress}%` }} className="h-full bg-[#fbbf24] shadow-[0_0_15px_#fbbf24]" />
       </div>
 
-      <motion.div variants={containerVars} initial="hidden" animate="show" className="contact-card max-w-4xl mx-auto py-20 px-4">
-        <motion.header variants={itemVars} className="text-center mb-12">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="contact-card max-w-4xl mx-auto py-20 px-4">
+        <header className="text-center mb-12">
           <span className="text-[#fbbf24] uppercase tracking-[0.3em] text-[0.65rem] font-black">Request a Quote</span>
           <h1 className="text-4xl md:text-6xl font-black mt-4">Craft Your <span className="highlight">Ethiopian Odyssey</span></h1>
-        </motion.header>
+        </header>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div variants={itemVars} className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><User size={14}/> Name</label>
               <input type="text" name="user_name" value={formData.user_name} onChange={handleInputChange} placeholder="Full Name" className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#fbbf24]" />
               {formErrors.user_name && <p className="text-red-400 text-[10px]">{formErrors.user_name}</p>}
-            </motion.div>
-            <motion.div variants={itemVars} className="flex flex-col gap-2">
+            </div>
+            <div className="flex flex-col gap-2">
               <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><Mail size={14}/> Email</label>
               <input type="email" name="user_email" value={formData.user_email} onChange={handleInputChange} placeholder="Email Address" className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#fbbf24]" />
               {formErrors.user_email && <p className="text-red-400 text-[10px]">{formErrors.user_email}</p>}
-            </motion.div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div variants={itemVars} className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><Phone size={14}/> Phone/WhatsApp</label>
               <input type="tel" name="user_phone" value={formData.user_phone} onChange={handleInputChange} placeholder="+..." className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#fbbf24]" />
               {formErrors.user_phone && <p className="text-red-400 text-[10px]">{formErrors.user_phone}</p>}
-            </motion.div>
-            <motion.div variants={itemVars} className="flex flex-col gap-2">
+            </div>
+            <div className="flex flex-col gap-2">
               <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><Globe size={14}/> Tour Interest</label>
               <select name="tour_interest" value={formData.tour_interest} onChange={handleInputChange} className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none w-full">
                 <option value="custom" className="bg-black">Tailor-Made</option>
                 {tours.map(t => <option key={t._id} value={t.title} className="bg-black">{t.title}</option>)}
               </select>
-            </motion.div>
+            </div>
           </div>
 
-          {/* NEW: Preferred Contact Selection */}
-          <motion.div variants={itemVars} className="flex flex-col gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+          {/* Preferred Contact Selection - name="contact_method" matches EmailJS {{contact_method}} */}
+          <div className="flex flex-col gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
             <label className="text-xs uppercase text-[#fbbf24] font-bold">Preferred Contact Method</label>
             <div className="flex flex-wrap gap-6">
               {['Email', 'WhatsApp', 'Phone Call'].map((method) => (
                 <label key={method} className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white">
                   <input 
                     type="radio" 
-                    name="preferred_contact" 
+                    name="contact_method" 
                     value={method} 
-                    checked={formData.preferred_contact === method} 
+                    checked={formData.contact_method === method} 
                     onChange={handleInputChange} 
                     className="accent-[#fbbf24]"
                   />
@@ -208,21 +203,20 @@ export default function Contact() {
                 </label>
               ))}
             </div>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <motion.div variants={itemVars} className="md:col-span-1 flex flex-col gap-2">
-              <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><Users size={14}/> Guests</label>
-              <input type="number" name="guests" value={formData.guests} onChange={handleInputChange} className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none" />
-            </motion.div>
-            <motion.div variants={itemVars} className="md:col-span-3 flex flex-col gap-2">
-              <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><PenTool size={14}/> Message</label>
-              <textarea name="message" value={formData.message} rows={3} onChange={handleInputChange} className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none resize-none" placeholder="Your details..."></textarea>
-            </motion.div>
           </div>
 
-          <motion.button
-            variants={itemVars}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="md:col-span-1 flex flex-col gap-2">
+              <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><Users size={14}/> Guests</label>
+              <input type="number" name="guests" value={formData.guests} onChange={handleInputChange} className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none" />
+            </div>
+            <div className="md:col-span-3 flex flex-col gap-2">
+              <label className="text-xs uppercase text-[#fbbf24] font-bold flex items-center gap-2"><PenTool size={14}/> Message</label>
+              <textarea name="message" value={formData.message} rows={3} onChange={handleInputChange} className="premium-input bg-white/5 border border-white/10 p-4 rounded-xl outline-none resize-none" placeholder="Your details..."></textarea>
+            </div>
+          </div>
+
+          <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
             className="submit-btn w-full py-6 rounded-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 border transition-all"
@@ -233,7 +227,7 @@ export default function Contact() {
             }}
           >
             {isSubmitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Send Request</>}
-          </motion.button>
+          </button>
         </form>
       </motion.div>
     </div>
