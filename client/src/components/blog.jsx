@@ -65,7 +65,14 @@ const BlogList = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1>Traveler's Guide to Ethiopia</h1>
+<Link 
+  to="/blog" 
+  style={{ textDecoration: 'none' }}
+>
+  <h1 className="guide-title">
+    Traveler's Guide to Ethiopia
+  </h1>
+</Link>
           <p className="font-inter uppercase tracking-widest text-xs opacity-60">
             Expert insights and cultural stories for your next journey.
           </p>

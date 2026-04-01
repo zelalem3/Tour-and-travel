@@ -53,16 +53,16 @@ const Footer = () => {
 
                     <Column>
                         <Heading>Quick Links</Heading>
-                        <FooterLink href="#tours">Popular Tours</FooterLink>
-                        <FooterLink href="#destinations">Destinations</FooterLink>
-                        <FooterLink href="#about">Our Story</FooterLink>
+                        <FooterLink href="/tours">Popular Tours</FooterLink>
+                        <FooterLink href="/destinations">Destinations</FooterLink>
+                        <FooterLink href="/about">Our Story</FooterLink>
                     </Column>
 
                     <Column>
                         <Heading>Traveler Tools</Heading>
-                        <FooterLink href="#">Booking Guide</FooterLink>
-                        <FooterLink href="#">Visa Info</FooterLink>
-                        <FooterLink href="#">Health & Safety</FooterLink>
+                        <FooterLink href="/booking-guide">Booking Guide</FooterLink>
+                        <FooterLink href="/visa-info">Visa Info</FooterLink>
+                        <FooterLink href="/healthandsafety">Health & Safety</FooterLink>
                     </Column>
 
                     <Column>

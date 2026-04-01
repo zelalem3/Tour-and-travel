@@ -1,6 +1,7 @@
 import React from 'react';
-import './WhyChooseUs.css';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import './WhyChooseUs.css';
 
 const WhyChooseUs = () => {
   const cards = [
@@ -14,7 +15,7 @@ const WhyChooseUs = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
+      transition: { staggerChildren: 0.15 } // Smooth stagger for words and cards
     }
   };
 
@@ -46,24 +47,29 @@ const WhyChooseUs = () => {
 
       <div className="container">
         <header className="section-header highlight">
-          <motion.h2 
-            className="title"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, margin: "-100px" }}
-            variants={containerVars}
-          >
-            {"Why Travelers Love Us".split(" ").map((word, i) => (
-              <motion.span 
-                key={i} 
-                className="animate-word"
-                variants={wordVars}
-                style={{ display: 'inline-block', marginRight: '0.3em' }}
-              >
-                {word === "Us" ? <span className="gold-accent">{word}</span> : word}
-              </motion.span>
-            ))}
-          </motion.h2>
+          <Link to="/about" className="title-link">
+            <motion.h2 
+              className="title"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVars}
+            >
+              {"Why Travelers Love Us".split(" ").map((word, i) => (
+                <motion.span 
+                  key={i} 
+                  variants={wordVars}
+                  style={{ display: 'inline-block', marginRight: '0.3em' }}
+                >
+                  {word === "Us" ? (
+                    <span className="gold-accent">{word}</span>
+                  ) : (
+                    word
+                  )}
+                </motion.span>
+              ))}
+            </motion.h2>
+          </Link>
 
           <motion.div 
             initial={{ scaleX: 0 }}
@@ -86,6 +92,7 @@ const WhyChooseUs = () => {
               key={index} 
               className="why-card"
               variants={cardVars}
+              whileHover={{ y: -10, transition: { duration: 0.3 } }}
             >
               <div className="icon-wrapper">{card.icon}</div>
               <h3 className="card-title">{card.title}</h3>

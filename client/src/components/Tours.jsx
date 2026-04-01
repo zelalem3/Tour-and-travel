@@ -105,27 +105,44 @@ export default function Tours() {
             width: '100%' 
           }}
         >
-          {"Our Tours".split(" ").map((word, wordIdx) => (
-            <span key={wordIdx} style={{ display: 'flex', whiteSpace: 'pre' }}>
-              {word.split("").map((char, charIdx) => (
-                <span key={charIdx} style={{ overflow: 'hidden', display: 'inline-block' }}>
-                  <motion.span 
-                    custom={charIdx} 
-                    variants={letterVariants}
-                    style={{ 
-                      display: 'inline-block',
-                      color: word === "Tours" ? '#fbbf24' : '#ffffff',
-                      fontStyle: word === "Tours" ? 'italic' : 'normal',
-                      paddingRight: '0.02em'
-                    }}
-                  >
-                    {char}
-                  </motion.span>
-                </span>
-              ))}
-              <span>&nbsp;</span>
-            </span>
-          ))}
+         <Link 
+  to="/tours" 
+  style={{ 
+    display: 'flex', 
+    textDecoration: 'none', 
+    alignItems: 'center' 
+  }}
+>
+  {"Our Tours".split(" ").map((word, wordIdx) => (
+    <span 
+      key={wordIdx} 
+      style={{ display: 'flex', whiteSpace: 'pre' }}
+    >
+      {word.split("").map((char, charIdx) => (
+        <span 
+          key={charIdx} 
+          style={{ overflow: 'hidden', display: 'inline-block' }}
+        >
+          <motion.span 
+            custom={charIdx} 
+            variants={letterVariants}
+            style={{ 
+              display: 'inline-block',
+              color: word === "Tours" ? '#fbbf24' : '#ffffff',
+              fontStyle: word === "Tours" ? 'italic' : 'normal',
+              paddingRight: '0.02em'
+            }}
+          >
+            {char}
+          </motion.span>
+        </span>
+      ))}
+      {/* Adds space after "Our" but not after "Tours" */}
+      {wordIdx === 0 && <span style={{ display: 'inline-block' }}>&nbsp;</span>}
+    </span>
+  ))}
+</Link>
+          
         </motion.h2>
 
         <motion.div 
