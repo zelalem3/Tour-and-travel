@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-// 1. Import 'urlFor' from your shared client to fix the deprecation error
 import { client, urlFor } from '../sanityClient'; 
 import { PortableText } from '@portabletext/react';
 import { FiClock } from "react-icons/fi";
@@ -17,22 +16,22 @@ import {
 import './BlogPost.css';
 import { Helmet } from 'react-helmet-async';
 
-// REMOVED: imageUrlBuilder and local urlFor definition from here
-
-// Component for rendering images inside the blog body
 const BodyImage = ({ value }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  // Accessing LQIP from the expanded asset reference in the query
   const lqip = value.asset?.metadata?.lqip;
 
   return (
     <figure className="article-figure">
       <div 
         className="blur-container" 
-        style={{ backgroundImage: `url(${lqip})`, backgroundSize: 'cover' }}
+        style={{ 
+          backgroundImage: lqip ? `url(${lqip})` : 'none',
+          backgroundSize: 'cover' 
+        }}
       >
         <img
-          // Using the shared urlFor helper
-          src={urlFor(value).width(1000).quality(75).url()}
+          src={urlFor(value).width(1000).auto('format').quality(75).url()}
           alt={value.alt || "Ethiopia Travel"}
           loading="lazy"
           decoding="async"
@@ -68,6 +67,7 @@ const BlogPost = () => {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
+    // Optimized Query: Ensuring asset metadata (lqip) is fetched for all images
     const query = `*[_type == "post" && slug.current == $slug][0]{
       title,
       excerpt,
@@ -79,9 +79,12 @@ const BlogPost = () => {
       publishedAt,
       body[]{
         ...,
-        asset->{
-          _id,
-          metadata { lqip }
+        _type == "image" => {
+          ...,
+          asset->{
+            _id,
+            metadata { lqip }
+          }
         }
       },
       "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180)
@@ -99,44 +102,25 @@ const BlogPost = () => {
       key="loader"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
-      className="loading-screen"
-      style={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        minHeight: '100vh', 
-        backgroundColor: '#020617',
-        gap: '30px'
-      }}
+      exit={{ opacity: 0, filter: "blur(20px)" }}
+      className="loading-screen-container"
     >
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-        style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        className="loader-icon"
       >
         <Compass size={64} strokeWidth={1} />
       </motion.div>
-
-      <div style={{ textAlign: 'center' }}>
+      <div className="loader-text">
         <motion.div 
           animate={{ opacity: [0.3, 1, 0.3] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          style={{ 
-            fontSize: '0.75rem', 
-            fontWeight: '900', 
-            color: '#fbbf24', 
-            letterSpacing: '6px',
-            textTransform: 'uppercase',
-            marginBottom: '10px'
-          }}
+          className="loader-subtext"
         >
           Expedition Intelligence
         </motion.div>
-        <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff' }}>
-          MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
-        </div>
+        <div>MAPPING YOUR <span className="gold-text">ROUTE...</span></div>
       </div>
     </motion.div>
     );
@@ -154,7 +138,6 @@ const BlogPost = () => {
       <Helmet>
         <title>{shareTitle}</title>
         <meta name="description" content={shareDesc} />
-        {/* Open Graph Tags */}
         <meta property="og:title" content={shareTitle} />
         <meta property="og:image" content={shareImg} />
       </Helmet>
@@ -188,10 +171,9 @@ const BlogPost = () => {
             style={{ backgroundImage: `url(${post.mainImage.metadata.lqip})` }}
           >
             <img
-              src={urlFor(post.mainImage._id).width(1600).quality(85).url()}
+              src={urlFor(post.mainImage._id).width(1600).auto('format').quality(80).url()}
               alt={post.title}
               className={`full-hero-image ${heroLoaded ? 'is-loaded' : 'is-loading'}`}
-              // FIX: fetchpriority -> fetchPriority (React camelCase)
               fetchPriority="high"
               loading="eager"
               onLoad={() => setHeroLoaded(true)}
@@ -204,10 +186,10 @@ const BlogPost = () => {
           <aside className="social-share">
             <div className="sticky-sidebar">
               <div className="share-icons">
-                <a href={`https://facebook.com/sharer/sharer.php?u=${shareUrl}`} className="social-icon facebook" target="_blank" rel="noreferrer"><FaFacebookF /></a>
-                <a href={`https://twitter.com/intent/tweet?url=${shareUrl}`} className="social-icon twitter" target="_blank" rel="noreferrer"><FaTwitter /></a>
-                <a href={`https://t.me/share/url?url=${shareUrl}`} className="social-icon telegram" target="_blank" rel="noreferrer"><FaTelegramPlane /></a>
-                <a href="https://instagram.com/travelethiopia" className="social-icon instagram" target="_blank" rel="noreferrer"><FaInstagram /></a>
+                <a href={`https://facebook.com/sharer/sharer.php?u=${shareUrl}`} className="social-icon" target="_blank" rel="noreferrer"><FaFacebookF /></a>
+                <a href={`https://twitter.com/intent/tweet?url=${shareUrl}`} className="social-icon" target="_blank" rel="noreferrer"><FaTwitter /></a>
+                <a href={`https://t.me/share/url?url=${shareUrl}`} className="social-icon" target="_blank" rel="noreferrer"><FaTelegramPlane /></a>
+                <a href="https://instagram.com/travelethiopia" className="social-icon" target="_blank" rel="noreferrer"><FaInstagram /></a>
               </div>
             </div>
           </aside>
