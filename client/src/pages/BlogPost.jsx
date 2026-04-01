@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { client } from '../sanityClient';
+// 1. Import 'urlFor' from your shared client to fix the deprecation error
+import { client, urlFor } from '../sanityClient'; 
 import { PortableText } from '@portabletext/react';
-import imageUrlBuilder from '@sanity/image-url';
 import { FiClock } from "react-icons/fi";
 import { Compass } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,8 +17,7 @@ import {
 import './BlogPost.css';
 import { Helmet } from 'react-helmet-async';
 
-const builder = imageUrlBuilder(client);
-const urlFor = (source) => builder.image(source).auto('format');
+// REMOVED: imageUrlBuilder and local urlFor definition from here
 
 // Component for rendering images inside the blog body
 const BodyImage = ({ value }) => {
@@ -32,6 +31,7 @@ const BodyImage = ({ value }) => {
         style={{ backgroundImage: `url(${lqip})`, backgroundSize: 'cover' }}
       >
         <img
+          // Using the shared urlFor helper
           src={urlFor(value).width(1000).quality(75).url()}
           alt={value.alt || "Ethiopia Travel"}
           loading="lazy"
@@ -68,7 +68,6 @@ const BlogPost = () => {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
-    // Added 'excerpt' to the query to ensure SEO descriptions work
     const query = `*[_type == "post" && slug.current == $slug][0]{
       title,
       excerpt,
@@ -97,84 +96,55 @@ const BlogPost = () => {
   if (!post) {
     return (
      <motion.div 
-  key="loader"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
-  style={{ 
-    display: 'flex', 
-    flexDirection: 'column',
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    minHeight: '100vh', 
-    backgroundColor: '#020617',
-    gap: '30px'
-  }}
->
-  {/* Rotating Compass Icon */}
-  <motion.div
-    animate={{ 
-      rotate: 360,
-    }}
-    transition={{ 
-      repeat: Infinity, 
-      duration: 4, 
-      ease: "linear" 
-    }}
-    style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-  >
-    <Compass size={64} strokeWidth={1} />
-  </motion.div>
-
-  {/* Text with localized glow effect */}
-  <div style={{ textAlign: 'center' }}>
-    <motion.div 
-      initial={{ opacity: 0.3 }}
-      animate={{ opacity: [0.3, 1, 0.3] }}
-      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+      key="loader"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 0.8 } }}
+      className="loading-screen"
       style={{ 
-        fontSize: '0.75rem', 
-        fontWeight: '900', 
-        color: '#fbbf24', 
-        letterSpacing: '6px',
-        textTransform: 'uppercase',
-        marginBottom: '10px'
+        display: 'flex', 
+        flexDirection: 'column',
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh', 
+        backgroundColor: '#020617',
+        gap: '30px'
       }}
     >
-      Expedition Intelligence
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+        style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Compass size={64} strokeWidth={1} />
+      </motion.div>
+
+      <div style={{ textAlign: 'center' }}>
+        <motion.div 
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          style={{ 
+            fontSize: '0.75rem', 
+            fontWeight: '900', 
+            color: '#fbbf24', 
+            letterSpacing: '6px',
+            textTransform: 'uppercase',
+            marginBottom: '10px'
+          }}
+        >
+          Expedition Intelligence
+        </motion.div>
+        <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff' }}>
+          MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
+        </div>
+      </div>
     </motion.div>
-    
-    <div style={{ 
-      fontSize: '1.5rem', 
-      fontWeight: 'bold', 
-      color: '#ffffff', 
-      letterSpacing: '1px',
-      position: 'relative'
-    }}>
-      MAPPING YOUR <span style={{ color: '#fbbf24' }}>ROUTE...</span>
-      
-      {/* Subtle Progress Underline */}
-      <motion.div 
-        initial={{ width: 0, left: 0 }}
-        animate={{ width: '100%' }}
-        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-        style={{ 
-          height: '2px', 
-          backgroundColor: '#fbbf24', 
-          marginTop: '8px',
-          boxShadow: '0 0 10px #fbbf24'
-        }}
-      />
-    </div>
-  </div>
-</motion.div>
     );
   }
 
-  // --- CRITICAL SEO VARIABLE DEFINITIONS ---
   const shareUrl = window.location.href;
   const shareTitle = `${post.title} | Travel Ethiopia`;
-  const shareDesc = post.excerpt || "Discover the hidden wonders of Ethiopia through our expert travel journals.";
+  const shareDesc = post.excerpt || "Discover the hidden wonders of Ethiopia.";
   const shareImg = post.mainImage 
     ? urlFor(post.mainImage._id).width(1200).height(630).url() 
     : "";
@@ -184,25 +154,9 @@ const BlogPost = () => {
       <Helmet>
         <title>{shareTitle}</title>
         <meta name="description" content={shareDesc} />
-        <link rel="canonical" href={shareUrl} />
-
-        {/* Open Graph / Telegram / WhatsApp / Facebook */}
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={shareUrl} />
+        {/* Open Graph Tags */}
         <meta property="og:title" content={shareTitle} />
-        <meta property="og:description" content={shareDesc} />
         <meta property="og:image" content={shareImg} />
-        <meta property="og:site_name" content="Travel Ethiopia" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={shareTitle} />
-        <meta name="twitter:description" content={shareDesc} />
-        <meta name="twitter:image" content={shareImg} />
-
-        {/* Metadata for Articles */}
-        <meta property="article:published_time" content={post.publishedAt} />
-        <meta property="article:author" content="Travel Ethiopia" />
       </Helmet>
 
       <div className="bg-glow-top"></div>
@@ -212,7 +166,6 @@ const BlogPost = () => {
           <Link to="/blog" className="back-link">
              <FaArrowLeft /> Back to Chronicles
           </Link>
-
           <div className="read-time-badge">
             <FiClock className="clock-icon" />
             {post.estimatedReadingTime || '5'} min read
@@ -225,27 +178,21 @@ const BlogPost = () => {
           <div className="post-meta-row">
             <span className="author">By Travel Ethiopia</span>
             <span className="dot"></span>
-            <time>
-              {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                month: 'long', day: 'numeric', year: 'numeric',
-              })}
-            </time>
+            <time>{new Date(post.publishedAt).toLocaleDateString()}</time>
           </div>
         </header>
 
         {post.mainImage && (
           <div 
             className="hero-image-container blur-container"
-            style={{ 
-              backgroundImage: `url(${post.mainImage.metadata.lqip})`,
-              backgroundSize: 'cover' 
-            }}
+            style={{ backgroundImage: `url(${post.mainImage.metadata.lqip})` }}
           >
             <img
               src={urlFor(post.mainImage._id).width(1600).quality(85).url()}
               alt={post.title}
               className={`full-hero-image ${heroLoaded ? 'is-loaded' : 'is-loading'}`}
-              fetchpriority="high"
+              // FIX: fetchpriority -> fetchPriority (React camelCase)
+              fetchPriority="high"
               loading="eager"
               onLoad={() => setHeroLoaded(true)}
             />
@@ -257,24 +204,10 @@ const BlogPost = () => {
           <aside className="social-share">
             <div className="sticky-sidebar">
               <div className="share-icons">
-                {/* Facebook Share */}
-                <a href={`https://facebook.com/sharer/sharer.php?u=${shareUrl}`} className="social-icon facebook" target="_blank" rel="noreferrer">
-                  <FaFacebookF />
-                </a>
-                {/* Twitter Share */}
-                <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`} className="social-icon twitter" target="_blank" rel="noreferrer">
-                  <FaTwitter />
-                </a>
-                {/* Telegram Share - NOW WORKING */}
-                <a href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`} className="social-icon telegram" target="_blank" rel="noreferrer">
-                  <FaTelegramPlane />
-                </a>
-                <a href="https://www.instagram.com/travelethiopia/" className="social-icon instagram" target="_blank" rel="noreferrer">
-                  <FaInstagram />
-                </a>
-                <a href="https://www.tiktok.com/@travelethiopia" className="social-icon tiktok" target="_blank" rel="noreferrer">
-                  <FaTiktok />
-                </a>
+                <a href={`https://facebook.com/sharer/sharer.php?u=${shareUrl}`} className="social-icon facebook" target="_blank" rel="noreferrer"><FaFacebookF /></a>
+                <a href={`https://twitter.com/intent/tweet?url=${shareUrl}`} className="social-icon twitter" target="_blank" rel="noreferrer"><FaTwitter /></a>
+                <a href={`https://t.me/share/url?url=${shareUrl}`} className="social-icon telegram" target="_blank" rel="noreferrer"><FaTelegramPlane /></a>
+                <a href="https://instagram.com/travelethiopia" className="social-icon instagram" target="_blank" rel="noreferrer"><FaInstagram /></a>
               </div>
             </div>
           </aside>

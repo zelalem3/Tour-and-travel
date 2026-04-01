@@ -2,7 +2,6 @@ export default {
   name: 'contactInquiry',
   title: 'Traveler Inquiries',
   type: 'document',
-  // We make it read-only so the client doesn't accidentally change a lead's info
   readOnly: true, 
   fields: [
     {
@@ -20,6 +19,21 @@ export default {
       title: 'WhatsApp / Phone',
       type: 'string',
     },
+    // --- ADDED FIELD START ---
+    {
+      name: 'preferredContact',
+      title: 'Preferred Contact Method',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Email', value: 'Email' },
+          { title: 'WhatsApp', value: 'WhatsApp' },
+          { title: 'Phone Call', value: 'Phone Call' },
+        ],
+        layout: 'radio', // Makes it look clean in the Sanity Studio
+      },
+    },
+    // --- ADDED FIELD END ---
     {
       name: 'tourInterest',
       title: 'Selected Tour',
@@ -45,17 +59,16 @@ export default {
       }
     },
   ],
-  // This makes the list view look professional in the Sanity Desk
   preview: {
     select: {
       title: 'userName',
       subtitle: 'tourInterest',
-      date: 'createdAt',
+      contact: 'preferredContact', // Added for the preview
     },
-    prepare({ title, subtitle, date }) {
+    prepare({ title, subtitle, contact }) {
       return {
         title: `${title} - ${subtitle}`,
-        subtitle: date ? new Date(date).toLocaleString() : 'No date',
+        subtitle: `Via ${contact || 'Unknown'}`,
       }
     }
   }

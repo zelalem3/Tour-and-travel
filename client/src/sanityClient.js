@@ -1,26 +1,28 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url"; // Change: Use curly braces here
 
-// 1. The Public Client: Used for fetching tours and images.
-// No token needed here. useCdn is true for fast performance.
+const PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID || "wzojjue2";
+const DATASET = import.meta.env.VITE_SANITY_DATASET || "production";
+const API_VERSION = "2023-01-01";
+
 export const client = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || "wzojjue2",
-  dataset: import.meta.env.VITE_SANITY_DATASET || "production",
+  projectId: PROJECT_ID,
+  dataset: DATASET,
   useCdn: true, 
-  apiVersion: "2023-01-01",
+  apiVersion: API_VERSION,
 });
 
-// 2. The Write Client: Used ONLY for submitting contact forms.
-// This uses the private token. useCdn must be false to see new leads immediately.
 export const writeClient = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || "wzojjue2",
-  dataset: import.meta.env.VITE_SANITY_DATASET || "production",
+  projectId: PROJECT_ID,
+  dataset: DATASET,
   useCdn: false, 
-  apiVersion: "2023-01-01",
-  token: import.meta.env.VITE_SANITY_TOKEN, // This comes from your .env
+  apiVersion: API_VERSION,
+  token: import.meta.env.VITE_SANITY_TOKEN,
+  ignoreBrowserTokenWarning: true, 
 });
 
-const builder = imageUrlBuilder(client);
+// Use the builder with the named export
+const builder = createImageUrlBuilder(client);
 
 export function urlFor(source) {
   return builder.image(source);
