@@ -1,39 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, Quote, Loader2 } from 'lucide-react';
+import { client } from '../sanityClient'; // Adjust path based on your setup
+import imageUrlBuilder from '@sanity/image-url';
 import './ReviewCarousel.css';
 
-const reviews = [
-  {
-    id: 1,
-    name: "Sarah Jenkins",
-    role: "Verified Buyer",
-    image: "https://i.pravatar.cc/150?u=1",
-    text: "The interface is incredibly intuitive. I was able to set up my entire workflow in under ten minutes. Highly recommended!",
-  },
-  {
-    id: 2,
-    name: "Marcus Chen",
-    role: "Software Engineer",
-    image: "https://i.pravatar.cc/150?u=2",
-    text: "The speed of response is unlike anything I've used before. It has completely optimized our sprint cycles.",
-  },
-  {
-    id: 3,
-    name: "Elena Rodriguez",
-    role: "Creative Director",
-    image: "https://i.pravatar.cc/150?u=3",
-    text: "Beautifully designed and functionally robust. It really helped our team bridge the gap between design and code.",
-  }
-];
+// Initialize Sanity Image Builder
+const builder = imageUrlBuilder(client);
+function urlFor(source) {
+  return builder.image(source);
+}
 
 const ReviewCarousel = () => {
+  const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Memoized next slide function so it can be reused safely
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+  // 1. Fetch Testimonials from Sanity
+  useEffect(() => {
+    const query = `*[_type == "testimonial"] | order(order asc) {
+      _id,
+      name,
+      role,
+      quote,
+      rating,
+      image
+    }`;
+
+    client.fetch(query)
+      .then((data) => {
+        setReviews(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Testimonial fetch error:", err);
+        setLoading(false);
+      });
   }, []);
+
+  const nextSlide = useCallback(() => {
+    if (reviews.length === 0) return;
+    setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+  }, [reviews.length]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
@@ -41,28 +49,30 @@ const ReviewCarousel = () => {
 
   // Auto-play Logic
   useEffect(() => {
-    if (!isPaused) {
-      const interval = setInterval(() => {
-        nextSlide();
-      }, 4000); // 4000ms = 4 seconds
-
-      return () => clearInterval(interval); // Cleanup on unmount
+    if (!isPaused && reviews.length > 0) {
+      const interval = setInterval(nextSlide, 5000); 
+      return () => clearInterval(interval);
     }
-  }, [nextSlide, isPaused]);
+  }, [nextSlide, isPaused, reviews.length]);
+
+  if (loading) return (
+    <div className="flex justify-center py-20">
+      <Loader2 className="animate-spin text-[#fbbf24]" size={32} />
+    </div>
+  );
+
+  if (reviews.length === 0) return null;
 
   return (
-    
     <div className="carousel-root">
-      <h1 
-  className="contact-title text-3xl font-bold mg" 
-  style={{ textAlign: 'center', width: '100%', marginBottom: '40px' }}
->
-  Your <span className="highlight">Testimonials</span>
-</h1>
+      <h1 className="contact-title text-3xl font-bold mg" style={{ textAlign: 'center', width: '100%', marginBottom: '40px' }}>
+        Traveler <span className="highlight">Testimonials</span>
+      </h1>
+      
       <div 
         className="carousel-container"
-        onMouseEnter={() => setIsPaused(true)}  // Stop auto-play when mouse enters
-        onMouseLeave={() => setIsPaused(false)} // Resume auto-play when mouse leaves
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
         <button onClick={prevSlide} className="nav-arrow left">
           <ChevronLeft size={24} />
@@ -78,17 +88,32 @@ const ReviewCarousel = () => {
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {reviews.map((review) => (
-              <div key={review.id} className="carousel-slide">
+              <div key={review._id} className="carousel-slide">
                 <div className="review-glass-card">
                   <Quote className="quote-icon" size={40} />
-                  <p className="review-body">"{review.text}"</p>
+                  <p className="review-body">"{review.quote}"</p>
+                  
                   <div className="rating-stars">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star 
+                        key={i} 
+                        size={16} 
+                        fill={i < (review.rating || 5) ? "#fbbf24" : "none"} 
+                        color="#fbbf24" 
+                      />
                     ))}
                   </div>
+
                   <div className="user-meta">
-                    <img src={review.image} alt={review.name} className="user-avatar" />
+                    {review.image ? (
+                      <img 
+                        src={urlFor(review.image).width(100).height(100).fit('crop').url()} 
+                        alt={review.name} 
+                        className="user-avatar" 
+                      />
+                    ) : (
+                      <div className="user-avatar-placeholder" />
+                    )}
                     <div className="user-details">
                       <h4 className="user-name">{review.name}</h4>
                       <p className="user-role">{review.role}</p>
