@@ -12,14 +12,14 @@ import {
     SocialIcon
 } from "./FooterStyle";
 
-
 import { 
   FaFacebookF, 
   FaTwitter, 
   FaInstagram, 
-  FaLinkedinIn, 
   FaTiktok, 
-  FaTelegramPlane 
+  FaTelegramPlane,
+  FaPhoneAlt,
+  FaEnvelope 
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -37,6 +37,58 @@ const Footer = () => {
                 <MottoBar>
                     <p>Authentic • Responsible • Unforgettable</p>
                 </MottoBar>
+
+                {/* --- NEW CONTACT ROW START --- */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '40px',
+                    padding: '20px 0 40px 0',
+                    flexWrap: 'wrap', // Ensures it stacks on mobile
+                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                    marginBottom: '40px'
+                }}>
+                    {/* Call Section */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            Call us anytime
+                        </span>
+                        <a href="tel:+251911234567" style={{ color: '#fbbf24', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <FaPhoneAlt size={14} /> +251 911 23 45 67
+                        </a>
+                    </div>
+
+                    {/* Divider for Desktop (Optional) */}
+                    <div style={{ width: '1px', height: '30px', background: 'rgba(255,255,255,0.1)', display: 'none' }}></div>
+
+                    {/* Message Section */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            Send us a message
+                        </span>
+                        <a href="/contact" style={{ 
+                            background: 'transparent', 
+                            color: '#fff', 
+                            border: '1px solid #fbbf24',
+                            padding: '8px 24px', 
+                            borderRadius: '30px', 
+                            textDecoration: 'none', 
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseOver={(e) => {e.target.style.background = '#fbbf24'; e.target.style.color = '#1a1a1a'}}
+                        onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = '#fff'}}
+                        >
+                            <FaEnvelope /> Contact Us
+                        </a>
+                    </div>
+                </div>
+                {/* --- NEW CONTACT ROW END --- */}
 
                 <Row>
                     <Column>
@@ -66,7 +118,6 @@ const Footer = () => {
                     </Column>
 
                     <Column>
-                        {/* 2. Updated Social Icons Section */}
                         <Heading>Follow Our Journey</Heading>
                         <SocialGrid>
                             <SocialIcon href="https://facebook.com/travelethiopia" target="_blank" aria-label="Facebook">

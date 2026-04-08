@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { client, writeClient } from "../sanityClient";
 
+import {  MessageSquare, } from "lucide-react";
+
 import "./contacts.css";
 
 export default function Contact() {
@@ -261,6 +263,29 @@ export default function Contact() {
           </button>
         </form>
       </motion.div>
+        {/* Floating WhatsApp Button */}
+     <motion.a 
+  href="https://wa.me/251911223344"
+  target="_blank"
+  rel="noreferrer"
+  initial={{ scale: 0, rotate: -45 }} 
+  animate={{ scale: 1, rotate: 0 }} 
+  whileHover={{ scale: 1.1 }}
+  className="whatsapp-float fixed bottom-7 right-7 bg-[#25D366] p-4 rounded-full shadow-[0_6px_20px_rgba(37,211,102,0.25)] z-50 text-white"
+>
+  <MessageSquare size={20} />
+</motion.a>
+      <motion.a
+        href="https://wa.me/251911223344"
+        target="_blank"
+        rel="noreferrer"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        className="whatsapp-float fixed bottom-7 right-7 bg-[#25D366] p-4 rounded-full shadow-[0_6px_20px_rgba(37,211,102,0.25)] z-50 text-white"
+      >
+        <MessageSquare size={20} />
+      </motion.a>
     </div>
   );
 }

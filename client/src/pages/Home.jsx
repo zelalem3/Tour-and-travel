@@ -3,14 +3,15 @@ import { Helmet } from "react-helmet-async";
 import Hero from "../components/hero"; 
 import BlogList from "../components/blog";
 import { motion } from "framer-motion";
+import { MessageSquare } from "lucide-react";
 
 // Lazy loaded sections
 const WhyChooseUs = lazy(() => import("../components/Whychooeuse"));
 const Tours = lazy(() => import("../components/Tours"));
 const Destinations = lazy(() => import("../components/Destinations"));
 const Cta = lazy(() => import("../components/Cta"));
+const ReviewCarousel = lazy(() => import("../components/review"));
 
-// Updated Loader to match your Premium/Dark theme
 const SectionLoader = () => (
   <div className="flex flex-col items-center justify-center py-32 bg-[#020617]">
     <div className="w-10 h-10 border-2 border-[#fbbf24]/20 border-t-[#fbbf24] rounded-full animate-spin"></div>
@@ -22,66 +23,68 @@ const Home = () => {
   const siteUrl = "https://travelethiopia.com";
   const siteTitle = "Travel Ethiopia | Discover the Cradle of Humanity";
   const siteDesc = "Join Travel Ethiopia for an unforgettable odyssey. From the rock-hewn churches of Lalibela to the volcanic landscapes of Danakil.";
-  // Ensure this image exists in your public folder or Sanity
   const siteImg = "https://travelethiopia.com/icon.svg"; 
 
   return (
     <div className="flex flex-col min-h-screen bg-[#020617]">
-      {/* --- MASTER SEO & SOCIAL TAGS --- */}
       <Helmet>
         <title>{siteTitle}</title>
         <meta name="description" content={siteDesc} />
-        <link rel="canonical" href={siteUrl} />
-
-        {/* Open Graph / Telegram / WhatsApp / FB */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl} />
         <meta property="og:title" content={siteTitle} />
         <meta property="og:description" content={siteDesc} />
         <meta property="og:image" content={siteImg} />
-        <meta property="og:site_name" content="Travel Ethiopia" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={siteTitle} />
-        <meta name="twitter:description" content={siteDesc} />
-        <meta name="twitter:image" content={siteImg} />
-
-        {/* Favicon & Theme Color */}
         <meta name="theme-color" content="#020617" />
       </Helmet>
 
       <main className="flex-grow">
-        {/* Hero is usually not lazy-loaded to avoid LCP (Largest Contentful Paint) delays */}
+        {/* 1. HERO - Keep at top, no lazy load */}
         <Hero />
 
         <Suspense fallback={<SectionLoader />}>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <section id="destinations">
-              <Destinations />
-            </section>
+          {/* 2. DESTINATIONS - Spark immediate interest */}
+          <section id="destinations">
+            <Destinations />
+          </section>
 
-            <section id="tours">
-              <Tours />
-            </section>
+          {/* 3. TOURS - Show them the products while they are excited */}
+          <section id="tours">
+            <Tours />
+          </section>
 
-            <section id="why-us">
-              <WhyChooseUs />
-            </section>
+          {/* 4. WHY CHOOSE US - Answer "Why book with this specific company?" */}
+          <section id="why-us">
+            <WhyChooseUs />
+          </section>
 
-            <section id="blog" className="py-12">
-              <BlogList />
-            </section>
+          {/* 5. REVIEWS - Back up your "Why Us" claims with real social proof */}
+          <section id="reviews">
+             <ReviewCarousel />
+          </section>
 
-            <section id="contact">
-              <Cta />
-            </section>
-          </motion.div>
+          {/* 6. BLOG - Provide extra value and travel tips */}
+          <section id="blog" className="py-12">
+            <BlogList />
+          </section>
+
+          {/* 7. CTA - The final "Call to Action" */}
+          <section id="contact">
+            <Cta />
+          </section>
         </Suspense>
+
+        {/* Floating WhatsApp Button - Removed duplicate, added logic */}
+        <motion.a 
+          href="https://wa.me/251911223344"
+          target="_blank"
+          rel="noreferrer"
+          initial={{ scale: 0, y: 20 }} 
+          animate={{ scale: 1, y: 0 }} 
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="whatsapp-float fixed bottom-7 right-7 bg-[#25D366] p-4 rounded-full shadow-[0_10px_25px_rgba(37,211,102,0.4)] z-50 text-white"
+        >
+          <MessageSquare size={24} />
+        </motion.a>
       </main>
     </div>
   );

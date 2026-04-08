@@ -49,6 +49,12 @@ const MyNavbar = () => {
             <Nav.Link as={Link} to="/tours" className="nav-item-link">
               Tours
             </Nav.Link>
+
+            {/* NEW GALLERY LINK */}
+            <Nav.Link as={Link} to="/gallery" className="nav-item-link">
+              Gallery
+            </Nav.Link>
+
             <Nav.Link as={Link} to="/blog" className="nav-item-link">
               Blog
             </Nav.Link>
