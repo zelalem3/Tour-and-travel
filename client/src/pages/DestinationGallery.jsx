@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Loader2 } from 'lucide-react';
+import { ChevronLeft, Loader2, Camera, MapPin } from 'lucide-react';
 import { client } from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
+import './DestinationGallery.css';
 
-// Initialize the builder
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
-  return builder.image(source);
+  return builder.image(source).auto('format').quality(85);
 }
 
 const DestinationAlbum = () => {
@@ -16,18 +16,14 @@ const DestinationAlbum = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Updated Query: Fetch the whole image object so we can get metadata and captions
     const query = `*[_type == "gallery" && slug.current == $slug][0]{
       title,
-      images[]{
-        asset,
-        caption,
-        alt
-      }
+      location,
+      description,
+      images[]{ asset, caption, alt }
     }`;
 
-    client
-      .fetch(query, { slug })
+    client.fetch(query, { slug })
       .then((data) => {
         setAlbum(data);
         setLoading(false);
@@ -40,71 +36,63 @@ const DestinationAlbum = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white' }}>
-        <Loader2 className="animate-spin" size={40} color="#fbbf24" />
+      <div className="album-loader">
+        <Loader2 className="spinner" size={48} />
+        <p>Developing the Expedition...</p>
       </div>
     );
   }
 
-  if (!album) return <div style={{ textAlign: 'center', color: 'white' }}>Album not found</div>;
+  if (!album) return <div className="error-state">Album not found</div>;
 
   return (
-    <div className="album-page" style={{ padding: '40px 5%', color: 'white', minHeight: '100vh' }}>
-      <Link to="/gallery" style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '5px', textDecoration: 'none', marginBottom: '20px' }}>
-        <ChevronLeft size={20} /> Back to Gallery
-      </Link>
+    <div className="album-page-container">
+      <div className="album-content">
+        
+        <Link to="/gallery" className="back-link">
+          <ChevronLeft size={20} />
+          <span>Back to All Expeditions</span>
+        </Link>
 
-      <header style={{ marginBottom: '60px' }}>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#fbbf24', marginBottom: '10px' }}>
-          {album.title}
-        </h1>
-        <div style={{ width: '60px', height: '4px', background: '#fbbf24' }}></div>
-      </header>
-
-      <div style={{ 
-        columns: '3 300px', 
-        columnGap: '20px',
-        width: '100%'
-      }}>
-        {album.images?.map((img, index) => (
-          <div key={index} style={{ breakInside: 'avoid', marginBottom: '25px', position: 'relative' }}>
-            {/* 2. Optimized Image Loading */}
-            <img 
-              src={urlFor(img.asset)
-                .width(800)           // Resize to a sensible width
-                .quality(80)          // Slight compression for speed
-                .auto('format')       // Automatically serve WebP if the browser supports it
-                .url()} 
-              style={{ 
-                width: '100%', 
-                borderRadius: '15px 15px 0 0', 
-                display: 'block',
-                boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-                transition: 'transform 0.3s ease'
-              }} 
-              alt={img.alt || album.title}
-              loading="lazy"          // 3. Native Browser Lazy Loading
-              onMouseOver={(e) => e.target.style.transform = 'scale(1.02)'}
-              onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
-            />
-
-            {/* 4. Caption Bar */}
-            {img.caption && (
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                padding: '12px 15px',
-                borderRadius: '0 0 15px 15px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderTop: 'none',
-                fontSize: '14px',
-                color: 'rgba(255, 255, 255, 0.8)',
-                fontStyle: 'italic'
-              }}>
-                {img.caption}
-              </div>
-            )}
+        <header className="album-header">
+          <div className="header-badge">
+            <Camera size={18} />
+            <span>Photo Expedition</span>
           </div>
-        ))}
+          
+          {album.location && (
+            <div className="album-location">
+              <MapPin size={18} /> {album.location}
+            </div>
+          )}
+
+          <h1 className="album-title">{album.title}</h1>
+          
+          {album.description && (
+            <p className="album-description">{album.description}</p>
+          )}
+          
+          <div className="title-underline"></div>
+        </header>
+
+        <div className="masonry-grid">
+          {album.images?.map((img, index) => (
+            <div key={index} className="masonry-item">
+              <div className="image-card">
+                <img 
+                  src={urlFor(img.asset).width(1200).url()} 
+                  alt={img.alt || album.title}
+                  loading="lazy"
+                />
+                {img.caption && (
+                  <div className="caption-overlay">
+                    <p>{img.caption}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

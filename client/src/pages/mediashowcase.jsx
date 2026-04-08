@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Maximize2, Image as ImageIcon } from 'lucide-react';
+import { Play, Image as ImageIcon, ArrowUpRight, Loader2, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import {client} from '../sanityClient'; 
+import { client } from '../sanityClient';
 import './mediashowcase.css';
 
 const MediaShowcase = () => {
@@ -10,79 +10,127 @@ const MediaShowcase = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // GROQ Query to fetch both Galleries and Videos
-    const query = `
-      {
-        "galleries": *[_type == "gallery"]{
-          _id,
-          title,
-          "slug": slug.current,
-          "url": mainImage.asset->url
-        },
-        "videos": *[_type == "youtubeVideo"]{
-          _id,
-          title,
-          videoId
-        }
+    const query = `{
+      "galleries": *[_type == "gallery"] | order(_createdAt desc) { 
+        _id, 
+        title, 
+        "slug": slug.current, 
+        "url": mainImage.asset->url,
+        location,
+        description
+      },
+      "videos": *[_type == "youtubeVideo"] | order(_createdAt desc) { 
+        _id, 
+        title, 
+        videoId,
+        location
       }
-    `;
+    }`;
 
-    client
-      .fetch(query)
-      .then((data) => {
-        setPhotos(data.galleries);
-        setVideos(data.videos);
-        setLoading(false);
-      })
-      .catch(console.error);
+    client.fetch(query).then((data) => {
+      setPhotos(data.galleries);
+      setVideos(data.videos);
+      setLoading(false);
+    }).catch(console.error);
   }, []);
 
-  if (loading) return <div className="loading-state">Loading your journey...</div>;
+  if (loading) {
+    return (
+      <div className="media-loader">
+        <Loader2 className="spinner" size={48} />
+        <p>Unfolding Ethiopia's Epic Story...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="media-page">
-      <div className="media-header">
-        <h1>Visual Journey</h1>
-        <p>Explore Ethiopia through the lenses of our travelers</p>
-      </div>
+      {/* Hero Header */}
+      <header className="media-header">
+        <span className="eyebrow">Visual Expeditions</span>
+        <h1>Ethiopia Through <span className="highlight">The Lens</span></h1>
+        <p className="header-desc">
+          From the otherworldly sulfur lakes of the Danakil Depression to the mist-shrouded peaks of the Simien Mountains — 
+          experience the raw beauty of Ethiopia in cinematic detail.
+        </p>
+       
+      </header>
 
-      {/* PHOTO GALLERY SECTION */}
+      {/* Photographic Albums */}
       <section className="gallery-section">
-        <h2 className="section-subtitle">Photo Gallery</h2>
+        <div className="section-header">
+          <div>
+            <h2 className="section-subtitle">Photographic Albums</h2>
+            <p className="section-tagline">Timeless moments captured across the Ethiopian highlands and beyond</p>
+          </div>
+          <div className="accent-line"></div>
+        </div>
+
         <div className="photo-grid">
           {photos.map((photo) => (
-            <Link 
-              to={`/gallery/${photo.slug}`} 
-              key={photo._id} 
-              className="photo-card"
-            >
-              <img src={photo.url} alt={photo.title} />
-              <div className="photo-overlay">
-                <ImageIcon color="white" size={24} />
-                <span className="view-album-text">View Full Album</span>
+            <Link to={`/gallery/${photo.slug}`} key={photo._id} className="photo-card">
+              <div className="image-wrapper">
+                <img src={photo.url} alt={photo.title} loading="lazy" />
+                <div className="image-overlay"></div>
+              </div>
+
+              <div className="photo-content">
+                <div className="location">
+                  <MapPin size={16} />
+                  <span>{photo.location || "Ethiopia"}</span>
+                </div>
+                
                 <h3 className="photo-title">{photo.title}</h3>
+                {photo.description && <p className="photo-desc">{photo.description}</p>}
+
+                <div className="card-footer">
+                  <div className="explore-btn">
+                    <ImageIcon size={18} />
+                    <span>Explore Album</span>
+                  </div>
+                  <ArrowUpRight className="arrow" size={20} />
+                </div>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* VIDEO SECTION */}
-      <section className="video-section">
-        <h2 className="section-subtitle">Featured Expeditions</h2>
+      {/* Cinematic Expeditions */}
+      <section className="video-section" >
+        <div className="section-header" >
+          <div>
+            <h2 className="section-subtitle"style={{ margin: "20px" }}>Cinematic Expeditions</h2>
+            <p className="section-tagline">Immerse yourself in the movement and soul of Ethiopia</p>
+          </div>
+          <div className="accent-line"></div>
+        </div>
+
         <div className="video-grid">
           {videos.map((video) => (
             <div key={video._id} className="video-card">
               <div className="iframe-container">
                 <iframe
-                  src={`https://www.youtube.com/embed/${video.videoId}`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+                  src={`https://www.youtube.com/embed/${video.videoId}?rel=0&modestbranding=1&playsinline=1`}
                   title={video.title}
+                  allowFullScreen
+                  loading="lazy"
                 ></iframe>
               </div>
-              <h3>{video.title}</h3>
+
+              <div className="video-info">
+                <div className="play-badge">
+                  <Play size={20} fill="#fbbf24" />
+                </div>
+                <div>
+                  <h3>{video.title}</h3>
+                  {video.location && (
+                    <div className="video-location">
+                      <MapPin size={14} /> {video.location}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
