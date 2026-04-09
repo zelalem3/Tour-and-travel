@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, Loader2, Camera, MapPin } from 'lucide-react';
+import Masonry from 'react-masonry-css'; // Import the library
 import { client } from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
 import './DestinationGallery.css';
@@ -14,6 +15,13 @@ const DestinationAlbum = () => {
   const { slug } = useParams();
   const [album, setAlbum] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Configuration for the masonry columns
+  const breakpointColumnsObj = {
+    default: 2,    // 2 columns for desktop
+    1100: 2,       // 2 columns for tablets
+    768: 1         // 1 column for mobile
+  };
 
   useEffect(() => {
     const query = `*[_type == "gallery" && slug.current == $slug][0]{
@@ -75,7 +83,12 @@ const DestinationAlbum = () => {
           <div className="title-underline"></div>
         </header>
 
-        <div className="masonry-grid">
+        {/* Replaced standard div with Masonry component */}
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           {album.images?.map((img, index) => (
             <div key={index} className="masonry-item">
               <div className="image-card">
@@ -92,7 +105,7 @@ const DestinationAlbum = () => {
               </div>
             </div>
           ))}
-        </div>
+        </Masonry>
       </div>
     </div>
   );
