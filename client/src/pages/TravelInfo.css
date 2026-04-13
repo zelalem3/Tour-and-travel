@@ -182,3 +182,31 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.visa-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.faq-mini {
+  margin-top: 50px;
+}
+
+.faq-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+}
+
+.faq-item p {
+  color: #94a3b8;
+  margin-top: 5px;
+}
